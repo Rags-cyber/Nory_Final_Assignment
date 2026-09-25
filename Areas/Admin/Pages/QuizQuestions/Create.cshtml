@@ -1,0 +1,156 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.QuizQuestions.CreateModel
+@{
+    ViewData["Title"] = "Create Quiz Question";
+}
+
+<h1>Create Quiz Question</h1>
+
+<form method="post">
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Quiz</label>
+        <div class="col-sm-10">
+            <select class="form-select" asp-for="QuizQuestion.QuizId" asp-items="ViewBag.QuizId">
+                <option value="">-- Select Quiz --</option>
+            </select>
+            <span asp-validation-for="QuizQuestion.QuizId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Question Text</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" asp-for="QuizQuestion.QuestionText" rows="3"></textarea>
+            <span asp-validation-for="QuizQuestion.QuestionText" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Question Type</label>
+        <div class="col-sm-10">
+            <select class="form-select" id="questionType" asp-for="QuizQuestion.Type">
+                <option value="MultipleChoice">Multiple Choice</option>
+                <option value="TrueFalse">True/False</option>
+                <option value="FillInBlank">Fill in the Blank</option>
+                <option value="AudioIdentification">Audio Identification (Ear Training)</option>
+            </select>
+            <span asp-validation-for="QuizQuestion.Type" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Points</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="number" min="1" asp-for="QuizQuestion.Points" />
+            <span asp-validation-for="QuizQuestion.Points" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Order Index</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="number" min="0" asp-for="QuizQuestion.OrderIndex" />
+            <span asp-validation-for="QuizQuestion.OrderIndex" class="text-danger"></span>
+        </div>
+    </div>
+
+    <!-- Multiple Choice / True False Options -->
+    <div id="optionsContainer" class="row mb-3">
+        <label class="col-sm-2 col-form-label">Options</label>
+        <div class="col-sm-10">
+            <div class="mb-2">
+                <input class="form-control" type="text" placeholder="Option 1" name="Option1" />
+            </div>
+            <div class="mb-2">
+                <input class="form-control" type="text" placeholder="Option 2" name="Option2" />
+            </div>
+            <div class="mb-2">
+                <input class="form-control" type="text" placeholder="Option 3" name="Option3" />
+            </div>
+            <div class="mb-2">
+                <input class="form-control" type="text" placeholder="Option 4" name="Option4" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Correct Answer Index (for MC/TF) -->
+    <div id="correctIndexContainer" class="row mb-3">
+        <label class="col-sm-2 col-form-label">Correct option number (1-4)</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="number" min="1" max="4" name="CorrectAnswerIndex" />
+            <span class="form-text text-muted">For Multiple Choice and True/False questions</span>
+        </div>
+    </div>
+
+    <!-- Correct Answer Text (for Fill in Blank / Audio Identification) -->
+    <div id="correctAnswerTextContainer" class="row mb-3">
+        <label class="col-sm-2 col-form-label">Correct Answer</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="text" placeholder="Enter the correct answer" name="CorrectAnswerText" />
+            <span class="form-text text-muted">For Fill in the Blank and Audio Identification questions</span>
+        </div>
+    </div>
+
+    <!-- Audio URL (for Audio Identification) -->
+    <div id="audioUrlContainer" class="row mb-3">
+        <label class="col-sm-2 col-form-label">Audio URL (MP3)</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="url" placeholder="https://example.com/audio/note.mp3" asp-for="QuizQuestion.AudioUrl" />
+            <span asp-validation-for="QuizQuestion.AudioUrl" class="text-danger"></span>
+            <span class="form-text text-muted">For Audio Identification questions</span>
+        </div>
+    </div>
+
+    <div id="toneSequenceContainer" class="row mb-3">
+        <label class="col-sm-2 col-form-label">Synthesized tones (Hz)</label>
+        <div class="col-sm-10">
+            <input class="form-control" placeholder="261.63,392.00" asp-for="QuizQuestion.ToneSequence" />
+            <span asp-validation-for="QuizQuestion.ToneSequence" class="text-danger"></span>
+            <span class="form-text text-muted">Optional. Enter comma-separated frequencies; use this or an audio URL.</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10 offset-sm-2">
+            <button type="submit" class="btn btn-primary">Create Question</button>
+            <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        // Show/hide fields based on question type
+        function toggleQuestionFields() {
+            const type = document.getElementById('questionType').value;
+
+            // Hide all containers first
+            document.getElementById('optionsContainer').style.display = 'none';
+            document.getElementById('correctIndexContainer').style.display = 'none';
+            document.getElementById('correctAnswerTextContainer').style.display = 'none';
+            document.getElementById('audioUrlContainer').style.display = 'none';
+            document.getElementById('toneSequenceContainer').style.display = 'none';
+
+            // Show relevant containers based on type
+            if (type === 'MultipleChoice' || type === 'TrueFalse') {
+                document.getElementById('optionsContainer').style.display = 'block';
+                document.getElementById('correctIndexContainer').style.display = 'block';
+            } else if (type === 'FillInBlank' || type === 'AudioIdentification') {
+                document.getElementById('correctAnswerTextContainer').style.display = 'block';
+            }
+
+            if (type === 'AudioIdentification') {
+                document.getElementById('audioUrlContainer').style.display = 'block';
+                document.getElementById('toneSequenceContainer').style.display = 'block';
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', toggleQuestionFields);
+
+        // Update when question type changes
+        document.getElementById('questionType').addEventListener('change', toggleQuestionFields);
+    </script>
+}

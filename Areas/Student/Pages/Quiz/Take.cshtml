@@ -1,0 +1,163 @@
+@page
+@model NoryMusicLMS_VS.Areas.Student.Pages.Quiz.TakeModel
+@{
+    ViewData["Title"] = $"Take Quiz: {Model.Quiz.Title}";
+}
+
+<h1>@Model.Quiz.Title</h1>
+<p><strong>Course:</strong> @Model.Quiz.Lesson.Course.Title</p>
+<p><strong>Lesson:</strong> @Model.Quiz.Lesson.Title</p>
+<p><strong>Type:</strong> @Model.Quiz.Type</p>
+<p><strong>Description:</strong> @Model.Quiz.Description</p>
+
+@if (Model.Attempt is not null)
+{
+    <div class="alert alert-info mt-3">
+        Resuming previous attempt started on @Model.Attempt.StartedAt.ToString("MMM dd, yyyy HH:mm")
+    </div>
+}
+
+<form method="post" asp-page-handler="Submit">
+    @if (Model.Questions == null || !Model.Questions.Any())
+    {
+        <div class="alert alert-warning">No questions found for this quiz.</div>
+    }
+    else
+    {
+        @for (int i = 0; i < Model.Questions.Count; i++)
+        {
+            var question = Model.Questions[i];
+            var answer = Model.Answers.FirstOrDefault(a => a.QuestionId == question.Id);
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Question @(i + 1) (@question.Points points)</h5>
+                </div>
+                <div class="card-body">
+                    <p>@question.QuestionText</p>
+
+                    @switch (question.Type)
+                    {
+                        case QuestionType.MultipleChoice:
+                        case QuestionType.TrueFalse:
+                            {
+                                var options = System.Text.Json.JsonSerializer.Deserialize<List<string>>(question.OptionsJson ?? "[]");
+                                <div class="mb-3">
+                                    @for (int j = 0; j < options?.Count; j++)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="Answers[@i].SelectedAnswerIndex" value="@j"
+                                                @(answer?.SelectedAnswerIndex == j ? "checked" : "") />
+                                            <label class="form-check-label">
+                                                @options[j]
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                break;
+                            }
+                        case QuestionType.FillInBlank:
+                            {
+                                <div class="mb-3">
+                                    <label class="form-label">Your Answer:</label>
+                                    <input class="form-control" type="text" name="Answers[@i].SelectedAnswer"
+                                        value="@(answer?.SelectedAnswer ?? string.Empty)" />
+                                    <div class="form-text">Enter the correct word or phrase.</div>
+                                </div>
+                                break;
+                            }
+                        case QuestionType.AudioIdentification:
+                            {
+                                <div class="mb-3">
+                                    @if (!string.IsNullOrEmpty(question.ToneSequence))
+                                    {
+                                        <label class="form-label">Listen to the notes, then identify what you hear:</label>
+                                        <div class="mb-2">
+                                            <button type="button" class="btn btn-outline-primary btn-sm nory-play-tones" data-tones="@question.ToneSequence">
+                                                <i class="bi bi-play-fill"></i> Play
+                                            </button>
+                                            <span class="text-muted small ms-2">Uses your browser's audio - no file, no download.</span>
+                                        </div>
+                                    }
+                                    else if (!string.IsNullOrEmpty(question.AudioUrl))
+                                    {
+                                        <label class="form-label">Listen to the audio and identify the note:</label>
+                                        <audio controls class="w-100 mb-2">
+                                            <source src="@question.AudioUrl" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-warning">No audio available for this question.</div>
+                                    }
+                                    <label class="form-label">Your Answer (note name or interval name, e.g. "C", "D#", "Perfect 5th"):</label>
+                                    <input class="form-control" type="text" name="Answers[@i].SelectedAnswer"
+                                        value="@(answer?.SelectedAnswer ?? string.Empty)" />
+                                    <div class="form-text">Enter what you hear - a single note name, or an interval name if two notes played.</div>
+                                </div>
+                                break;
+                            }
+                    }
+                </div>
+            </div>
+        }
+    }
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Submit Quiz</button>
+        <a asp-page="/Student/Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        // Plays a comma-separated sequence of frequencies (Hz) using the
+        // Web Audio API - real synthesized tones, no audio files needed.
+        // data-tones="261.63,392.00" plays C4 then G4 (a Perfect 5th),
+        // half a second apart, each held for 900ms.
+        (function () {
+            let audioCtx = null;
+
+            function playTone(freq, startTime, duration) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+
+                // Simple envelope so notes don't click at start/end.
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
+                gain.gain.linearRampToValueAtTime(0.3, startTime + duration - 0.1);
+                gain.gain.linearRampToValueAtTime(0, startTime + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(startTime);
+                osc.stop(startTime + duration);
+            }
+
+            document.querySelectorAll('.nory-play-tones').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    if (!audioCtx) {
+                        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    const tones = (button.dataset.tones || '')
+                        .split(',')
+                        .map(function (t) { return parseFloat(t.trim()); })
+                        .filter(function (f) { return !isNaN(f) && f > 0; });
+
+                    if (tones.length === 0) return;
+
+                    const noteDuration = 0.9;
+                    const gap = 0.15;
+                    let t = audioCtx.currentTime + 0.05;
+                    tones.forEach(function (freq) {
+                        playTone(freq, t, noteDuration);
+                        t += noteDuration + gap;
+                    });
+                });
+            });
+        })();
+    </script>
+}

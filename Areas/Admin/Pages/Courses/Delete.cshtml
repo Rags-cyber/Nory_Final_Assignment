@@ -1,0 +1,44 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Courses.DeleteModel
+@{
+    ViewData["Title"] = "Delete Course";
+}
+
+<h1>Delete Course</h1>
+
+<div class="alert alert-danger">
+    <h4>Are you sure you want to delete this course?</h4>
+    <p>This action cannot be undone and will remove associated enrollments and lessons.</p>
+</div>
+
+<div class="card col-md-6 mb-3">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Course.Title</h5>
+        <p class="card-text">@Model.Course.Description</p>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Instructor</dt>
+            <dd class="col-sm-8">@(Model.Course.Instructor != null ? $"{Model.Course.Instructor.FirstName} {Model.Course.Instructor.LastName}" : "None")</dd>
+
+            <dt class="col-sm-4">Start Date</dt>
+            <dd class="col-sm-8">@Model.Course.StartDate.ToString("MMM dd, yyyy")</dd>
+
+            <dt class="col-sm-4">Status</dt>
+            <dd class="col-sm-8">
+                @if (Model.Course.IsActive)
+                {
+                    <span class="badge bg-success">Active</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Inactive</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="Course.Id" />
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+</form>

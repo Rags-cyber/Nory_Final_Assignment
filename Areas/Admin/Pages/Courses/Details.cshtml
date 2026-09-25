@@ -1,0 +1,89 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Courses.DetailsModel
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<h1>Course Details</h1>
+
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.Instructor)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.Instructor.FirstName) @Html.DisplayFor(model => model.Course.Instructor.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.StartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.EndDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.EndDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.IsActive)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.IsActive)
+        </dd>
+    </dl>
+</div>
+<div>
+    <h4>Lessons in this Course</h4>
+    @if (Model.Lessons == null || !Model.Lessons.Any())
+    {
+        <p>No lessons found for this course.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Content (preview)</th>
+                    <th>Order</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var lesson in Model.Lessons)
+            {
+                <tr>
+                    <td>@lesson.Title</td>
+                    <td>@(lesson.Content.Length > 100 ? lesson.Content.Substring(0, 100) + "..." : lesson.Content)</td>
+                    <td>@lesson.OrderIndex</td>
+                    <td>
+                        <a asp-page="../Lessons/Edit" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-primary">Edit</a> |
+                        <a asp-page="../Lessons/Details" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-secondary">Details</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
+
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Course.Id" class="btn btn-primary">Edit</a>
+    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+</div>

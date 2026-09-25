@@ -1,0 +1,43 @@
+@page "{id:int}"
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Resources.EditModel
+@{
+    ViewData["Title"] = "Edit Resource";
+}
+
+<h1>Edit Resource</h1>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Resource.Id" />
+    <input type="hidden" asp-for="Resource.UploadedAt" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Resource.Title" class="control-label"></label>
+        <input asp-for="Resource.Title" class="form-control" />
+        <span asp-validation-for="Resource.Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Resource.Description" class="control-label"></label>
+        <textarea asp-for="Resource.Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Resource.Type" class="control-label"></label>
+        <select asp-for="Resource.Type" class="form-select" asp-items="Html.GetEnumSelectList<NoryMusicLMS_VS.Models.ResourceType>()"></select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Resource.Url" class="control-label">File URL / Path</label>
+        <input asp-for="Resource.Url" class="form-control" />
+        <span asp-validation-for="Resource.Url" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Resource.LessonId" class="control-label">Lesson</label>
+        <select asp-for="Resource.LessonId" class="form-select" asp-items="ViewBag.LessonId"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>

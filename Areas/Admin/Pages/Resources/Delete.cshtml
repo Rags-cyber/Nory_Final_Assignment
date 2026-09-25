@@ -1,0 +1,25 @@
+@page "{id:int}"
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Resources.DeleteModel
+@{
+    ViewData["Title"] = "Delete Resource";
+}
+
+<h1>Delete Resource</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<dl class="row">
+    <dt class="col-sm-3">Title</dt>
+    <dd class="col-sm-9">@Model.Resource.Title</dd>
+
+    <dt class="col-sm-3">Type</dt>
+    <dd class="col-sm-9">@Model.Resource.Type</dd>
+
+    <dt class="col-sm-3">Lesson</dt>
+    <dd class="col-sm-9">@Model.Resource.Lesson.Title</dd>
+</dl>
+
+<form method="post">
+    <input type="hidden" asp-for="Resource.Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+</form>

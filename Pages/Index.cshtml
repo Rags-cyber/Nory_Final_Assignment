@@ -1,0 +1,109 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Welcome to Nory";
+}
+
+<div class="nory-hero">
+    <p class="nory-eyebrow mb-3">Theory &amp; Guitar Platform</p>
+    <h1 class="mb-3">
+        Stop Memorizing Shapes.<br />
+        <span class="accent">Start Understanding Music.</span>
+    </h1>
+    <p class="text-muted fs-5 mb-4" style="max-width: 640px;">
+        Nory bridges music theory with hands-on ear training and structured lessons,
+        so the notes on the page finally connect to what you hear and play.
+    </p>
+    <div class="d-flex flex-wrap gap-2">
+        @if (User?.Identity?.IsAuthenticated ?? false)
+        {
+            @if (User.IsInRole("Student"))
+            {
+                <a class="btn btn-primary btn-lg" href="/Student/BrowseCourses" role="button">Browse Courses</a>
+                <a class="btn btn-outline-primary btn-lg" href="/Student" role="button">My Dashboard</a>
+            }
+            else if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-primary btn-lg" href="/Admin/" role="button">Admin Dashboard</a>
+            }
+            else if (User.IsInRole("Instructor"))
+            {
+                <a class="btn btn-primary btn-lg" href="/Instructor/" role="button">Instructor Dashboard</a>
+            }
+        }
+        else
+        {
+            <a class="btn btn-primary btn-lg" href="/Identity/Account/Register" role="button">Start Learning Free</a>
+            <a class="btn btn-outline-primary btn-lg" href="/Student/BrowseCourses" role="button">Browse Courses</a>
+        }
+    </div>
+</div>
+
+<!-- Feature Cards -->
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="bi bi-music-note-beamed fs-2 mb-3 d-block"></i>
+                <h5 class="card-title">Structured Courses</h5>
+                <p class="card-text">Music theory, ear training, and performance lessons organized into a clear, progressive curriculum.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="bi bi-headphones fs-2 mb-3 d-block"></i>
+                <h5 class="card-title">Ear Training</h5>
+                <p class="card-text">
+                    Practice interval and pitch recognition with
+                    <a href="https://www.musictheory.net/exercises" target="_blank" rel="noopener">musictheory.net's</a>
+                    trainers, linked directly from each lesson's resources.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="bi bi-graph-up fs-2 mb-3 d-block"></i>
+                <h5 class="card-title">Track Progress</h5>
+                <p class="card-text">Monitor your learning journey with enrollment progress and quiz performance history.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="bi bi-patch-question fs-2 mb-3 d-block"></i>
+                <h5 class="card-title">Interactive Quizzes</h5>
+                <p class="card-text">Test your knowledge with theory questions and audio identification quizzes after every lesson.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="bi bi-folder2-open fs-2 mb-3 d-block"></i>
+                <h5 class="card-title">Curated Resources</h5>
+                <p class="card-text">Every lesson links out to sheet music, audio tracks, and external references worth your time.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="bi bi-clock-history fs-2 mb-3 d-block"></i>
+                <h5 class="card-title">Learn At Your Pace</h5>
+                <p class="card-text">Self-paced lessons and materials, available whenever you want to practice.</p>
+            </div>
+        </div>
+    </div>
+</div>

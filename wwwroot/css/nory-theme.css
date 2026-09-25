@@ -1,0 +1,332 @@
+/* =====================================================================
+   Nory Design System
+   Dark navy + amber theme matching the Nory_Design_Idea mockups.
+   This file overrides Bootstrap defaults globally, so every page -
+   including the scaffolded Identity Login/Register pages and the
+   Admin CRUD pages - inherits it automatically without needing its
+   markup rewritten by hand.
+   ===================================================================== */
+
+:root {
+  --nory-bg: #0a0f1e;
+  --nory-bg-elevated: #101728;
+  --nory-panel: #141d33;
+  --nory-panel-border: #232f4d;
+  --nory-nav: #0d1426;
+
+  --nory-accent: #f5a623;      /* amber - primary CTAs */
+  --nory-accent-hover: #ffb640;
+  --nory-accent-2: #2fd3e0;    /* cyan - secondary highlights */
+  --nory-accent-2-hover: #57e0ec;
+
+  --nory-text: #eef1f8;
+  --nory-text-muted: #93a0bd;
+  --nory-text-dim: #5f6c8a;
+
+  --nory-success: #35c98f;
+  --nory-danger: #ef5a6f;
+  --nory-warning: #f5a623;
+
+  --nory-radius: 12px;
+  --nory-radius-sm: 8px;
+  --nory-font-ui: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
+
+html, body {
+  background-color: var(--nory-bg);
+  color: var(--nory-text);
+  font-family: var(--nory-font-ui);
+}
+
+a { color: var(--nory-accent-2); }
+a:hover { color: var(--nory-accent-2-hover); }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--nory-text);
+}
+
+.text-muted { color: var(--nory-text-muted) !important; }
+
+.nory-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nory-accent-2);
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+  background-color: var(--nory-nav) !important;
+  border-bottom: 1px solid var(--nory-panel-border);
+}
+.navbar-brand {
+  font-weight: 800;
+  color: var(--nory-text) !important;
+  letter-spacing: -0.02em;
+}
+.navbar-brand .nory-logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--nory-accent), #ff7a45);
+  color: #0a0f1e;
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-right: 8px;
+}
+.navbar .nav-link {
+  color: var(--nory-text-muted) !important;
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: var(--nory-text) !important;
+}
+.navbar .dropdown-menu {
+  background-color: var(--nory-panel);
+  border: 1px solid var(--nory-panel-border);
+}
+.navbar .dropdown-item {
+  color: var(--nory-text-muted);
+}
+.navbar .dropdown-item:hover {
+  background-color: var(--nory-bg-elevated);
+  color: var(--nory-text);
+}
+
+/* ---------- Layout shell ---------- */
+main {
+  min-height: 70vh;
+}
+
+footer.footer {
+  background-color: var(--nory-nav);
+  border-top: 1px solid var(--nory-panel-border) !important;
+  color: var(--nory-text-dim);
+  padding: 2.5rem 0;
+  margin-top: 4rem;
+}
+footer.footer a { color: var(--nory-text-muted); text-decoration: none; }
+footer.footer a:hover { color: var(--nory-accent-2); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  border-radius: var(--nory-radius-sm);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--nory-accent), #ff8a3d);
+  border: none;
+  color: #12100a;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background: linear-gradient(135deg, var(--nory-accent-hover), #ff9a55);
+  color: #12100a;
+}
+.btn-outline-primary {
+  border-color: var(--nory-panel-border);
+  color: var(--nory-text);
+  background: transparent;
+}
+.btn-outline-primary:hover {
+  background-color: var(--nory-bg-elevated);
+  border-color: var(--nory-accent-2);
+  color: var(--nory-text);
+}
+.btn-secondary, .btn-outline-secondary {
+  background-color: var(--nory-bg-elevated);
+  border-color: var(--nory-panel-border);
+  color: var(--nory-text-muted);
+}
+.btn-secondary:hover, .btn-outline-secondary:hover {
+  background-color: var(--nory-panel);
+  color: var(--nory-text);
+}
+.btn-danger, .btn-outline-danger {
+  background-color: transparent;
+  border-color: var(--nory-danger);
+  color: var(--nory-danger);
+}
+.btn-danger:hover, .btn-outline-danger:hover {
+  background-color: var(--nory-danger);
+  color: #12100a;
+}
+.btn-info { background-color: var(--nory-accent-2); border: none; color: #06232a; }
+.btn-lg { padding: 0.75rem 1.5rem; }
+
+/* ---------- Cards / panels ---------- */
+.card, .jumbotron {
+  background-color: var(--nory-panel) !important;
+  border: 1px solid var(--nory-panel-border) !important;
+  border-radius: var(--nory-radius) !important;
+  color: var(--nory-text);
+}
+.card-title { color: var(--nory-text); }
+.card-text { color: var(--nory-text-muted); }
+.card .bi, .card i.bi { color: var(--nory-accent) !important; }
+
+.jumbotron {
+  background: radial-gradient(circle at top left, rgba(245,166,35,0.08), transparent 55%), var(--nory-panel) !important;
+  padding: 3rem !important;
+}
+
+/* ---------- Tables ---------- */
+.table {
+  color: var(--nory-text);
+  border-color: var(--nory-panel-border);
+}
+.table thead th {
+  background-color: var(--nory-bg-elevated);
+  color: var(--nory-text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--nory-panel-border);
+  font-weight: 600;
+}
+.table td, .table th { border-color: var(--nory-panel-border); vertical-align: middle; }
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: var(--nory-bg-elevated);
+  color: var(--nory-text);
+}
+.table-hover > tbody > tr:hover > * {
+  background-color: rgba(245,166,35,0.08);
+}
+
+/* ---------- Forms ---------- */
+.form-control, .form-select {
+  background-color: var(--nory-bg-elevated);
+  border: 1px solid var(--nory-panel-border);
+  color: var(--nory-text);
+  border-radius: var(--nory-radius-sm);
+}
+.form-control:focus, .form-select:focus {
+  background-color: var(--nory-bg-elevated);
+  border-color: var(--nory-accent-2);
+  color: var(--nory-text);
+  box-shadow: 0 0 0 0.2rem rgba(47,211,224,0.15);
+}
+.form-control::placeholder { color: var(--nory-text-dim); }
+.form-label, label { color: var(--nory-text-muted); font-weight: 500; font-size: 0.9rem; }
+.form-check-input {
+  background-color: var(--nory-bg-elevated);
+  border-color: var(--nory-panel-border);
+}
+.form-check-input:checked {
+  background-color: var(--nory-accent);
+  border-color: var(--nory-accent);
+}
+.text-danger { color: var(--nory-danger) !important; }
+.valid-feedback { color: var(--nory-success); }
+
+/* ---------- Badges ---------- */
+.badge.bg-info { background-color: rgba(47,211,224,0.15) !important; color: var(--nory-accent-2) !important; border: 1px solid rgba(47,211,224,0.35); }
+.badge.bg-secondary { background-color: var(--nory-bg-elevated) !important; color: var(--nory-text-muted) !important; border: 1px solid var(--nory-panel-border); }
+.badge.bg-success { background-color: rgba(53,201,143,0.15) !important; color: var(--nory-success) !important; border: 1px solid rgba(53,201,143,0.35); }
+.badge.bg-warning { background-color: rgba(245,166,35,0.15) !important; color: var(--nory-accent) !important; border: 1px solid rgba(245,166,35,0.35); }
+.badge.bg-danger { background-color: rgba(239,90,111,0.15) !important; color: #ff8a97 !important; border: 1px solid rgba(239,90,111,0.35); }
+
+/* ---------- Progress bars ---------- */
+.progress {
+  background-color: var(--nory-bg-elevated);
+  border-radius: 999px;
+  height: 8px;
+}
+.progress-bar {
+  background: linear-gradient(90deg, var(--nory-accent-2), var(--nory-accent));
+  border-radius: 999px;
+}
+
+/* ---------- Definition lists (Details pages) ---------- */
+dl.row dt { color: var(--nory-text-muted); font-weight: 500; }
+dl.row dd { color: var(--nory-text); }
+
+/* ---------- Alerts ---------- */
+.alert { border-radius: var(--nory-radius-sm); border: 1px solid var(--nory-panel-border); }
+.alert-danger { background-color: rgba(239,90,111,0.1); color: #ff8a97; border-color: rgba(239,90,111,0.3); }
+.alert-success { background-color: rgba(53,201,143,0.1); color: #6fe3b6; border-color: rgba(53,201,143,0.3); }
+.alert-info { background-color: rgba(47,211,224,0.1); color: var(--nory-accent-2); border-color: rgba(47,211,224,0.3); }
+
+/* ---------- Small helper components used on restyled pages ---------- */
+.nory-stat {
+  background-color: var(--nory-bg-elevated);
+  border: 1px solid var(--nory-panel-border);
+  border-radius: var(--nory-radius-sm);
+  padding: 1rem 1.25rem;
+}
+.nory-stat .value { font-size: 1.6rem; font-weight: 800; color: var(--nory-text); }
+.nory-stat .label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--nory-text-muted); }
+
+.nory-pill {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background-color: rgba(245,166,35,0.12);
+  color: var(--nory-accent);
+  border: 1px solid rgba(245,166,35,0.3);
+}
+
+.nory-resource-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--nory-panel-border);
+  border-radius: var(--nory-radius-sm);
+  background-color: var(--nory-bg-elevated);
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+  color: var(--nory-text);
+  transition: border-color 0.15s ease;
+}
+.nory-resource-link:hover {
+  border-color: var(--nory-accent-2);
+  color: var(--nory-text);
+}
+.nory-resource-link .source {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--nory-text-dim);
+  text-transform: uppercase;
+}
+
+.nory-hero {
+  padding: 3.5rem 0 2.5rem;
+}
+.nory-hero h1 {
+  font-size: 2.75rem;
+  font-weight: 800;
+}
+.nory-hero .accent { color: var(--nory-accent); }
+
+/* ---------- List groups / breadcrumbs ---------- */
+.list-group-item {
+  background-color: var(--nory-panel);
+  border-color: var(--nory-panel-border);
+  color: var(--nory-text);
+}
+.list-group-item-action:hover {
+  background-color: var(--nory-bg-elevated);
+  color: var(--nory-text);
+}
+.breadcrumb {
+  background-color: transparent;
+  padding: 0;
+}
+.breadcrumb-item a { color: var(--nory-text-muted); }
+.breadcrumb-item.active { color: var(--nory-text-dim); }
+.breadcrumb-item + .breadcrumb-item::before { color: var(--nory-text-dim); }

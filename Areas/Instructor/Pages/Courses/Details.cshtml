@@ -1,0 +1,47 @@
+@page "{id:int}"
+@model NoryMusicLMS_VS.Areas.Instructor.Pages.Courses.DetailsModel
+@{
+    ViewData["Title"] = Model.Course.Title;
+}
+<p class="nory-eyebrow mb-1">My Course</p>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <h1>@Model.Course.Title</h1>
+    <div><a asp-page="Edit" asp-route-id="@Model.Course.Id" class="btn btn-outline-primary">Edit course</a><a asp-page="Index" class="btn btn-outline-secondary ms-1">All courses</a></div>
+</div>
+<p class="text-muted">@Model.Course.Description</p>
+@if (TempData["StatusMessage"] is string message) { <div class="alert alert-success">@message</div> }
+<div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+    <h2 class="h4 mb-0">Lessons</h2>
+    <a asp-area="Instructor" asp-page="/Lessons/Create" asp-route-courseId="@Model.Course.Id" class="btn btn-primary">Add lesson</a>
+</div>
+@if (Model.Course.Lessons.Count == 0)
+{
+    <div class="alert alert-info">No lessons yet. Add the first lesson to this course.</div>
+}
+else
+{
+    <div class="list-group">
+    @foreach (var lesson in Model.Course.Lessons)
+    {
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div><strong>@lesson.OrderIndex. @lesson.Title</strong><div class="small text-muted">@lesson.Quizzes.Count quiz(es)</div></div>
+                    <div class="d-flex gap-2">
+                        <a asp-area="Instructor" asp-page="/Lessons/Edit" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-primary">Edit lesson</a>
+                        <a asp-area="Instructor" asp-page="/Resources/Manage" asp-route-lessonId="@lesson.Id" class="btn btn-sm btn-outline-secondary">Resources (@lesson.Resources.Count)</a>
+                        <a asp-area="Instructor" asp-page="/Quizzes/Create" asp-route-lessonId="@lesson.Id" class="btn btn-sm btn-outline-info">Add quiz</a>
+                    </div>
+                </div>
+                @if (lesson.Quizzes.Count > 0)
+                {
+                    <div class="small mt-2">
+                    @foreach (var quiz in lesson.Quizzes)
+                    {
+                        <a asp-area="Instructor" asp-page="/Quizzes/Manage" asp-route-id="@quiz.Id" class="me-3">@quiz.Title (@quiz.Questions.Count questions)</a>
+                    }
+                    </div>
+                }
+            </div>
+    }
+    </div>
+}

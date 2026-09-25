@@ -1,0 +1,48 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Lessons.IndexModel
+@{
+    ViewData["Title"] = "Lesson Management";
+}
+
+<h1>Lesson Management</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">+ Create New Lesson</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Title</th>
+            <th>Order</th>
+            <th>Has Video</th>
+            <th>Has Audio</th>
+            <th>Has Notation</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.Lessons == null || !Model.Lessons.Any())
+    {
+        <tr><td colspan="7">No lessons found.</td></tr>
+    }
+    else
+    {
+        foreach (var lesson in Model.Lessons)
+        {
+            <tr>
+                <td>@lesson.Course.Title</td>
+                <td>@lesson.Title</td>
+                <td>@lesson.OrderIndex</td>
+                <td>@Html.Raw(!string.IsNullOrEmpty(lesson.VideoUrl) ? "<span class=\"badge bg-success\">Yes</span>" : "<span class=\"badge bg-secondary\">No</span>")</td>
+                <td>@Html.Raw(!string.IsNullOrEmpty(lesson.AudioUrl) ? "<span class=\"badge bg-success\">Yes</span>" : "<span class=\"badge bg-secondary\">No</span>")</td>
+                <td>@Html.Raw(!string.IsNullOrEmpty(lesson.NotationUrl) ? "<span class=\"badge bg-success\">Yes</span>" : "<span class=\"badge bg-secondary\">No</span>")</td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                    <a asp-page="./Edit" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a asp-page="./Delete" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

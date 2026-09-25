@@ -1,0 +1,76 @@
+@page "{id:int}"
+@model NoryMusicLMS_VS.Areas.Instructor.Pages.Quizzes.ManageModel
+@{
+    ViewData["Title"] = "Manage Quiz";
+}
+<p class="nory-eyebrow mb-1">@Model.Quiz.Lesson.Course.Title · @Model.Quiz.Lesson.Title</p>
+<h1>@Model.Quiz.Title</h1>
+<p class="text-muted">@Model.Quiz.Description</p>
+@if (TempData["StatusMessage"] is string message) { <div class="alert alert-success">@message</div> }
+
+<h2 class="h4 mt-4">Questions (@Model.Quiz.Questions.Count)</h2>
+@if (Model.Quiz.Questions.Count == 0)
+{
+    <div class="alert alert-warning">This quiz has no questions yet, so students cannot take it.</div>
+}
+else
+{
+    <ol class="list-group list-group-numbered mb-4">
+    @foreach (var question in Model.Quiz.Questions)
+    {
+        <li class="list-group-item">@question.QuestionText <span class="badge bg-secondary">@question.Type</span> <span class="badge bg-info">@question.Points pts</span></li>
+    }
+    </ol>
+}
+
+<section class="card">
+    <div class="card-header"><h2 class="h5 mb-0">Add a question</h2></div>
+    <div class="card-body">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3"><label asp-for="Input.QuestionText" class="form-label"></label><textarea asp-for="Input.QuestionText" class="form-control" rows="2"></textarea><span asp-validation-for="Input.QuestionText" class="text-danger"></span></div>
+            <div class="row">
+                <div class="col-md-6 mb-3"><label asp-for="Input.Type" class="form-label"></label><select asp-for="Input.Type" asp-items="Html.GetEnumSelectList<QuestionType>()" class="form-select" id="questionType"></select></div>
+                <div class="col-md-3 mb-3"><label asp-for="Input.Points" class="form-label"></label><input asp-for="Input.Points" type="number" min="1" class="form-control" /></div>
+            </div>
+            <div id="choiceFields">
+                <p class="form-text">For True/False, the options are automatically set to True and False.</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3"><label asp-for="Input.Option1" class="form-label">Option 1</label><input asp-for="Input.Option1" class="form-control" /></div>
+                    <div class="col-md-6 mb-3"><label asp-for="Input.Option2" class="form-label">Option 2</label><input asp-for="Input.Option2" class="form-control" /></div>
+                    <div class="col-md-6 mb-3"><label asp-for="Input.Option3" class="form-label">Option 3 (optional)</label><input asp-for="Input.Option3" class="form-control" /></div>
+                    <div class="col-md-6 mb-3"><label asp-for="Input.Option4" class="form-label">Option 4 (optional)</label><input asp-for="Input.Option4" class="form-control" /></div>
+                </div>
+                <div class="mb-3"><label asp-for="Input.CorrectOptionNumber" class="form-label">Correct option number (1-4)</label><input asp-for="Input.CorrectOptionNumber" type="number" min="1" max="4" class="form-control" /><span asp-validation-for="Input.CorrectOptionNumber" class="text-danger"></span></div>
+            </div>
+            <div id="textAnswerFields">
+                <div class="mb-3"><label asp-for="Input.CorrectAnswerText" class="form-label">Expected answer (e.g. C or Perfect 5th)</label><input asp-for="Input.CorrectAnswerText" class="form-control" /><span asp-validation-for="Input.CorrectAnswerText" class="text-danger"></span></div>
+            </div>
+            <div id="audioFields">
+                <div class="mb-3"><label asp-for="Input.AudioUrl" class="form-label">Audio URL (optional)</label><input asp-for="Input.AudioUrl" class="form-control" /><span asp-validation-for="Input.AudioUrl" class="text-danger"></span></div>
+                <div class="mb-3"><label asp-for="Input.ToneSequence" class="form-label">Tone sequence in Hz (optional, e.g. 261.63,392.00)</label><input asp-for="Input.ToneSequence" class="form-control" /><span asp-validation-for="Input.ToneSequence" class="text-danger"></span></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add question</button>
+            <a asp-page="/Courses/Details" asp-route-id="@Model.Quiz.Lesson.CourseId" class="btn btn-outline-secondary">Back to course</a>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const typeSelect = document.getElementById('questionType');
+        const choiceFields = document.getElementById('choiceFields');
+        const textFields = document.getElementById('textAnswerFields');
+        const audioFields = document.getElementById('audioFields');
+        function updateQuestionFields() {
+            const type = typeSelect.value;
+            const choice = type === 'MultipleChoice' || type === 'TrueFalse';
+            choiceFields.hidden = !choice;
+            textFields.hidden = choice;
+            audioFields.hidden = type !== 'AudioIdentification';
+        }
+        typeSelect.addEventListener('change', updateQuestionFields);
+        updateQuestionFields();
+    </script>
+}

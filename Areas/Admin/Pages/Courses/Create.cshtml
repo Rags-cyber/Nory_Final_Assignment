@@ -1,0 +1,61 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Courses.CreateModel
+@{
+    ViewData["Title"] = "Create Course";
+}
+
+<h1>Create Course</h1>
+
+<h4>Course</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Course.Title" class="form-label"></label>
+                <input asp-for="Course.Title" class="form-control" placeholder="e.g. Music Theory Fundamentals" />
+                <span asp-validation-for="Course.Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Course.Description" class="form-label"></label>
+                <textarea asp-for="Course.Description" class="form-control" rows="4" placeholder="Course overview and syllabus"></textarea>
+                <span asp-validation-for="Course.Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Course.InstructorId" class="form-label">Instructor</label>
+                <select asp-for="Course.InstructorId" class="form-select" asp-items="ViewBag.InstructorId">
+                    <option value="">-- Select Instructor --</option>
+                </select>
+                <span asp-validation-for="Course.InstructorId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Course.StartDate" class="form-label"></label>
+                <input asp-for="Course.StartDate" type="date" class="form-control" />
+                <span asp-validation-for="Course.StartDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Course.EndDate" class="form-label"></label>
+                <input asp-for="Course.EndDate" type="date" class="form-control" />
+                <span asp-validation-for="Course.EndDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <input class="form-check-input" asp-for="Course.IsActive" checked />
+                <label class="form-check-label" asp-for="Course.IsActive">Active Course</label>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Course.ImageUrl" class="form-label"></label>
+                <input asp-for="Course.ImageUrl" class="form-control" placeholder="URL to course thumbnail image" />
+                <span asp-validation-for="Course.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Create Course</button>
+                <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

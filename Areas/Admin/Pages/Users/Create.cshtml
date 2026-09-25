@@ -1,0 +1,20 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Users.CreateModel
+@{
+    ViewData["Title"] = "Create User";
+}
+<h1>Create account</h1>
+<p class="text-muted">Create a student, instructor, or administrator account.</p>
+<div class="row"><div class="col-md-7 col-lg-6">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3"><label asp-for="Input.FirstName" class="form-label"></label><input asp-for="Input.FirstName" class="form-control" /><span asp-validation-for="Input.FirstName" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Input.LastName" class="form-label"></label><input asp-for="Input.LastName" class="form-control" /><span asp-validation-for="Input.LastName" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Input.Email" class="form-label"></label><input asp-for="Input.Email" class="form-control" /><span asp-validation-for="Input.Email" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Input.Password" class="form-label"></label><input asp-for="Input.Password" class="form-control" /><span asp-validation-for="Input.Password" class="text-danger"></span><div class="form-text">Must satisfy the configured Identity password rules.</div></div>
+        <div class="mb-3"><label asp-for="Input.Role" class="form-label"></label><select asp-for="Input.Role" class="form-select"><option>Student</option><option>Instructor</option><option>Admin</option></select></div>
+        <button type="submit" class="btn btn-primary">Create account</button>
+        <a asp-page="Index" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

@@ -1,0 +1,96 @@
+@page
+@model NoryMusicLMS_VS.Areas.Instructor.Pages.IndexModel
+@{
+    ViewData["Title"] = "Instructor Dashboard";
+}
+
+<p class="nory-eyebrow mb-1">Instructor Console</p>
+<h1 class="mb-2">Instructor Dashboard</h1>
+<p class="text-muted mb-4">Manage your courses and track student progress.</p>
+@if (TempData["StatusMessage"] is string message)
+{
+    <div class="alert alert-success">@message</div>
+}
+<p><a asp-area="Instructor" asp-page="/Courses/Index" class="btn btn-primary">Manage my courses</a></p>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.Courses.Count</div>
+            <div class="label">My Courses</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.TotalStudents</div>
+            <div class="label">Total Students</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.TotalLessons</div>
+            <div class="label">Lessons Created</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.TotalQuizzes</div>
+            <div class="label">Quizzes</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">My Courses</h5>
+    </div>
+    <div class="card-body">
+        @if (Model.Courses.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Lessons</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in Model.Courses)
+                        {
+                            <tr>
+                                <td><strong>@course.Title</strong></td>
+                                <td>
+                                    <span class="badge bg-info">
+                                        @(course.Lessons?.Count ?? 0) Lessons
+                                    </span>
+                                </td>
+                                <td>
+                                    @if (course.IsActive)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-area="Instructor" asp-page="/Courses/Details" asp-route-id="@course.Id" class="btn btn-sm btn-outline-primary">Manage</a>
+                                    <a asp-area="Instructor" asp-page="/Courses/Edit" asp-route-id="@course.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="text-center text-muted">No courses are assigned to you yet.</p>
+            <p class="text-center"><a asp-area="Instructor" asp-page="/Courses/Create" class="btn btn-primary">Create a course</a></p>
+        }
+    </div>
+</div>

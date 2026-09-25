@@ -1,0 +1,21 @@
+@page "{id:int}"
+@model NoryMusicLMS_VS.Areas.Instructor.Pages.Lessons.EditModel
+@{
+    ViewData["Title"] = "Edit Lesson";
+}
+<h1>Edit lesson</h1>
+<p class="text-muted">Course: @Model.CourseTitle</p>
+<div class="row"><div class="col-lg-8">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3"><label asp-for="Input.Title" class="form-label"></label><input asp-for="Input.Title" class="form-control" /><span asp-validation-for="Input.Title" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Input.Content" class="form-label">Lesson text/content</label><textarea asp-for="Input.Content" class="form-control" rows="7"></textarea><span asp-validation-for="Input.Content" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Input.OrderIndex" class="form-label">Lesson order</label><input asp-for="Input.OrderIndex" type="number" min="1" class="form-control" /><span asp-validation-for="Input.OrderIndex" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Input.VideoUrl" class="form-label">Video URL (optional)</label><input asp-for="Input.VideoUrl" class="form-control" /><span asp-validation-for="Input.VideoUrl" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Input.AudioUrl" class="form-label">Audio URL (optional)</label><input asp-for="Input.AudioUrl" class="form-control" /><span asp-validation-for="Input.AudioUrl" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Input.NotationUrl" class="form-label">Notation/sheet music URL (optional)</label><input asp-for="Input.NotationUrl" class="form-control" /><span asp-validation-for="Input.NotationUrl" class="text-danger"></span></div>
+        <button type="submit" class="btn btn-primary">Save lesson</button>
+        <a asp-page="/Courses/Index" class="btn btn-outline-secondary">Back to courses</a>
+    </form>
+</div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

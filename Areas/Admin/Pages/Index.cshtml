@@ -1,0 +1,85 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.IndexModel
+@{
+    ViewData["Title"] = "Admin Console";
+}
+
+<p class="nory-eyebrow mb-1">Instructor &amp; Admin Console</p>
+<h1 class="mb-4">Nory Admin Dashboard</h1>
+
+@if (TempData["StatusMessage"] is string statusMessage)
+{
+    <div class="alert alert-success">@statusMessage</div>
+}
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.TotalStudents</div>
+            <div class="label">Students</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.TotalInstructors</div>
+            <div class="label">Instructors</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.Courses.Count(c => c.IsActive)</div>
+            <div class="label">Active Courses</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.Courses.Count</div>
+            <div class="label">Total Courses</div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a asp-page="./Courses/Create" class="btn btn-primary">+ New Course</a>
+    <a asp-page="./Lessons/Create" class="btn btn-outline-primary">+ New Lesson</a>
+    <a asp-page="./Quizzes/Create" class="btn btn-outline-primary">+ New Quiz</a>
+    <a asp-page="./Resources/Create" class="btn btn-outline-primary">+ Upload Resource</a>
+    <a asp-page="./Users/Index" class="btn btn-outline-dark">Manage Users</a>
+</div>
+
+<h2 class="h4 mb-3">Recent Courses</h2>
+<div class="card">
+    <table class="table table-hover mb-0">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Instructor</th>
+                <th>Start Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model.Courses == null || !Model.Courses.Any())
+        {
+            <tr><td colspan="5">No courses found. Create your first course above.</td></tr>
+        }
+        else
+        {
+            foreach (var course in Model.Courses)
+            {
+                <tr>
+                    <td>@course.Title</td>
+                    <td>@course.Instructor.FirstName @course.Instructor.LastName</td>
+                    <td>@course.StartDate.ToShortDateString()</td>
+                    <td>@Html.Raw(course.IsActive ? "<span class=\"badge bg-success\">Active</span>" : "<span class=\"badge bg-secondary\">Inactive</span>")</td>
+                    <td>
+                        <a asp-page="./Courses/Details" asp-route-id="@course.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                        <a asp-page="./Courses/Edit" asp-route-id="@course.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

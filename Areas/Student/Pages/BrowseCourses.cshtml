@@ -1,0 +1,58 @@
+@page
+@model NoryMusicLMS_VS.Areas.Student.Pages.BrowseCoursesModel
+@{
+    ViewData["Title"] = "Browse Courses";
+}
+
+<p class="nory-eyebrow mb-1">Curriculum</p>
+<h1 class="mb-4">Available Courses</h1>
+
+@if (Model.Courses == null || !Model.Courses.Any())
+{
+    <div class="alert alert-info">
+        No courses available at the moment. Please check back later.
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var course in Model.Courses)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <div class="ratio ratio-16x9">
+                        @if (!string.IsNullOrEmpty(course.ImageUrl))
+                        {
+                            <img src="@course.ImageUrl" class="card-img-top" alt="@course.Title">
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center justify-content-center" style="background-color: var(--nory-bg-elevated);">
+                                <i class="bi bi-music-note-beamed display-4" style="color: var(--nory-accent);"></i>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@course.Title</h5>
+                        <p class="card-text flex-grow-1">
+                            @course.Description.Substring(0, Math.Min(150, course.Description.Length))...
+                        </p>
+                        <div class="mt-3">
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="bi bi-person"></i> Instructor: @course.Instructor.FirstName @course.Instructor.LastName<br>
+                                    <i class="bi bi-calendar"></i> Starts: @course.StartDate.ToString("MMM dd, yyyy")<br>
+                                    <i class="bi bi-list-ul"></i> Lessons: @course.Lessons.Count
+                                </small>
+                            </p>
+                        </div>
+                        <form method="post" asp-page-handler="Enroll">
+                            <input type="hidden" name="courseId" value="@course.Id" />
+                            <button type="submit" class="btn btn-primary w-100">Enroll Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

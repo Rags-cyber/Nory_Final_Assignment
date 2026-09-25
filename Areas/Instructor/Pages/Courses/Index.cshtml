@@ -1,0 +1,33 @@
+@page
+@model NoryMusicLMS_VS.Areas.Instructor.Pages.Courses.IndexModel
+@{
+    ViewData["Title"] = "My Courses";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div><p class="nory-eyebrow mb-1">Instructor Console</p><h1 class="mb-0">My Courses</h1></div>
+    <a asp-page="Create" class="btn btn-primary">Create course</a>
+</div>
+<div class="table-responsive card">
+    <table class="table table-hover mb-0">
+        <thead><tr><th>Course</th><th>Lessons</th><th>Students</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        @if (Model.Courses.Count == 0)
+        {
+            <tr><td colspan="5" class="p-3 text-muted">No courses are assigned to you yet. Ask an administrator to assign one, or create a course.</td></tr>
+        }
+        @foreach (var course in Model.Courses)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.Lessons.Count</td>
+                <td>@course.Enrollments.Count(e => e.Status != EnrollmentStatus.Dropped)</td>
+                <td>@(course.IsActive ? "Active" : "Inactive")</td>
+                <td class="text-nowrap">
+                    <a asp-page="Details" asp-route-id="@course.Id" class="btn btn-sm btn-outline-primary">Manage</a>
+                    <a asp-page="Edit" asp-route-id="@course.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

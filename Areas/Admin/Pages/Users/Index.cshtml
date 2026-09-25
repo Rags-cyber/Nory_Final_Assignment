@@ -1,0 +1,54 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Users.IndexModel
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+        <p class="nory-eyebrow mb-1">Administration</p>
+        <h1 class="mb-0">User Management</h1>
+    </div>
+    <a asp-page="Create" class="btn btn-primary">Create account</a>
+</div>
+
+@if (TempData["StatusMessage"] is string statusMessage)
+{
+    <div class="alert alert-success">@statusMessage</div>
+}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-sm-8 col-md-5">
+        <input name="search" value="@Model.Search" class="form-control" placeholder="Search name or email" />
+    </div>
+    <div class="col-auto"><button class="btn btn-outline-primary" type="submit">Search</button></div>
+    @if (!string.IsNullOrWhiteSpace(Model.Search))
+    {
+        <div class="col-auto"><a asp-page="Index" class="btn btn-link">Clear</a></div>
+    }
+</form>
+
+<div class="table-responsive card">
+    <table class="table table-hover mb-0">
+        <thead><tr><th>Name</th><th>Email</th><th>Role(s)</th><th>Email confirmed</th><th>Actions</th></tr></thead>
+        <tbody>
+        @if (Model.Users.Count == 0)
+        {
+            <tr><td colspan="5" class="text-muted p-3">No accounts found.</td></tr>
+        }
+        @foreach (var row in Model.Users)
+        {
+            <tr>
+                <td>@row.User.FirstName @row.User.LastName</td>
+                <td>@row.User.Email</td>
+                <td>@(string.IsNullOrWhiteSpace(row.Roles) ? "No role" : row.Roles)</td>
+                <td>@(row.User.EmailConfirmed ? "Yes" : "No")</td>
+                <td class="text-nowrap">
+                    <a asp-page="Edit" asp-route-id="@row.User.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-page="Delete" asp-route-id="@row.User.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

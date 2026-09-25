@@ -1,0 +1,46 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Resources.IndexModel
+@{
+    ViewData["Title"] = "Resource Management";
+}
+
+<h1>Educational Resources</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">+ Upload New Resource</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Lesson</th>
+            <th>Course</th>
+            <th>Uploaded</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.Resources == null || !Model.Resources.Any())
+    {
+        <tr><td colspan="6">No resources found. Upload your first one above.</td></tr>
+    }
+    else
+    {
+        foreach (var resource in Model.Resources)
+        {
+            <tr>
+                <td>@resource.Title</td>
+                <td><span class="badge bg-info">@resource.Type</span></td>
+                <td>@resource.Lesson.Title</td>
+                <td>@resource.Lesson.Course.Title</td>
+                <td>@resource.UploadedAt.ToShortDateString()</td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@resource.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                    <a asp-page="./Edit" asp-route-id="@resource.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a asp-page="./Delete" asp-route-id="@resource.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

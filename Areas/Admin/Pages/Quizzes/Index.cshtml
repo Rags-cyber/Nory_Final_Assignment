@@ -1,0 +1,48 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Quizzes.IndexModel
+@{
+    ViewData["Title"] = "Quiz Management";
+}
+
+<h1>Quiz Management</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">+ Create New Quiz</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Lesson</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Questions</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.Quizzes == null || !Model.Quizzes.Any())
+    {
+        <tr><td colspan="7">No quizzes found.</td></tr>
+    }
+    else
+    {
+        foreach (var quiz in Model.Quizzes)
+        {
+            <tr>
+                <td>@quiz.Lesson.Course.Title</td>
+                <td>@quiz.Lesson.Title</td>
+                <td>@quiz.Title</td>
+                <td>@quiz.Type</td>
+                <td>@quiz.Questions.Count</td>
+                <td>@(quiz.IsActive ? "<span class=\"badge bg-success\">Active</span>" : "<span class=\"badge bg-secondary\">Inactive</span>")</td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@quiz.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                    <a asp-page="./Edit" asp-route-id="@quiz.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a asp-page="./Delete" asp-route-id="@quiz.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

@@ -1,0 +1,46 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.QuizQuestions.IndexModel
+@{
+    ViewData["Title"] = "Quiz Question Management";
+}
+
+<h1>Quiz Question Management</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">+ Create New Question</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Quiz</th>
+            <th>Question</th>
+            <th>Type</th>
+            <th>Points</th>
+            <th>Order</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.QuizQuestions == null || !Model.QuizQuestions.Any())
+    {
+        <tr><td colspan="6">No questions found.</td></tr>
+    }
+    else
+    {
+        foreach (var question in Model.QuizQuestions)
+        {
+            <tr>
+                <td>@question.Quiz.Title (@question.Quiz.Lesson.Course.Title)</td>
+                <td>@question.QuestionText</td>
+                <td>@question.Type</td>
+                <td>@question.Points</td>
+                <td>@question.OrderIndex</td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@question.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                    <a asp-page="./Edit" asp-route-id="@question.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a asp-page="./Delete" asp-route-id="@question.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

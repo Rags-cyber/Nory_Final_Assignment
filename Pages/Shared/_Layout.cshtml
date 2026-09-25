@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nory</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/nory-theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/NoryMusicLMS_VS.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-page="/Index">
+                    <span class="nory-logo-mark">N</span> Nory
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin Console
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Index">Dashboard</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Courses/Index">Courses</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Lessons/Index">Lessons</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Quizzes/Index">Quizzes</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Resources/Index">Resources</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Users/Index">User Management</a></li>
+                                </ul>
+                            </li>
+                        }
+                        @if (User.IsInRole("Instructor"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="instructorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Instructor Console</a>
+                                <ul class="dropdown-menu" aria-labelledby="instructorDropdown">
+                                    <li><a class="dropdown-item" asp-area="Instructor" asp-page="/Index">Dashboard</a></li>
+                                    <li><a class="dropdown-item" asp-area="Instructor" asp-page="/Courses/Index">My Courses</a></li>
+                                </ul>
+                            </li>
+                        }
+                        @if (User.IsInRole("Student"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Student Portal
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="studentDropdown">
+                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/Index">My Dashboard</a></li>
+                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/BrowseCourses">Browse Courses</a></li>
+                                </ul>
+                            </li>
+                        }
+                        @if (!(User?.Identity?.IsAuthenticated ?? false))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Student" asp-page="/BrowseCourses">Courses</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/SampleData">Sample Data</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+                <strong class="text-light">Nory</strong> &middot; Studio-grade music theory &amp; ear training
+            </div>
+            <div>
+                &copy; 2026 Nory &middot; <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,126 @@
+@page
+@model NoryMusicLMS_VS.Areas.Student.Pages.IndexModel
+@{
+    ViewData["Title"] = "My Dashboard";
+}
+
+<p class="nory-eyebrow mb-1">Student Portal</p>
+<h1 class="mb-4">Welcome back, @Model.CurrentUser.FirstName</h1>
+
+<div class="row mb-4 g-3">
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.Enrollments.Count</div>
+            <div class="label">My Courses</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.Enrollments.Count(e => e.Status == EnrollmentStatus.Completed)</div>
+            <div class="label">Completed</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@Model.Enrollments.Count(e => e.Status == EnrollmentStatus.Active && e.ProgressPercentage > 0 && e.ProgressPercentage < 100)</div>
+            <div class="label">In Progress</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="nory-stat">
+            <div class="value">@(Model.Enrollments.Any() ? $"{Model.Enrollments.Average(e => e.ProgressPercentage):0}%" : "0%")</div>
+            <div class="label">Avg. Progress</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <section class="card h-100">
+            <div class="card-header"><h2 class="h5 mb-0">My Awards</h2></div>
+            <div class="card-body">
+                @if (Model.Awards.Count == 0)
+                {
+                    <p class="text-muted mb-0">Pass a quiz or complete a course to earn your first award.</p>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                    @foreach (var award in Model.Awards)
+                    {
+                        <li class="list-group-item px-0">
+                            <strong><i class="bi bi-award text-warning me-1"></i>@award.Title</strong>
+                            <div class="small text-muted">@award.Description · @award.EarnedAt.ToString("MMM d, yyyy")</div>
+                        </li>
+                    }
+                    </ul>
+                }
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-6">
+        <section class="card h-100">
+            <div class="card-header"><h2 class="h5 mb-0">Recent Quiz Attempts</h2></div>
+            <div class="card-body">
+                @if (Model.RecentAttempts.Count == 0)
+                {
+                    <p class="text-muted mb-0">Your completed quizzes will appear here.</p>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                    @foreach (var attempt in Model.RecentAttempts)
+                    {
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span>@attempt.Quiz.Title <small class="text-muted">(@attempt.CompletedAt?.ToString("MMM d"))</small></span>
+                            <strong class="@(attempt.IsPassed ? "text-success" : "text-danger")">@attempt.ScorePercentage%</strong>
+                        </li>
+                    }
+                    </ul>
+                }
+            </div>
+        </section>
+    </div>
+</div>
+
+<h2 class="h4 mb-3">My Courses</h2>
+
+@if (Model.Enrollments == null || !Model.Enrollments.Any())
+{
+    <div class="alert alert-info">
+        You're not enrolled in any courses yet. <a asp-area="Student" asp-page="/BrowseCourses">Browse available courses</a> to get started.
+    </div>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var enrollment in Model.Enrollments)
+        {
+            <div class="list-group-item p-3">
+                <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">@enrollment.Course.Title</h5>
+                    @switch (enrollment.Status)
+                    {
+                        case EnrollmentStatus.Active:
+                            <span class="badge bg-success">Active</span>
+                            break;
+                        case EnrollmentStatus.Completed:
+                            <span class="badge bg-info">Completed</span>
+                            break;
+                        case EnrollmentStatus.Dropped:
+                            <span class="badge bg-secondary">Dropped</span>
+                            break;
+                    }
+                </div>
+                <p class="text-muted mb-2">@enrollment.Course.Description.Substring(0, Math.Min(100, enrollment.Course.Description.Length))...</p>
+                <div class="progress mb-2">
+                    <div class="progress-bar" role="progressbar" style="width: @enrollment.ProgressPercentage%" aria-valuenow="@enrollment.ProgressPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Enrolled @enrollment.EnrolledAt.ToString("MMM dd, yyyy") &middot; @enrollment.ProgressPercentage% complete</small>
+                    <a asp-page="./CourseDetails" asp-route-id="@enrollment.CourseId" class="btn btn-sm btn-outline-primary">Continue Learning</a>
+                </div>
+            </div>
+        }
+    </div>
+}

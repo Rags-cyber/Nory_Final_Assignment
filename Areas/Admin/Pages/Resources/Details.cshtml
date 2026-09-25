@@ -1,0 +1,30 @@
+@page "{id:int}"
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Resources.DetailsModel
+@{
+    ViewData["Title"] = "Resource Details";
+}
+
+<h1>Resource Details</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Title</dt>
+    <dd class="col-sm-9">@Model.Resource.Title</dd>
+
+    <dt class="col-sm-3">Description</dt>
+    <dd class="col-sm-9">@Model.Resource.Description</dd>
+
+    <dt class="col-sm-3">Type</dt>
+    <dd class="col-sm-9">@Model.Resource.Type</dd>
+
+    <dt class="col-sm-3">File / Link</dt>
+    <dd class="col-sm-9"><a href="@Model.Resource.Url" target="_blank">@Model.Resource.Url</a></dd>
+
+    <dt class="col-sm-3">Lesson</dt>
+    <dd class="col-sm-9">@Model.Resource.Lesson.Title (@Model.Resource.Lesson.Course.Title)</dd>
+
+    <dt class="col-sm-3">Uploaded</dt>
+    <dd class="col-sm-9">@Model.Resource.UploadedAt.ToShortDateString()</dd>
+</dl>
+
+<a asp-page="./Edit" asp-route-id="@Model.Resource.Id" class="btn btn-secondary">Edit</a>
+<a asp-page="./Index" class="btn btn-outline-primary">Back to List</a>

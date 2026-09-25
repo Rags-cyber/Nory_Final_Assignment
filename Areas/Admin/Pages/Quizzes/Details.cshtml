@@ -1,0 +1,64 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Quizzes.DetailsModel
+@{
+    ViewData["Title"] = "Quiz Details";
+}
+
+<h1>Quiz Details</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>@Model.Quiz.Title</h2>
+        <p><strong>Course:</strong> @Model.Quiz.Lesson.Course.Title</p>
+        <p><strong>Lesson:</strong> @Model.Quiz.Lesson.Title</p>
+        <p><strong>Type:</strong> @Model.Quiz.Type</p>
+        <p><strong>Description:</strong> @Model.Quiz.Description</p>
+        <p><strong>Status:</strong> @(Model.Quiz.IsActive ? "<span class=\"badge bg-success\">Active</span>" : "<span class=\"badge bg-secondary\">Inactive</span>")</p>
+        <p><strong>Created:</strong> @Model.Quiz.CreatedAt.ToString("MMMM dd, yyyy")</p>
+
+        @if (Model.Quiz.Questions.Any())
+        {
+            <div class="mt-4">
+                <h3>Quiz Questions (@Model.Quiz.Questions.Count)</h3>
+                <table class="table table-sm table-borderless">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Question</th>
+                            <th>Type</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @{ int qIndex = 1; }
+                    @foreach (var question in Model.Quiz.Questions)
+                    {
+                        <tr>
+                            <td>@(qIndex++)</td>
+                            <td>@question.QuestionText</td>
+                            <td>@question.Type</td>
+                            <td>@question.Points</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info mt-3">No questions added to this quiz yet.</div>
+        }
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Actions</h4>
+            </div>
+            <div class="card-body">
+                <a asp-page="./Edit" asp-route-id="@Model.Quiz.Id" class="btn btn-primary w-100 mb-2">Edit Quiz</a>
+                <a asp-page="./Index" class="btn btn-outline-secondary w-100">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

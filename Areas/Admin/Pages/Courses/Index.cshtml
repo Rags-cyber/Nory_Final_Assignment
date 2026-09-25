@@ -1,0 +1,47 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Courses.IndexModel
+@using NoryMusicLMS_VS.Models
+@{
+    ViewData["Title"] = "Course Management";
+}
+
+<h1>Course Management</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">+ Create New Course</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Instructor</th>
+            <th>Lessons</th>
+            <th>Enrollments</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.Courses == null || !Model.Courses.Any())
+    {
+        <tr><td colspan="6">No courses found.</td></tr>
+    }
+    else
+    {
+        foreach (var course in Model.Courses)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.Instructor.FirstName @course.Instructor.LastName</td>
+                <td>@course.Lessons.Count</td>
+                <td>@course.Enrollments.Count(e => e.Status == EnrollmentStatus.Active)</td>
+                <td>@Html.Raw(course.IsActive ? "<span class=\"badge bg-success\">Active</span>" : "<span class=\"badge bg-secondary\">Inactive</span>")</td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@course.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                    <a asp-page="./Edit" asp-route-id="@course.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a asp-page="./Delete" asp-route-id="@course.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

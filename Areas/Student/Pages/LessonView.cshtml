@@ -1,0 +1,150 @@
+@page
+@model NoryMusicLMS_VS.Areas.Student.Pages.LessonViewModel
+@{
+    ViewData["Title"] = $"Lesson: {Model.Lesson.Title}";
+}
+
+<p class="nory-eyebrow mb-1">@Model.Course.Title &middot; Lesson @Model.CurrentLessonIndex of @Model.TotalLessons</p>
+<h1 class="mb-3">@Model.Lesson.Title</h1>
+
+<div class="progress mb-4">
+    <div class="progress-bar" role="progressbar" style="width: @Model.Enrollment.ProgressPercentage%" aria-valuenow="@Model.Enrollment.ProgressPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3>Lesson Content</h3>
+                <div class="lesson-content">@Model.Lesson.Content</div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Lesson.VideoUrl))
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Video Lesson</h3>
+                </div>
+                <div class="card-body">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="@Model.Lesson.VideoUrl" title="Lesson Video" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Lesson.AudioUrl))
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Audio Lesson</h3>
+                </div>
+                <div class="card-body">
+                    <audio controls class="w-100">
+                        <source src="@Model.Lesson.AudioUrl" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Lesson.NotationUrl))
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Notation/Sheet Music</h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <a href="@Model.Lesson.NotationUrl" target="_blank" class="btn btn-outline-primary">
+                            <i class="bi bi-file-earmark-me"></i> View Notation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (Model.Resources.Any())
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Additional Resources</h3>
+                </div>
+                <div class="card-body">
+                    @foreach (var resource in Model.Resources)
+                    {
+                        var host = Uri.TryCreate(resource.Url, UriKind.Absolute, out var uri) ? uri.Host.Replace("www.", "") : "Uploaded file";
+                        <a href="@resource.Url" target="_blank" rel="noopener" class="nory-resource-link">
+                            <div>
+                                <div><strong>@resource.Title</strong> <span class="nory-pill ms-1">@resource.Type</span></div>
+                                @if (!string.IsNullOrEmpty(resource.Description))
+                                {
+                                    <div class="text-muted small">@resource.Description</div>
+                                }
+                                <div class="source">@host</div>
+                            </div>
+                            <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Lesson Actions</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="MarkComplete">
+                    <input type="hidden" name="lessonId" value="@Model.Lesson.Id" />
+                    <button type="submit" class="btn btn-primary w-100 mb-2" @(Model.Enrollment.Status != EnrollmentStatus.Active ? "disabled" : null)>
+                        @(Model.Enrollment.Status == EnrollmentStatus.Completed ? "Course Completed" : "Mark Lesson Complete")
+                    </button>
+                </form>
+                @if (Model.PreviousLessonId.HasValue)
+                {
+                    <a asp-page="./LessonView" asp-route-lessonId="@Model.PreviousLessonId" class="btn btn-outline-secondary w-100 mb-2">Previous lesson</a>
+                }
+                @if (Model.NextLessonId.HasValue)
+                {
+                    <a asp-page="./LessonView" asp-route-lessonId="@Model.NextLessonId" class="btn btn-outline-secondary w-100 mb-2">Next lesson</a>
+                }
+
+                @if (Model.Quizzes.Any())
+                {
+                    <div class="mt-3">
+                        <h5>Quizzes for this Lesson</h5>
+                        @foreach (var quiz in Model.Quizzes)
+                        {
+                            <div class="mb-2">
+                                <a asp-page="/Student/Quiz/Take" asp-route-quizId="@quiz.Id" class="btn btn-outline-info w-100">
+                                    @quiz.Title (@quiz.Type)
+                                </a>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info mt-3">No quizzes for this lesson yet.</div>
+                }
+
+                <a asp-page="./CourseDetails" asp-route-id="@Model.Course.Id" class="btn btn-outline-secondary w-100 mt-3">
+                    Back to Course
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* @if (Model.CurrentLessonIndex > 1)
+{
+    <div class="mt-4">
+        <a asp-page="./LessonView" asp-route-lessonId="@Model.Lesson.Id" class="btn btn-outline-secondary">
+            ← Previous Lesson
+        </a>
+    </div>
+}
+*@

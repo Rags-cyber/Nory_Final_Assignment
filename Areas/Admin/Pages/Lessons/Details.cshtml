@@ -1,0 +1,65 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Lessons.DetailsModel
+@{
+    ViewData["Title"] = "Lesson Details";
+}
+
+<h1>Lesson Details</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>@Model.Lesson.Title</h2>
+        <p><strong>Course:</strong> @Model.Lesson.Course.Title</p>
+        <p><strong>Order:</strong> @Model.Lesson.OrderIndex</p>
+
+        <div class="mb-4">
+            <h3>Content</h3>
+            <div>@Html.Raw(Model.Lesson.Content)</div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Lesson.VideoUrl))
+        {
+            <div class="mb-4">
+                <h3>Video Lesson</h3>
+                <div class="ratio ratio-16x9">
+                    <iframe src="@Model.Lesson.VideoUrl" title="Lesson Video" allowfullscreen></iframe>
+                </div>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Lesson.AudioUrl))
+        {
+            <div class="mb-4">
+                <h3>Audio Lesson</h3>
+                <audio controls class="w-100">
+                    <source src="@Model.Lesson.AudioUrl" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Lesson.NotationUrl))
+        {
+            <div class="mb-4">
+                <h3>Notation/Sheet Music</h3>
+                <div>
+                    <a href="@Model.Lesson.NotationUrl" target="_blank" class="btn btn-outline-primary">
+                        View Notation
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Actions</h4>
+            </div>
+            <div class="card-body">
+                <a asp-page="./Edit" asp-route-id="@Model.Lesson.Id" class="btn btn-primary w-100 mb-2">Edit</a>
+                <a asp-page="./Index" class="btn btn-outline-secondary w-100">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

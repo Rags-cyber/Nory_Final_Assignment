@@ -1,0 +1,20 @@
+@page "{id}"
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Users.DeleteModel
+@{
+    ViewData["Title"] = "Delete User";
+}
+<h1>Delete user</h1>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+<div class="alert alert-warning">This permanently deletes the account. Accounts with learning or instructor records cannot be deleted.</div>
+<dl class="row">
+    <dt class="col-sm-3">Name</dt><dd class="col-sm-9">@Model.Account.FirstName @Model.Account.LastName</dd>
+    <dt class="col-sm-3">Email</dt><dd class="col-sm-9">@Model.Account.Email</dd>
+</dl>
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete account</button>
+    <a asp-page="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>

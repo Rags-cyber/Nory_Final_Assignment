@@ -1,0 +1,46 @@
+@page
+@model NoryMusicLMS_VS.Pages.SampleDataModel
+@{
+    ViewData["Title"] = "Generate Sample Data";
+}
+
+<h1>Generate Sample Data</h1>
+
+<p>This page will create sample data for the Nory Music Learning Management System, including:</p>
+<ul>
+    <li>Roles (Admin, Instructor, Student)</li>
+    <li>Sample users (admin, instructor, student)</li>
+    <li>Sample courses (Music Theory Fundamentals, Chord Progressions & Harmony, Ear Training Essentials)</li>
+    <li>Sample lessons with content, videos, audio, and notation</li>
+    <li>Sample quizzes and questions (including ear training with audio identification)</li>
+</ul>
+
+<div class="alert alert-info">
+    <strong>Sample Login Credentials:</strong><br>
+    Admin: admin@norymusic.com / Admin@123<br>
+    Instructor: instructor@norymusic.com / Instructor@123<br>
+    Student: student@norymusic.com / Student@123
+</div>
+
+<form method="post">
+    <div class="d-grid gap-2">
+        <button type="submit" name="handler" value="Generate" class="btn btn-primary btn-lg">
+            Generate Sample Data
+        </button>
+        <a href="/" class="btn btn-outline-secondary">Back to Home</a>
+    </div>
+</form>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-4">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger mt-4">
+        @TempData["ErrorMessage"]
+    </div>
+}

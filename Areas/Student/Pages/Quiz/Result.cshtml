@@ -1,0 +1,133 @@
+@page
+@model NoryMusicLMS_VS.Areas.Student.Pages.Quiz.ResultModel
+@{
+    ViewData["Title"] = "Quiz Result";
+}
+
+<h1>Quiz Results</h1>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>@Model.Quiz.Title</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Course:</strong> @Model.Quiz.Lesson.Course.Title</p>
+                <p><strong>Lesson:</strong> @Model.Quiz.Lesson.Title</p>
+                <p><strong>Type:</strong> @Model.Quiz.Type</p>
+                <p><strong>Date Taken:</strong> @Model.Attempt.CompletedAt?.ToString("MMM dd, yyyy HH:mm")</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card text-white @(Model.Attempt.IsPassed ? "bg-success" : "bg-danger") mb-3">
+            <div class="card-body text-center">
+                <h2 class="display-4">@Model.Attempt.ScorePercentage%</h2>
+                <p class="lead">@(Model.Attempt.IsPassed ? "Passed" : "Failed")</p>
+                <p>@(Model.Attempt.IsPassed ? "Great job! You've mastered this topic." : "Keep practicing! You can retake the quiz to improve your score.")</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Question Review</h4>
+            </div>
+            <div class="card-body">
+                @if (Model.Answers == null || !Model.Answers.Any())
+                {
+                    <p>No answers recorded for this attempt.</p>
+                }
+                else
+                {
+                    <div class="list-group">
+                        @for (int i = 0; i < Model.Answers.Count; i++)
+                        {
+                            var answer = Model.Answers[i];
+                            var question = answer.Question;
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">Question @(i + 1)</h6>
+                                    <small class="@(answer.IsCorrect ? "text-success" : "text-danger")">
+                                        @(answer.IsCorrect ? "Correct" : "Incorrect")
+                                    </small>
+                                </div>
+                                <p class="mb-1">@question.QuestionText</p>
+                                @switch (question.Type)
+                                {
+                                    case QuestionType.MultipleChoice:
+                                    case QuestionType.TrueFalse:
+                                        {
+                                            var options = System.Text.Json.JsonSerializer.Deserialize<List<string>>(question.OptionsJson ?? "[]");
+                                            <div>
+                                                <strong>Your Answer:</strong>
+                                                @(answer.SelectedAnswerIndex.HasValue && answer.SelectedAnswerIndex.Value >= 0 &&
+                                                  answer.SelectedAnswerIndex.Value < (options?.Count ?? 0) ?
+                                                  options![answer.SelectedAnswerIndex.Value] : "Not answered")
+                                                <br />
+                                                <strong>Correct Answer:</strong>
+                                                @(question.CorrectAnswerIndex.HasValue && question.CorrectAnswerIndex.Value >= 0 &&
+                                                  question.CorrectAnswerIndex.Value < (options?.Count ?? 0) ?
+                                                  options![question.CorrectAnswerIndex.Value] : "Not set")
+                                            </div>
+                                            break;
+                                        }
+                                    case QuestionType.FillInBlank:
+                                        {
+                                            <div>
+                                                <strong>Your Answer:</strong> @(string.IsNullOrEmpty(answer.SelectedAnswer) ? "Not answered" : answer.SelectedAnswer)
+                                                <br />
+                                                <strong>Correct Answer:</strong> @question.CorrectAnswerText
+                                            </div>
+                                            break;
+                                        }
+                                    case QuestionType.AudioIdentification:
+                                        {
+                                            <div>
+                                                <strong>Your Answer:</strong> @(string.IsNullOrEmpty(answer.SelectedAnswer) ? "Not answered" : answer.SelectedAnswer)
+                                                <br />
+                                                <strong>Correct Answer:</strong> @question.CorrectAnswerText
+                                            </div>
+                                            break;
+                                        }
+                                }
+                                @if (!string.IsNullOrEmpty(answer.Feedback))
+                                {
+                                    <div class="mt-2">
+                                        <em>@answer.Feedback</em>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div class="card">
+        <div class="card-header">
+            <h4>Actions</h4>
+        </div>
+        <div class="card-body">
+            <a asp-page="/Student/Quiz/Take" asp-route-quizId="@Model.Quiz.Id" class="btn btn-outline-primary w-100 mb-2">
+                Retake Quiz
+            </a>
+            <a asp-page="/Student/LessonView" asp-route-lessonId="@Model.Quiz.Lesson.Id" class="btn btn-outline-secondary w-100">
+                Back to Lesson
+            </a>
+            <a asp-page="/Student/Index" class="btn btn-outline-dark w-100 mt-2">
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>

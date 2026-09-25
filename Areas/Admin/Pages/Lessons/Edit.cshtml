@@ -1,0 +1,87 @@
+@page
+@model NoryMusicLMS_VS.Areas.Admin.Pages.Lessons.EditModel
+@{
+    ViewData["Title"] = "Edit Lesson";
+}
+
+<h1>Edit Lesson</h1>
+
+<h4>Lesson</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Lesson.Id" />
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Course</label>
+                <div class="col-sm-10">
+                    <select class="form-select" asp-for="Lesson.CourseId" asp-items="ViewBag.CourseId">
+                        <option value="">-- Select Course --</option>
+                    </select>
+                    <span asp-validation-for="Lesson.CourseId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="Lesson.Title" />
+                    <span asp-validation-for="Lesson.Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Content</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" asp-for="Lesson.Content" rows="6"></textarea>
+                    <span asp-validation-for="Lesson.Content" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Order Index</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="number" asp-for="Lesson.OrderIndex" />
+                    <span asp-validation-for="Lesson.OrderIndex" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Video URL</label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="Lesson.VideoUrl" placeholder="https://..." />
+                    <span asp-validation-for="Lesson.VideoUrl" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Audio URL</label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="Lesson.AudioUrl" placeholder="https://..." />
+                    <span asp-validation-for="Lesson.AudioUrl" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Notation URL</label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="Lesson.NotationUrl" placeholder="https://..." />
+                    <span asp-validation-for="Lesson.NotationUrl" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
