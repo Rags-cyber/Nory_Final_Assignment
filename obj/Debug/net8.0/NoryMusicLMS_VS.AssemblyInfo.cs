@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NoryMusicLMS_VS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+56b10fb13ce22c49f517de2a79df945173997f62")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fcca6fee2ca2f97ee607a7da20f8ded3db0edc53")]
 [assembly: System.Reflection.AssemblyProductAttribute("NoryMusicLMS_VS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NoryMusicLMS_VS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
