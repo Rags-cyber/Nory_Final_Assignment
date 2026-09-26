@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+  <title id="title">Music notes on a treble staff</title><desc id="desc">Five staff lines with a treble clef and notes ascending in pitch.</desc>
+  <rect width="960" height="360" rx="28" fill="#f4f0ff"/>
+  <text x="62" y="95" font-family="serif" font-size="82" fill="#6741a5">𝄞</text>
+  <g stroke="#51466b" stroke-width="4">
+    <path d="M170 105H880M170 145H880M170 185H880M170 225H880M170 265H880"/>
+  </g>
+  <g fill="#7953b8">
+    <ellipse cx="280" cy="225" rx="17" ry="11" transform="rotate(-18 280 225)"/><ellipse cx="385" cy="205" rx="17" ry="11" transform="rotate(-18 385 205)"/>
+    <ellipse cx="490" cy="185" rx="17" ry="11" transform="rotate(-18 490 185)"/><ellipse cx="595" cy="165" rx="17" ry="11" transform="rotate(-18 595 165)"/>
+    <ellipse cx="700" cy="145" rx="17" ry="11" transform="rotate(-18 700 145)"/>
+  </g>
+  <g stroke="#7953b8" stroke-width="4"><path d="M296 225V140M401 205V120M506 185V100M611 165V80M716 145V60"/></g>
+  <text x="170" y="320" font-family="Arial,sans-serif" font-size="22" fill="#51466b">Lower pitch</text>
+  <text x="758" y="320" font-family="Arial,sans-serif" font-size="22" fill="#51466b">Higher pitch →</text>
+</svg>

@@ -28,6 +28,8 @@ public class DetailsModel : PageModel
         var course = await _db.Courses.AsNoTracking()
             .Include(c => c.Lessons.OrderBy(l => l.OrderIndex))
                 .ThenInclude(l => l.Quizzes)
+            .Include(c => c.Lessons)
+                .ThenInclude(l => l.Resources)
             .FirstOrDefaultAsync(c => c.Id == id && c.InstructorId == userId);
         if (course is null) return NotFound();
         Course = course;

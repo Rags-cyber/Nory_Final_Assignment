@@ -9,6 +9,13 @@ namespace NoryMusicLMS_VS.Models
         public string LastName { get; set; } = string.Empty;
         public DateTime DateOfBirth { get; set; } = new DateTime(2000, 1, 1);
         public string? Bio { get; set; }
+        public string? Instrument { get; set; }
+        public string? SkillLevel { get; set; }
+        public string? LearningGoals { get; set; }
+        public string? TeachingSpecialty { get; set; }
+        public int? YearsTeaching { get; set; }
+        public string? AdminDepartment { get; set; }
+        public string? AdminJobTitle { get; set; }
 
         // Navigation properties
         public ICollection<Course> InstructorCourses { get; set; } = new List<Course>();

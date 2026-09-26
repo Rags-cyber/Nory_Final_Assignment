@@ -141,4 +141,5 @@ C:\Users\bshal\OneDrive - Asia Pacific University of Technology And Innovation (
 C:\Users\bshal\OneDrive - Asia Pacific University of Technology And Innovation (APU)\4th_SEM\Web_Application\Final_Assignment\Quizzzes\NoryMusicLMS_VS\obj\Debug\net8.0\NoryMusicLMS_VS.pdb
 C:\Users\bshal\OneDrive - Asia Pacific University of Technology And Innovation (APU)\4th_SEM\Web_Application\Final_Assignment\Quizzzes\NoryMusicLMS_VS\obj\Debug\net8.0\NoryMusicLMS_VS.genruntimeconfig.cache
 C:\Users\bshal\OneDrive - Asia Pacific University of Technology And Innovation (APU)\4th_SEM\Web_Application\Final_Assignment\Quizzzes\NoryMusicLMS_VS\obj\Debug\net8.0\ref\NoryMusicLMS_VS.dll
+C:\Users\bshal\OneDrive - Asia Pacific University of Technology And Innovation (APU)\4th_SEM\Web_Application\Final_Assignment\Quizzzes\NoryMusicLMS_VS\obj\Debug\net8.0\NoryMusicLMS_VS.sourcelink.json
 C:\Users\bshal\OneDrive - Asia Pacific University of Technology And Innovation (APU)\4th_SEM\Web_Application\Final_Assignment\Quizzzes\NoryMusicLMS_VS\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

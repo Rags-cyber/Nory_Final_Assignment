@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-labelledby="title">
+  <title id="title">Verse chorus song form and accompaniment textures</title>
+  <rect width="960" height="360" rx="28" fill="#eaf8f2"/>
+  <text x="480" y="70" text-anchor="middle" font-family="Arial,sans-serif" font-size="30" font-weight="bold" fill="#286652">Song form: notice return and contrast</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle" font-weight="bold" font-size="27">
+    <rect x="100" y="125" width="155" height="90" rx="18" fill="#bfe7d7"/><text x="177" y="180" fill="#225442">Verse A</text>
+    <rect x="285" y="125" width="155" height="90" rx="18" fill="#f8d78e"/><text x="362" y="180" fill="#654b1a">Chorus B</text>
+    <rect x="470" y="125" width="155" height="90" rx="18" fill="#bfe7d7"/><text x="547" y="180" fill="#225442">Verse A</text>
+    <rect x="655" y="125" width="155" height="90" rx="18" fill="#f8d78e"/><text x="732" y="180" fill="#654b1a">Chorus B</text>
+  </g>
+  <text x="480" y="285" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" fill="#286652">Change the accompaniment texture to create contrast</text>
+</svg>

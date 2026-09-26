@@ -14,6 +14,14 @@
 
     <div class="row mb-4">
         <div class="col-md-8">
+            @if (!string.IsNullOrWhiteSpace(Model.Course.ImageUrl))
+            {
+                <img src="@Model.Course.ImageUrl" class="img-fluid rounded mb-3" alt="@Model.Course.Title" />
+            }
+            else
+            {
+                <img src="/images/music-staff.svg" class="img-fluid rounded mb-3" alt="Music notation illustration" />
+            }
             <h2>@Model.Course.Title</h2>
             <p class="lead text-muted">@Model.Course.Description</p>
             <p>

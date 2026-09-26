@@ -3,7 +3,7 @@
 -- Creates the "Nory" database with a schema that matches the current
 -- ApplicationDbContext + Models exactly (Identity + Courses + Lessons +
 -- Quizzes + QuizQuestions + QuizAttempts + QuizAnswers + Enrollments +
--- Resources).
+-- Resources + LessonCompletions + StudentAwards + ChordSongs).
 --
 -- HOW TO RUN THIS (SSMS):
 --   1. Open SSMS, connect to Server name:  (localdb)\mssqllocaldb
@@ -62,6 +62,13 @@ CREATE TABLE [dbo].[AspNetUsers] (
     [LastName] NVARCHAR(MAX) NULL,
     [DateOfBirth] DATETIME2(7) NOT NULL,
     [Bio] NVARCHAR(MAX) NULL,
+    [Instrument] NVARCHAR(100) NULL,
+    [SkillLevel] NVARCHAR(40) NULL,
+    [LearningGoals] NVARCHAR(1000) NULL,
+    [TeachingSpecialty] NVARCHAR(150) NULL,
+    [YearsTeaching] INT NULL,
+    [AdminDepartment] NVARCHAR(100) NULL,
+    [AdminJobTitle] NVARCHAR(100) NULL,
     CONSTRAINT [PK_AspNetUsers] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 GO
@@ -287,6 +294,23 @@ CREATE TABLE [dbo].[Resources] (
     [UploadedAt] DATETIME2(7) NOT NULL,
     CONSTRAINT [PK_Resources] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Resources_Lessons_LessonId] FOREIGN KEY ([LessonId]) REFERENCES [dbo].[Lessons] ([Id]) ON DELETE CASCADE
+)
+GO
+
+CREATE TABLE [dbo].[ChordSongs] (
+    [Id] INT IDENTITY(1,1) NOT NULL,
+    [Title] NVARCHAR(150) NOT NULL,
+    [Artist] NVARCHAR(150) NOT NULL,
+    [Instrument] NVARCHAR(40) NOT NULL,
+    [Key] NVARCHAR(20) NULL,
+    [CapoFret] INT NULL,
+    [TempoBpm] INT NULL,
+    [TempoNote] NVARCHAR(80) NULL,
+    [ChordMap] NVARCHAR(2000) NOT NULL,
+    [StrummingPattern] NVARCHAR(250) NULL,
+    [AttributionUrl] NVARCHAR(1000) NULL,
+    [AddedAt] DATETIME2(7) NOT NULL,
+    CONSTRAINT [PK_ChordSongs] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 GO
 

@@ -1,6 +1,14 @@
 wwwroot\css\nory-theme.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\music-form.svg
+wwwroot\images\music-harmony.svg
+wwwroot\images\music-intervals.svg
+wwwroot\images\music-keys.svg
+wwwroot\images\music-rhythm.svg
+wwwroot\images\music-scale.svg
+wwwroot\images\music-staff.svg
+wwwroot\images\music-triads.svg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map

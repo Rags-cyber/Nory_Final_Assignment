@@ -27,7 +27,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
 
         public NoryMusicLMS_VS.Models.Quiz Quiz { get; set; } = default!;
         public IList<QuizQuestion> Questions { get; set; } = default!;
-        public QuizAttempt Attempt { get; set; } = default!;
+        public QuizAttempt? Attempt { get; set; }
 
         [BindProperty]
         public List<QuizAnswerViewModel> Answers { get; set; } = new List<QuizAnswerViewModel>();
@@ -53,15 +53,16 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
             }
 
             // Get the quiz with its questions
-            Quiz = await _context.Quizzes
+            var quiz = await _context.Quizzes
                 .Include(q => q.Lesson)
                     .ThenInclude(l => l.Course)
-                .FirstOrDefaultAsync(q => q.Id == quizId);
+                .FirstOrDefaultAsync(q => q.Id == quizId && q.IsActive);
 
-            if (Quiz == null)
+            if (quiz == null)
             {
                 return NotFound();
             }
+            Quiz = quiz;
 
             // Check if user is enrolled in this course
             var enrollment = await _context.Enrollments
@@ -115,7 +116,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                     var viewModel = Answers.FirstOrDefault(a => a.QuestionId == answer.QuizQuestionId);
                     if (viewModel != null)
                     {
-                        viewModel.SelectedAnswer = answer.SelectedAnswer;
+                        viewModel.SelectedAnswer = answer.SelectedAnswer ?? string.Empty;
                         viewModel.SelectedAnswerIndex = answer.SelectedAnswerIndex;
                     }
                 }
@@ -138,15 +139,16 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
             }
 
             // Get the quiz
-            Quiz = await _context.Quizzes
+            var quiz = await _context.Quizzes
                 .Include(q => q.Lesson)
                     .ThenInclude(l => l.Course)
-                .FirstOrDefaultAsync(q => q.Id == quizId);
+                .FirstOrDefaultAsync(q => q.Id == quizId && q.IsActive);
 
-            if (Quiz == null)
+            if (quiz == null)
             {
                 return NotFound();
             }
+            Quiz = quiz;
 
             // Check enrollment
             var enrollment = await _context.Enrollments
@@ -163,6 +165,54 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 .Where(q => q.QuizId == quizId)
                 .OrderBy(q => q.OrderIndex)
                 .ToListAsync();
+
+            if (Questions.Count == 0)
+                return BadRequest("This quiz has no questions yet.");
+
+            // Require a valid response to every question. Previously a crafted
+            // or incomplete POST could silently skip questions and still close
+            // the attempt, making the quiz feel broken and losing the chance
+            // to answer the missing items.
+            Answers ??= new List<QuizAnswerViewModel>();
+            var submittedAnswers = Answers
+                .Where(a => Questions.Any(q => q.Id == a.QuestionId))
+                .GroupBy(a => a.QuestionId)
+                .ToDictionary(g => g.Key, g => g.Last());
+            var incomplete = Questions.Any(question =>
+            {
+                if (!submittedAnswers.TryGetValue(question.Id, out var answer))
+                    return true;
+
+                return question.Type switch
+                {
+                    QuestionType.MultipleChoice or QuestionType.TrueFalse =>
+                        !answer.SelectedAnswerIndex.HasValue ||
+                        !TryGetOptionCount(question.OptionsJson, out var count) ||
+                        answer.SelectedAnswerIndex.Value < 0 ||
+                        answer.SelectedAnswerIndex.Value >= count ||
+                        (question.Type == QuestionType.TrueFalse && answer.SelectedAnswerIndex.Value > 1),
+                    QuestionType.FillInBlank or QuestionType.AudioIdentification =>
+                        string.IsNullOrWhiteSpace(answer.SelectedAnswer),
+                    _ => true
+                };
+            });
+
+            if (incomplete)
+            {
+                ModelState.AddModelError(string.Empty, "Please answer every question before submitting.");
+                Answers = Questions.Select(question =>
+                    submittedAnswers.TryGetValue(question.Id, out var answer)
+                        ? answer
+                        : new QuizAnswerViewModel { QuestionId = question.Id })
+                    .ToList();
+                Attempt = await _context.QuizAttempts
+                    .FirstOrDefaultAsync(a => a.StudentId == user.Id && a.QuizId == quizId && a.CompletedAt == null)!;
+                return Page();
+            }
+
+            // Discard forged question IDs and put accepted answers in the
+            // same order as the questions rendered by the form.
+            Answers = Questions.Select(question => submittedAnswers[question.Id]).ToList();
 
             // Check if there's an existing attempt
             Attempt = await _context.QuizAttempts

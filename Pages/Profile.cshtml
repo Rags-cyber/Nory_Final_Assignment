@@ -1,0 +1,136 @@
+@page
+@model NoryMusicLMS_VS.Pages.ProfileModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="profile-shell">
+    <p class="nory-eyebrow mb-1">Account settings</p>
+    <h1 class="mb-1">My profile</h1>
+    <p class="text-muted mb-4">Manage your contact information and role-specific details.</p>
+
+    @if (TempData["ProfileSaved"] is string savedMessage)
+    {
+        <div class="alert alert-success" role="status">@savedMessage</div>
+    }
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+        <section class="card mb-3">
+            <div class="card-header"><h2 class="h5 mb-0">Basic information</h2></div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="Input.FirstName" class="form-label"></label>
+                        <input asp-for="Input.FirstName" class="form-control" autocomplete="given-name" />
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Input.LastName" class="form-label"></label>
+                        <input asp-for="Input.LastName" class="form-control" autocomplete="family-name" />
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email address</label>
+                        <input class="form-control" value="@Model.Email" readonly />
+                        <div class="form-text">Email changes are managed separately to protect sign-in security.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                        <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="tel" />
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Input.DateOfBirth" class="form-label"></label>
+                        <input asp-for="Input.DateOfBirth" class="form-control" />
+                        <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="Input.Bio" class="form-label"></label>
+                        <textarea asp-for="Input.Bio" class="form-control" rows="3" placeholder="A short introduction"></textarea>
+                        <span asp-validation-for="Input.Bio" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        @if (Model.IsStudent)
+        {
+            <section class="card mb-3">
+                <div class="card-header"><h2 class="h5 mb-0">Student learning profile</h2></div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label asp-for="Input.Instrument" class="form-label">Primary instrument</label>
+                            <input asp-for="Input.Instrument" class="form-control" placeholder="e.g. Guitar, piano, voice" />
+                            <span asp-validation-for="Input.Instrument" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Input.SkillLevel" class="form-label"></label>
+                            <select asp-for="Input.SkillLevel" class="form-select">
+                                <option value="">Choose a level</option>
+                                <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+                            </select>
+                            <span asp-validation-for="Input.SkillLevel" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Input.LearningGoals" class="form-label"></label>
+                            <textarea asp-for="Input.LearningGoals" class="form-control" rows="3" placeholder="What would you like to learn?"></textarea>
+                            <span asp-validation-for="Input.LearningGoals" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+
+        @if (Model.IsInstructor)
+        {
+            <section class="card mb-3">
+                <div class="card-header"><h2 class="h5 mb-0">Instructor profile</h2></div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label asp-for="Input.TeachingSpecialty" class="form-label"></label>
+                            <input asp-for="Input.TeachingSpecialty" class="form-control" placeholder="e.g. Guitar, harmony, ear training" />
+                            <span asp-validation-for="Input.TeachingSpecialty" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Input.YearsTeaching" class="form-label"></label>
+                            <input asp-for="Input.YearsTeaching" class="form-control" type="number" min="0" max="80" />
+                            <span asp-validation-for="Input.YearsTeaching" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+
+        @if (Model.IsAdmin)
+        {
+            <section class="card mb-3">
+                <div class="card-header"><h2 class="h5 mb-0">Administrator profile</h2></div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Input.AdminDepartment" class="form-label"></label>
+                            <input asp-for="Input.AdminDepartment" class="form-control" placeholder="e.g. Learning operations" />
+                            <span asp-validation-for="Input.AdminDepartment" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Input.AdminJobTitle" class="form-label"></label>
+                            <input asp-for="Input.AdminJobTitle" class="form-control" placeholder="e.g. LMS administrator" />
+                            <span asp-validation-for="Input.AdminJobTitle" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <p class="form-text mt-3 mb-0">User and course administration remains available in the Admin Console.</p>
+                </div>
+            </section>
+        }
+
+        <button type="submit" class="btn btn-primary">Save profile</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -119,13 +119,13 @@
             <h4>Actions</h4>
         </div>
         <div class="card-body">
-            <a asp-page="/Student/Quiz/Take" asp-route-quizId="@Model.Quiz.Id" class="btn btn-outline-primary w-100 mb-2">
+            <a asp-area="Student" asp-page="/Quiz/Take" asp-route-quizId="@Model.Quiz.Id" class="btn btn-outline-primary w-100 mb-2">
                 Retake Quiz
             </a>
-            <a asp-page="/Student/LessonView" asp-route-lessonId="@Model.Quiz.Lesson.Id" class="btn btn-outline-secondary w-100">
+            <a asp-area="Student" asp-page="/LessonView" asp-route-lessonId="@Model.Quiz.Lesson.Id" class="btn btn-outline-secondary w-100">
                 Back to Lesson
             </a>
-            <a asp-page="/Student/Index" class="btn btn-outline-dark w-100 mt-2">
+            <a asp-area="Student" asp-page="/Index" class="btn btn-outline-dark w-100 mt-2">
                 Back to Dashboard
             </a>
         </div>

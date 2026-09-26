@@ -17,24 +17,13 @@ A comprehensive, production-ready Learning Management System built with **ASP.NE
 - SQL Server 2019+ or LocalDB
 - Git
 
-### Setup (5 minutes)
-```bash
-# 1. Clone repository
-git clone <repo-url>
-cd NoryMusicLMS_VS
+### Setup
+1. In SSMS, run `Nory_Database_Script.sql` against `(localdb)\mssqllocaldb`.
+2. Run the application once with `dotnet run` to create the demo roles/accounts.
+3. In SSMS, run `Nory_Local_Content_And_Chords.sql` against `Nory`. This seeds local lesson content, quizzes, ear-training tones, and the chord library.
 
-# 2. Update database
-dotnet ef database update
-
-# 3. Run application
-dotnet run
-
-# 4. Generate sample data
-# Navigate to: http://localhost:5000/SampleData
-# Click "Generate Sample Data"
-```
-
-**Access the application**: `https://localhost:7000`
+The Development launch profile uses `http://localhost:5158`. Existing databases
+should run `Nory_Upgrade_Existing_Database.sql` before the local content seed.
 
 ### Test Credentials
 | Role | Email | Password |
@@ -170,6 +159,9 @@ NoryMusicLMS_VS/
 - **QuizQuestions** - Individual questions
 - **Enrollments** - Student enrollments with progress
 - **QuizAttempts** - Quiz submission tracking
+- **LessonCompletions / StudentAwards** - Student progress and rewards
+- **ChordSongs** - Instrument-specific song chord guides, including key,
+  capo, and learner-adjustable practice tempo
 
 ### ER Diagram (Simplified)
 ```

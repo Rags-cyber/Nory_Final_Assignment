@@ -27,16 +27,12 @@ else
                         }
                         else
                         {
-                            <div class="d-flex align-items-center justify-content-center" style="background-color: var(--nory-bg-elevated);">
-                                <i class="bi bi-music-note-beamed display-4" style="color: var(--nory-accent);"></i>
-                            </div>
+                            <img src="/images/music-staff.svg" class="card-img-top" alt="Music theory course illustration">
                         }
                     </div>
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">@course.Title</h5>
-                        <p class="card-text flex-grow-1">
-                            @course.Description.Substring(0, Math.Min(150, course.Description.Length))...
-                        </p>
+                        <p class="card-text flex-grow-1">@course.Description</p>
                         <div class="mt-3">
                             <p class="card-text">
                                 <small class="text-muted">

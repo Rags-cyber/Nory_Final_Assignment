@@ -1,0 +1,82 @@
+@page
+@model NoryMusicLMS_VS.Areas.Student.Pages.ChordSongs.IndexModel
+@{
+    ViewData["Title"] = "Song Chords";
+}
+<p class="nory-eyebrow mb-1">Song library</p>
+<h1>Guitar chords</h1>
+<p class="text-muted">Section-by-section chord guidance for practice. Lyrics are not reproduced; use the linked reference for lyric alignment.</p>
+
+<form method="get" class="row g-2 mb-4">
+    <div class="col-sm-8 col-md-6"><input asp-for="Search" class="form-control" placeholder="Search song, artist, or instrument" /></div>
+    <div class="col-auto"><button class="btn btn-outline-primary" type="submit">Search</button></div>
+    @if (!string.IsNullOrWhiteSpace(Model.Search)) { <div class="col-auto"><a asp-page="./Index" class="btn btn-link">Clear</a></div> }
+</form>
+
+@if (Model.Songs.Count == 0)
+{
+    <div class="alert alert-info">No chord sheets found. Try another search.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-lg-2 g-3">
+    @foreach (var song in Model.Songs)
+    {
+        <div class="col">
+            <article class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between gap-2">
+                        <div><h2 class="h4 mb-1">@song.Title</h2><p class="text-muted">@song.Artist</p></div>
+                        <span class="badge bg-secondary align-self-start">@song.Instrument</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        @if (song.Key is not null) { <span class="badge bg-light text-dark">Key: @song.Key</span> }
+                        @if (song.CapoFret.HasValue) { <span class="badge bg-light text-dark">Capo: @song.CapoFret</span> }
+                        @if (song.TempoBpm.HasValue) { <span class="badge bg-light text-dark">Practice tempo: ~@song.TempoBpm BPM</span> }
+                    </div>
+                    <div class="rounded p-3 bg-body-tertiary mb-3">
+                        <h3 class="h6">Section chord progression</h3>
+                        @foreach (var line in song.ChordMap.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <div class="mb-2 font-monospace"><strong>@line</strong></div>
+                        }
+                    </div>
+                    <p class="small text-muted">Chord sequence shown without lyrics. For exact lyric placement and the full user-contributed chart, see the attributed reference.</p>
+                    @if (!string.IsNullOrWhiteSpace(song.StrummingPattern)) { <p><strong>Strumming:</strong> @song.StrummingPattern</p> }
+                    @if (song.TempoBpm.HasValue)
+                    {
+                        <button type="button" class="btn btn-sm btn-outline-primary nory-metronome" data-bpm="@song.TempoBpm">Start metronome</button>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(song.AttributionUrl))
+                    {
+                        <a href="@song.AttributionUrl" target="_blank" rel="noopener noreferrer" class="small ms-2">Chord reference</a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(song.TempoNote)) { <div class="small text-muted mt-2">@song.TempoNote</div> }
+                </div>
+            </article>
+        </div>
+    }
+    </div>
+}
+
+@section Scripts {
+<script>
+    document.querySelectorAll('.nory-metronome').forEach(button => {
+        let timer = null, audio = null;
+        button.addEventListener('click', () => {
+            if (timer) {
+                clearInterval(timer); timer = null; button.textContent = 'Start metronome'; return;
+            }
+            audio ??= new (window.AudioContext || window.webkitAudioContext)();
+            const bpm = Number(button.dataset.bpm);
+            const tick = () => {
+                const osc = audio.createOscillator(), gain = audio.createGain();
+                osc.frequency.value = 880; gain.gain.setValueAtTime(0.16, audio.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.04);
+                osc.connect(gain); gain.connect(audio.destination); osc.start(); osc.stop(audio.currentTime + 0.05);
+            };
+            tick(); timer = setInterval(tick, 60000 / bpm); button.textContent = 'Stop metronome';
+        });
+    });
+</script>
+}

@@ -2,6 +2,19 @@
 @model NoryMusicLMS_VS.Areas.Student.Pages.LessonViewModel
 @{
     ViewData["Title"] = $"Lesson: {Model.Lesson.Title}";
+    var contentLines = (Model.Lesson.Content ?? "")
+        .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+    var lessonImage = Model.Lesson.Title switch
+    {
+        "The Staff, Clefs, and Note Duration" => "/images/music-staff.svg",
+        "Steps, Accidentals, and Key Signatures" => "/images/music-keys.svg",
+        "The Major Scale" => "/images/music-scale.svg",
+        "Intervals and Ear Training" => "/images/music-intervals.svg",
+        "Triads and Basic Chords" => "/images/music-triads.svg",
+        "Chord Progressions and Harmonic Function" => "/images/music-harmony.svg",
+        "Song Form and Accompaniment" => "/images/music-form.svg",
+        _ => "/images/music-staff.svg"
+    };
 }
 
 <p class="nory-eyebrow mb-1">@Model.Course.Title &middot; Lesson @Model.CurrentLessonIndex of @Model.TotalLessons</p>
@@ -14,9 +27,43 @@
 <div class="row">
     <div class="col-md-8">
         <div class="card mb-4">
+            <img src="@lessonImage" class="w-100 rounded-top" alt="Music theory illustration for @Model.Lesson.Title" />
             <div class="card-body">
                 <h3>Lesson Content</h3>
-                <div class="lesson-content">@Model.Lesson.Content</div>
+                <div class="lesson-content">
+                    @foreach (var line in contentLines)
+                    {
+                        if (line.StartsWith("## ", StringComparison.Ordinal))
+                        {
+                            <h4 class="mt-4">@line[3..]</h4>
+                        }
+                        else if (line.StartsWith("- ", StringComparison.Ordinal))
+                        {
+                            <p class="mb-2"><i class="bi bi-check2-circle text-info me-2"></i>@line[2..]</p>
+                        }
+                        else if (line.StartsWith("Example: ", StringComparison.Ordinal))
+                        {
+                            <div class="alert alert-info py-2"><strong>Worked example:</strong> @line[9..]</div>
+                        }
+                        else if (line.StartsWith("Practice: ", StringComparison.Ordinal))
+                        {
+                            <div class="p-3 mb-3 rounded nory-practice-prompt"><strong>Try it:</strong> @line[10..]</div>
+                        }
+                        else
+                        {
+                            <p>@line</p>
+                        }
+                    }
+                </div>
+                <div class="mt-3 p-3 rounded bg-body-tertiary">
+                    <strong>Source and license</strong>
+                    <p class="small text-muted mb-0">
+                        Lesson summary adapted for Nory from Robert Hutchinson, <em>Music Theory for the 21st-Century Classroom</em>,
+                        University of Puget Sound (2017; draft dated August 23, 2019), relevant chapter cited above.
+                        The source states it is available under the GNU Free Documentation License 1.2 or later.
+                        Nory's explanations and practice prompts are newly written summaries.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -119,7 +166,7 @@
                         @foreach (var quiz in Model.Quizzes)
                         {
                             <div class="mb-2">
-                                <a asp-page="/Student/Quiz/Take" asp-route-quizId="@quiz.Id" class="btn btn-outline-info w-100">
+                                <a asp-area="Student" asp-page="/Quiz/Take" asp-route-quizId="@quiz.Id" class="btn btn-outline-info w-100">
                                     @quiz.Title (@quiz.Type)
                                 </a>
                             </div>

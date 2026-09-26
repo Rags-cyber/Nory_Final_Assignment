@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-labelledby="title">
+  <title id="title">Rhythm values and beats</title><rect width="960" height="360" rx="28" fill="#e9f8f4"/>
+  <g fill="#186b61" font-family="Arial,sans-serif" text-anchor="middle"><text x="180" y="100" font-size="25">Whole</text><text x="400" y="100" font-size="25">Half</text><text x="620" y="100" font-size="25">Quarter</text><text x="820" y="100" font-size="25">Eighths</text></g>
+  <g stroke="#186b61" stroke-width="6" fill="none"><path d="M180 145v92M400 145v92M620 145v92M820 145v92"/></g>
+  <g fill="#186b61"><circle cx="180" cy="238" r="24"/><ellipse cx="400" cy="238" rx="25" ry="16" fill="#e9f8f4" stroke="#186b61" stroke-width="5"/><circle cx="620" cy="238" r="24"/><circle cx="795" cy="238" r="20"/><circle cx="845" cy="238" r="20"/></g>
+  <g font-family="Arial,sans-serif" font-size="20" fill="#355b56" text-anchor="middle"><text x="180" y="298">4 beats</text><text x="400" y="298">2 beats</text><text x="620" y="298">1 beat</text><text x="820" y="298">½ beat each</text></g>
+</svg>

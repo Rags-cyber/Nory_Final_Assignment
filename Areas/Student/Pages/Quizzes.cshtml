@@ -1,0 +1,71 @@
+@page
+@model NoryMusicLMS_VS.Areas.Student.Pages.QuizzesModel
+@{
+    ViewData["Title"] = "Practice Quizzes";
+}
+<p class="nory-eyebrow mb-1">Practice studio</p>
+<h1>Quizzes &amp; ear training</h1>
+<p class="text-muted">Theory checks and listening exercises for courses you are actively enrolled in.</p>
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a asp-page="./Quizzes" class="btn @(Model.Type is null ? "btn-primary" : "btn-outline-primary")">All quizzes</a>
+    <a asp-page="./Quizzes" asp-route-type="@QuizType.Theory" class="btn @(Model.Type == QuizType.Theory ? "btn-primary" : "btn-outline-primary")">Music theory</a>
+    <a asp-page="./Quizzes" asp-route-type="@QuizType.EarTraining" class="btn @(Model.Type == QuizType.EarTraining ? "btn-primary" : "btn-outline-primary")">Ear training</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card h-100 border-primary">
+            <div class="card-body">
+                <span class="badge bg-primary">Sight reading</span>
+                <h2 class="h5 mt-2">Name that note</h2>
+                <p class="mb-0">Read notes on the treble staff, choose a note name, and track your score in Nory.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-info">
+            <div class="card-body">
+                <span class="badge bg-info">Guitar ear training</span>
+                <h2 class="h5 mt-2">Guitar chord quizzes</h2>
+                <p class="mb-0">Identify chords from original fretboard diagrams or listen to synthesized chords. Your results are saved with your quiz history.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-info">
+            <div class="card-body">
+                <span class="badge bg-info">Practice format</span>
+                <h2 class="h5 mt-2">Choose and submit</h2>
+                <p class="mb-0">Answer each question, submit the quiz, and review your score and correct answers on the results page.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Quizzes.Count == 0)
+{
+    <div class="alert alert-info">
+        <p class="mb-2">No quizzes match this filter. Enroll in a course to unlock its quizzes, or check back after your instructor adds practice.</p>
+        <a asp-area="Student" asp-page="/BrowseCourses" class="btn btn-sm btn-outline-info">Browse and enroll in courses</a>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 g-3">
+    @foreach (var quiz in Model.Quizzes)
+    {
+        <div class="col">
+            <article class="card h-100">
+                <div class="card-body">
+                    <span class="badge @(quiz.Type == QuizType.EarTraining ? "bg-info" : "bg-primary")">@quiz.Type</span>
+                    <h2 class="h5 mt-2">@quiz.Title</h2>
+                    <p class="small text-muted mb-2">@quiz.Lesson.Course.Title · @quiz.Lesson.Title</p>
+                    <p>@quiz.Description</p>
+                    <a asp-area="Student" asp-page="/Quiz/Take" asp-route-quizId="@quiz.Id" class="btn btn-primary">Start practice</a>
+                </div>
+            </article>
+        </div>
+    }
+    </div>
+}

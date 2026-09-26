@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-labelledby="title">
+  <title id="title">Pitch intervals shown on a staff</title><rect width="960" height="360" rx="28" fill="#eaf2ff"/>
+  <g stroke="#49668f" stroke-width="4"><path d="M130 110H830M130 145H830M130 180H830M130 215H830M130 250H830"/></g>
+  <g fill="#3976bf"><ellipse cx="330" cy="215" rx="20" ry="13" transform="rotate(-18 330 215)"/><ellipse cx="610" cy="145" rx="20" ry="13" transform="rotate(-18 610 145)"/></g>
+  <path d="M355 202Q470 65 585 132" fill="none" stroke="#3976bf" stroke-width="5" stroke-dasharray="10 9"/>
+  <text x="480" y="95" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" fill="#244a78">Listen for the distance between pitches</text>
+  <text x="330" y="295" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" fill="#244a78">First note</text><text x="610" y="295" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" fill="#244a78">Second note</text>
+</svg>

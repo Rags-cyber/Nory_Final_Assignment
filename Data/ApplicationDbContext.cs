@@ -22,6 +22,7 @@ namespace NoryMusicLMS_VS.Data
         public DbSet<Resource> Resources { get; set; } = default!;
         public DbSet<LessonCompletion> LessonCompletions { get; set; } = default!;
         public DbSet<StudentAward> StudentAwards { get; set; } = default!;
+        public DbSet<ChordSong> ChordSongs { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

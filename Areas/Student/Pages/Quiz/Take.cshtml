@@ -10,6 +10,11 @@
 <p><strong>Type:</strong> @Model.Quiz.Type</p>
 <p><strong>Description:</strong> @Model.Quiz.Description</p>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+}
+
 @if (Model.Attempt is not null)
 {
     <div class="alert alert-info mt-3">
@@ -17,7 +22,7 @@
     </div>
 }
 
-<form method="post" asp-page-handler="Submit">
+<form method="post" asp-page-handler="Submit" asp-route-quizId="@Model.Quiz.Id">
     @if (Model.Questions == null || !Model.Questions.Any())
     {
         <div class="alert alert-warning">No questions found for this quiz.</div>
@@ -34,19 +39,83 @@
                     <h5>Question @(i + 1) (@question.Points points)</h5>
                 </div>
                 <div class="card-body">
+                    <input type="hidden" name="Answers[@i].QuestionId" value="@question.Id" />
                     <p>@question.QuestionText</p>
+                    @if (question.Type == QuestionType.MultipleChoice && question.ToneSequence?.StartsWith("staff:", StringComparison.Ordinal) == true)
+                    {
+                        var staffParts = question.ToneSequence.Split(':');
+                        var staffClef = staffParts.Length > 1 && staffParts[1] == "bass" ? "bass" : "treble";
+                        <div class="nory-staff-card mb-3" data-staff-note="@question.ToneSequence">
+                            <svg class="nory-note-staff" viewBox="0 0 360 200" role="img" aria-label="A musical note on a @staffClef clef staff">
+                                <text x="12" y="28" font-size="15" fill="currentColor">@(staffClef == "bass" ? "Bass clef (F)" : "Treble clef (G)")</text>
+                                <text x="22" y="142" font-size="66" font-family="Georgia,serif" fill="currentColor">@(staffClef == "bass" ? "F" : "G")</text>
+
+                                <g stroke="currentColor" stroke-width="2">
+                                    <path d="M105 50H335M105 70H335M105 90H335M105 110H335M105 130H335"/>
+                                </g>
+                                <g class="nory-ledger" stroke="currentColor" stroke-width="2"></g>
+                                <ellipse class="nory-staff-note" cx="220" cy="130" rx="10" ry="7" fill="currentColor" transform="rotate(-18 220 130)"/>
+                                <path class="nory-note-stem" d="M230 130V75" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <span class="visually-hidden">Identify the note shown on the staff.</span>
+                        </div>
+                    }
+                    @if (question.Type == QuestionType.MultipleChoice && question.ToneSequence?.StartsWith("diagram:", StringComparison.Ordinal) == true)
+                    {
+                        var fingering = question.ToneSequence["diagram:".Length..];
+                        if (fingering.Length == 6 && fingering.All(c => c == 'x' || char.IsDigit(c)))
+                        {
+                            <div class="nory-chord-card mb-3">
+                                <p class="small text-muted mb-2">Guitar chord shape <span>(low E to high E)</span></p>
+                                <svg viewBox="0 0 240 205" role="img" aria-label="Guitar chord fingering diagram">
+                                    <g stroke="currentColor" stroke-width="2">
+                                        <path d="M45 42H195M45 72H195M45 102H195M45 132H195M45 162H195"/>
+                                        <path d="M45 42V162M75 42V162M105 42V162M135 42V162M165 42V162M195 42V162"/>
+                                    </g>
+                                    @for (var stringIndex = 0; stringIndex < 6; stringIndex++)
+                                    {
+                                        var fret = fingering[stringIndex];
+                                        var x = 45 + stringIndex * 30;
+                                        if (fret == 'x')
+                                        {
+                                            <g stroke="currentColor" stroke-width="2">
+                                                <path d="M@(x - 5) 17L@(x + 5) 27" />
+                                                <path d="M@(x + 5) 17L@(x - 5) 27" />
+                                            </g>
+                                        }
+                                        else if (fret == '0')
+                                        {
+                                            <circle cx="@x" cy="25" r="7" fill="none" stroke="currentColor" stroke-width="2" />
+                                        }
+                                        else
+                                        {
+                                            var y = 42 + (fret - '0') * 30 - 15;
+                                            <circle cx="@x" cy="@y" r="9" fill="currentColor" />
+                                        }
+                                    }
+                                </svg>
+                            </div>
+                        }
+                    }
 
                     @switch (question.Type)
                     {
                         case QuestionType.MultipleChoice:
                         case QuestionType.TrueFalse:
                             {
+                                @if (question.Type == QuestionType.MultipleChoice && question.ToneSequence?.StartsWith("chord:", StringComparison.Ordinal) == true)
+                                {
+                                    <button type="button" class="btn btn-outline-primary btn-sm nory-play-tones mb-3" data-tones="@question.ToneSequence">
+                                        <i class="bi bi-play-fill"></i> Play chord
+                                    </button>
+                                }
                                 var options = System.Text.Json.JsonSerializer.Deserialize<List<string>>(question.OptionsJson ?? "[]");
                                 <div class="mb-3">
                                     @for (int j = 0; j < options?.Count; j++)
                                     {
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Answers[@i].SelectedAnswerIndex" value="@j"
+                                                required="@(j == 0)"
                                                 @(answer?.SelectedAnswerIndex == j ? "checked" : "") />
                                             <label class="form-check-label">
                                                 @options[j]
@@ -106,14 +175,13 @@
 
     <div class="mt-4">
         <button type="submit" class="btn btn-primary btn-lg">Submit Quiz</button>
-        <a asp-page="/Student/Index" class="btn btn-secondary">Cancel</a>
+        <a asp-area="Student" asp-page="/Index" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
 
 @section Scripts {
     <script>
-        // Plays a comma-separated sequence of frequencies (Hz) using the
-        // Web Audio API - real synthesized tones, no audio files needed.
+        // Plays frequencies or simultaneous chord tones using Web Audio.
         // data-tones="261.63,392.00" plays C4 then G4 (a Perfect 5th),
         // half a second apart, each held for 900ms.
         (function () {
@@ -142,12 +210,20 @@
                     if (!audioCtx) {
                         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                     }
-                    const tones = (button.dataset.tones || '')
+                    const raw = button.dataset.tones || '';
+                    const isChord = raw.startsWith('chord:');
+                    const tones = (raw.replace(/^chord:/, ''))
                         .split(',')
                         .map(function (t) { return parseFloat(t.trim()); })
                         .filter(function (f) { return !isNaN(f) && f > 0; });
 
                     if (tones.length === 0) return;
+
+                    if (isChord) {
+                        const now = audioCtx.currentTime + 0.05;
+                        tones.forEach(function (freq) { playTone(freq, now, 1.8); });
+                        return;
+                    }
 
                     const noteDuration = 0.9;
                     const gap = 0.15;
@@ -157,6 +233,38 @@
                         t += noteDuration + gap;
                     });
                 });
+            });
+
+            const noteSteps = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+            document.querySelectorAll('.nory-staff-card').forEach(function (card) {
+                const parts = (card.dataset.staffNote || '').split(':');
+                const note = parts[2] || '';
+                const match = note.match(/^([A-G])([0-9])$/);
+                if (!match) return;
+                const letterIndex = noteSteps.indexOf(match[1]);
+                const octave = Number(match[2]);
+                // Bottom line is E4 in treble clef and G2 in bass clef.
+                const bassClef = parts[1] === 'bass';
+                const bottomLetterIndex = noteSteps.indexOf(bassClef ? 'G' : 'E');
+                const bottomOctave = bassClef ? 2 : 4;
+                const step = (octave - bottomOctave) * 7 + letterIndex - bottomLetterIndex;
+                const y = 130 - step * 10;
+                const ellipse = card.querySelector('.nory-staff-note');
+                const stem = card.querySelector('.nory-note-stem');
+                ellipse.setAttribute('cy', y);
+                ellipse.setAttribute('transform', `rotate(-18 220 ${y})`);
+                stem.setAttribute('d', `M230 ${y}V${y - 55}`);
+                const ledger = card.querySelector('.nory-ledger');
+                for (let ledgerY = 150; ledgerY <= y; ledgerY += 20) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    line.setAttribute('d', `M205 ${ledgerY}H235`);
+                    ledger.appendChild(line);
+                }
+                for (let ledgerY = 30; ledgerY >= y; ledgerY -= 20) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    line.setAttribute('d', `M205 ${ledgerY}H235`);
+                    ledger.appendChild(line);
+                }
             });
         })();
     </script>

@@ -34,10 +34,18 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
 
+/* A denser desktop scale keeps dashboards and lessons comfortable on larger
+   screens while Bootstrap continues to handle mobile layouts. */
+html { font-size: 15px; }
+@media (min-width: 1200px) {
+  .container { max-width: 1080px; }
+}
+
 html, body {
   background-color: var(--nory-bg);
   color: var(--nory-text);
   font-family: var(--nory-font-ui);
+  line-height: 1.5;
 }
 
 a { color: var(--nory-accent-2); }
@@ -48,6 +56,12 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.01em;
   color: var(--nory-text);
 }
+h1 { font-size: clamp(1.8rem, 2.5vw, 2.25rem); }
+h2 { font-size: clamp(1.45rem, 2vw, 1.8rem); }
+
+.profile-shell { max-width: 820px; margin: 1.5rem auto 0; }
+.profile-shell .card-header { padding: 0.8rem 1.1rem; }
+.profile-shell .card-body { padding: 1.1rem; }
 
 .text-muted { color: var(--nory-text-muted) !important; }
 
@@ -134,15 +148,33 @@ footer.footer a:hover { color: var(--nory-accent-2); }
   background: linear-gradient(135deg, var(--nory-accent-hover), #ff9a55);
   color: #12100a;
 }
+.btn-primary:visited { color: #12100a; }
 .btn-outline-primary {
   border-color: var(--nory-panel-border);
   color: var(--nory-text);
   background: transparent;
 }
-.btn-outline-primary:hover {
+.btn-outline-primary:hover, .btn-outline-primary:focus-visible, .btn-outline-primary:active {
   background-color: var(--nory-bg-elevated);
   border-color: var(--nory-accent-2);
   color: var(--nory-text);
+}
+.btn-outline-info {
+  color: var(--nory-accent-2);
+  border-color: var(--nory-accent-2);
+}
+.btn-outline-info:hover, .btn-outline-info:focus-visible, .btn-outline-info:active {
+  color: #06232a;
+  border-color: var(--nory-accent-2);
+  background-color: var(--nory-accent-2);
+}
+.btn-outline-secondary:hover, .btn-outline-dark:hover {
+  color: var(--nory-text) !important;
+}
+.btn:focus-visible {
+  outline: 3px solid var(--nory-accent-2);
+  outline-offset: 2px;
+  box-shadow: none;
 }
 .btn-secondary, .btn-outline-secondary {
   background-color: var(--nory-bg-elevated);
@@ -308,7 +340,7 @@ dl.row dd { color: var(--nory-text); }
   padding: 3.5rem 0 2.5rem;
 }
 .nory-hero h1 {
-  font-size: 2.75rem;
+  font-size: clamp(2rem, 3vw, 2.4rem);
   font-weight: 800;
 }
 .nory-hero .accent { color: var(--nory-accent); }
@@ -323,6 +355,7 @@ dl.row dd { color: var(--nory-text); }
   background-color: var(--nory-bg-elevated);
   color: var(--nory-text);
 }
+.card:hover { transform: translateY(-2px); }
 .breadcrumb {
   background-color: transparent;
   padding: 0;

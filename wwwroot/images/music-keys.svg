@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-labelledby="title">
+  <title id="title">Major scale and key signature learning guide</title><rect width="960" height="360" rx="28" fill="#eef4ff"/>
+  <text x="480" y="70" text-anchor="middle" font-family="Arial,sans-serif" font-size="30" font-weight="bold" fill="#315c91">Key signature order</text>
+  <text x="480" y="145" text-anchor="middle" font-family="Arial,sans-serif" font-size="27" fill="#315c91">Sharps: F  C  G  D  A  E  B</text>
+  <path d="M260 165H700" stroke="#6c91c2" stroke-width="3"/>
+  <text x="480" y="220" text-anchor="middle" font-family="Arial,sans-serif" font-size="27" fill="#315c91">Flats:  B  E  A  D  G  C  F</text>
+  <text x="480" y="295" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" fill="#45617f">Flat order reverses the sharp order</text>
+</svg>

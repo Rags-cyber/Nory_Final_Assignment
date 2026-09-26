@@ -26,16 +26,16 @@ continuing to fight migration generation.
 1. Open SSMS, connect to server `(localdb)\mssqllocaldb`.
 2. Open `Nory_Database_Script.sql` (in the project root) and execute it
    (F5). This creates the `Nory` database and every table the app needs,
-   including `Resources` and `LessonCompletions`.
+   including `Resources`, `LessonCompletions`, `StudentAwards`, and
+   `ChordSongs`.
 3. Run the app (F5 in Visual Studio). On startup it verifies the connection
    and schema, then seeds the roles and a default admin account:
    `admin@norymusic.com` / `Admin@123`.
-4. (Optional) Run `Nory_Sample_Content_Seed.sql` in SSMS to add a sample
-   "Music Theory Fundamentals" course with lessons linked to matching
-   musictheory.net lessons/exercises as Resources, plus two quizzes -
-   one theory, one with real tone-based ear training questions (see
-   below). Run this only after step 3, since it looks up the admin
-   account created there.
+4. Run `Nory_Local_Content_And_Chords.sql` in SSMS. It inserts/updates
+   self-contained lesson material, theory and ear-training quizzes, and
+   the Najeek guitar chord guide. It removes the old musictheory.net lesson
+   links from the sample course. This script requires the app to have run
+   once so the demo admin/instructor account exists.
 
 ## Real ear training (no audio files needed)
 
@@ -58,10 +58,11 @@ to match (add the new `CREATE TABLE`/`ALTER TABLE` statements) and either:
 - run just the new statements against your existing `Nory` database, or
 - drop `Nory` (see below) and re-run the whole script from scratch.
 
-For an existing database, run `Nory_Upgrade_Existing_Database.sql` once in
-SSMS. It idempotently adds the ear-training tone column, lesson resources,
-per-student lesson-completion, and student awards tables. You no longer need to run the
-older individual `Nory_Add_*.sql` scripts when using this combined upgrade.
+For an existing database, run `Nory_Upgrade_Existing_Database.sql` in SSMS
+before the local-content seed. It idempotently adds the ear-training tone
+column, lesson resources, per-student lesson-completion, student awards,
+and chord-song library tables. You no longer need to run the older
+individual `Nory_Add_*.sql` scripts when using this combined upgrade.
 
 ## Resetting to a clean database
 
@@ -77,3 +78,11 @@ then re-run `Nory_Database_Script.sql`.
 - **"...but its tables don't exist yet"** on startup - you haven't run
   `Nory_Database_Script.sql` yet (or it was run against a different
   database/server instance). Run it, then restart the app.
+
+## Role-specific profiles
+
+The shared **My profile** page shows common account details plus a Student,
+Instructor, and/or Admin section according to the signed-in user's assigned
+role. Changes are saved in `dbo.AspNetUsers`. For an existing database, run
+`Nory_Upgrade_Existing_Database.sql` to add the profile columns; a fresh
+database created with `Nory_Database_Script.sql` already includes them.

@@ -7,6 +7,16 @@
 <p class="nory-eyebrow mb-1">Student Portal</p>
 <h1 class="mb-4">Welcome back, @Model.CurrentUser.FirstName</h1>
 
+<section class="card mb-4">
+    <div class="card-body d-flex flex-wrap gap-2 align-items-center">
+        <strong class="me-2">Your learning studio</strong>
+        <a asp-page="/BrowseCourses" class="btn btn-sm btn-outline-primary">Browse courses</a>
+        <a asp-page="/Quizzes" class="btn btn-sm btn-outline-primary">Theory quizzes</a>
+        <a asp-page="/Quizzes" asp-route-type="@QuizType.EarTraining" class="btn btn-sm btn-outline-info">Ear training</a>
+        <a asp-page="/ChordSongs/Index" class="btn btn-sm btn-outline-secondary">Guitar song chords</a>
+    </div>
+</section>
+
 <div class="row mb-4 g-3">
     <div class="col-6 col-md-3">
         <div class="nory-stat">

@@ -9,6 +9,7 @@
       - Resources for lesson learning materials
       - LessonCompletions for accurate per-student progress tracking
       - StudentAwards for quiz/course achievement awards
+      - ChordSongs for the in-app chord/song library
 */
 USE [Nory];
 GO
@@ -19,6 +20,24 @@ IF OBJECT_ID(N'dbo.Lessons', N'U') IS NULL
     THROW 51000, 'Nory.Lessons is missing. Run Nory_Database_Script.sql first.', 1;
 IF OBJECT_ID(N'dbo.AspNetUsers', N'U') IS NULL
     THROW 51000, 'Nory.AspNetUsers is missing. Run Nory_Database_Script.sql first.', 1;
+GO
+
+-- Profile fields are stored on the Identity user row and are shared by the
+-- common profile plus the role-specific Student/Instructor/Admin sections.
+IF COL_LENGTH(N'dbo.AspNetUsers', N'Instrument') IS NULL
+    ALTER TABLE dbo.AspNetUsers ADD Instrument NVARCHAR(100) NULL;
+IF COL_LENGTH(N'dbo.AspNetUsers', N'SkillLevel') IS NULL
+    ALTER TABLE dbo.AspNetUsers ADD SkillLevel NVARCHAR(40) NULL;
+IF COL_LENGTH(N'dbo.AspNetUsers', N'LearningGoals') IS NULL
+    ALTER TABLE dbo.AspNetUsers ADD LearningGoals NVARCHAR(1000) NULL;
+IF COL_LENGTH(N'dbo.AspNetUsers', N'TeachingSpecialty') IS NULL
+    ALTER TABLE dbo.AspNetUsers ADD TeachingSpecialty NVARCHAR(150) NULL;
+IF COL_LENGTH(N'dbo.AspNetUsers', N'YearsTeaching') IS NULL
+    ALTER TABLE dbo.AspNetUsers ADD YearsTeaching INT NULL;
+IF COL_LENGTH(N'dbo.AspNetUsers', N'AdminDepartment') IS NULL
+    ALTER TABLE dbo.AspNetUsers ADD AdminDepartment NVARCHAR(100) NULL;
+IF COL_LENGTH(N'dbo.AspNetUsers', N'AdminJobTitle') IS NULL
+    ALTER TABLE dbo.AspNetUsers ADD AdminJobTitle NVARCHAR(100) NULL;
 GO
 
 -- Ear-training questions can play browser-synthesized tone sequences.
@@ -104,4 +123,28 @@ BEGIN
 END
 ELSE
     PRINT 'dbo.StudentAwards already exists.';
+GO
+
+-- In-app song chord guides, instrument and practice-tempo metadata.
+IF OBJECT_ID(N'dbo.ChordSongs', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.ChordSongs
+    (
+        Id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_ChordSongs PRIMARY KEY CLUSTERED,
+        Title NVARCHAR(150) NOT NULL,
+        Artist NVARCHAR(150) NOT NULL,
+        Instrument NVARCHAR(40) NOT NULL,
+        [Key] NVARCHAR(20) NULL,
+        CapoFret INT NULL,
+        TempoBpm INT NULL,
+        TempoNote NVARCHAR(80) NULL,
+        ChordMap NVARCHAR(2000) NOT NULL,
+        StrummingPattern NVARCHAR(250) NULL,
+        AttributionUrl NVARCHAR(1000) NULL,
+        AddedAt DATETIME2(7) NOT NULL CONSTRAINT DF_ChordSongs_AddedAt DEFAULT (SYSUTCDATETIME())
+    );
+    PRINT 'Created dbo.ChordSongs.';
+END
+ELSE
+    PRINT 'dbo.ChordSongs already exists.';
 GO

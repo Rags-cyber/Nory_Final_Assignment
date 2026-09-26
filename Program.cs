@@ -5,7 +5,7 @@ using NoryMusicLMS_VS.Data;
 using NoryMusicLMS_VS.Models;
 using NoryMusicLMS_VS.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages(options =>
@@ -247,6 +247,16 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
+
+// Serve only the supplied music-theory PDF from the project root. Keep the
+// project root itself out of the general static-file provider.
+app.MapGet("/references/MusicTheory.pdf", (IWebHostEnvironment environment) =>
+{
+    var pdfPath = Path.Combine(environment.ContentRootPath, "MusicTheory.pdf");
+    return System.IO.File.Exists(pdfPath)
+        ? Results.File(pdfPath, "application/pdf", enableRangeProcessing: true)
+        : Results.NotFound();
+});
 
 app.MapRazorPages();
 

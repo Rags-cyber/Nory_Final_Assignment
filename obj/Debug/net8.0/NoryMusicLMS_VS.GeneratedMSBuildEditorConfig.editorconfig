@@ -207,6 +207,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU3R1ZGVudFxQYWdlc1xCcm93c2VDb3Vyc2VzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bshal/OneDrive - Asia Pacific University of Technology And Innovation (APU)/4th_SEM/Web_Application/Final_Assignment/Quizzzes/NoryMusicLMS_VS/Areas/Student/Pages/ChordSongs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU3R1ZGVudFxQYWdlc1xDaG9yZFNvbmdzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bshal/OneDrive - Asia Pacific University of Technology And Innovation (APU)/4th_SEM/Web_Application/Final_Assignment/Quizzzes/NoryMusicLMS_VS/Areas/Student/Pages/CourseDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU3R1ZGVudFxQYWdlc1xDb3Vyc2VEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -217,6 +221,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/bshal/OneDrive - Asia Pacific University of Technology And Innovation (APU)/4th_SEM/Web_Application/Final_Assignment/Quizzzes/NoryMusicLMS_VS/Areas/Student/Pages/LessonView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU3R1ZGVudFxQYWdlc1xMZXNzb25WaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bshal/OneDrive - Asia Pacific University of Technology And Innovation (APU)/4th_SEM/Web_Application/Final_Assignment/Quizzzes/NoryMusicLMS_VS/Areas/Student/Pages/Quizzes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU3R1ZGVudFxQYWdlc1xRdWl6emVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bshal/OneDrive - Asia Pacific University of Technology And Innovation (APU)/4th_SEM/Web_Application/Final_Assignment/Quizzzes/NoryMusicLMS_VS/Areas/Student/Pages/Quiz/Result.cshtml]
@@ -245,6 +253,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/bshal/OneDrive - Asia Pacific University of Technology And Innovation (APU)/4th_SEM/Web_Application/Final_Assignment/Quizzzes/NoryMusicLMS_VS/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bshal/OneDrive - Asia Pacific University of Technology And Innovation (APU)/4th_SEM/Web_Application/Final_Assignment/Quizzzes/NoryMusicLMS_VS/Pages/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bshal/OneDrive - Asia Pacific University of Technology And Innovation (APU)/4th_SEM/Web_Application/Final_Assignment/Quizzzes/NoryMusicLMS_VS/Pages/SampleData.cshtml]
