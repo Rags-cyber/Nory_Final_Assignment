@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bshal\\OneDrive - Asia Pacific University of Technology And Innovation (APU)\\4th_SEM\\Web_Application\\Final_Assignment\\Quizzzes\\NoryMusicLMS_VS\\NoryMusicLMS_VS.csproj": {}
+    "C:\\Users\\bshal\\Downloads\\NoryMusicLMS_VS\\NoryMusicLMS_VS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bshal\\OneDrive - Asia Pacific University of Technology And Innovation (APU)\\4th_SEM\\Web_Application\\Final_Assignment\\Quizzzes\\NoryMusicLMS_VS\\NoryMusicLMS_VS.csproj": {
+    "C:\\Users\\bshal\\Downloads\\NoryMusicLMS_VS\\NoryMusicLMS_VS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bshal\\OneDrive - Asia Pacific University of Technology And Innovation (APU)\\4th_SEM\\Web_Application\\Final_Assignment\\Quizzzes\\NoryMusicLMS_VS\\NoryMusicLMS_VS.csproj",
+        "projectUniqueName": "C:\\Users\\bshal\\Downloads\\NoryMusicLMS_VS\\NoryMusicLMS_VS.csproj",
         "projectName": "NoryMusicLMS_VS",
-        "projectPath": "C:\\Users\\bshal\\OneDrive - Asia Pacific University of Technology And Innovation (APU)\\4th_SEM\\Web_Application\\Final_Assignment\\Quizzzes\\NoryMusicLMS_VS\\NoryMusicLMS_VS.csproj",
+        "projectPath": "C:\\Users\\bshal\\Downloads\\NoryMusicLMS_VS\\NoryMusicLMS_VS.csproj",
         "packagesPath": "C:\\Users\\bshal\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bshal\\OneDrive - Asia Pacific University of Technology And Innovation (APU)\\4th_SEM\\Web_Application\\Final_Assignment\\Quizzzes\\NoryMusicLMS_VS\\obj\\",
+        "outputPath": "C:\\Users\\bshal\\Downloads\\NoryMusicLMS_VS\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

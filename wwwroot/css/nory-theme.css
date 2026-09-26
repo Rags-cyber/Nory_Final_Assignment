@@ -42,11 +42,16 @@ html { font-size: 15px; }
 }
 
 html, body {
-  background-color: var(--nory-bg);
-  color: var(--nory-text);
-  font-family: var(--nory-font-ui);
-  line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--nory-bg);
+    color: var(--nory-text);
+    font-family: var(--nory-font-ui);
+    line-height: 1.5;
+    margin: 0;
 }
+
 
 a { color: var(--nory-accent-2); }
 a:hover { color: var(--nory-accent-2-hover); }
@@ -122,14 +127,22 @@ h2 { font-size: clamp(1.45rem, 2vw, 1.8rem); }
 main {
   min-height: 70vh;
 }
+.page-shell {
+    flex: 1 0 auto;
+}
 
 footer.footer {
-  background-color: var(--nory-nav);
-  border-top: 1px solid var(--nory-panel-border) !important;
-  color: var(--nory-text-dim);
-  padding: 2.5rem 0;
-  margin-top: 4rem;
+    background-color: var(--nory-nav);
+    border-top: 1px solid var(--nory-panel-border) !important;
+    color: var(--nory-text-dim);
+    /* --- THE FIX: Compact height and spacing --- */
+    padding: 1.5rem 0; /* Reduces the massive top/bottom empty space */
+    margin-top: auto; /* Pushes footer down naturally if inside a flex container */
+    position: static !important; /* Removes any broken absolute layout behaviors */
+    line-height: normal !important; /* Removes default template line spacing heights */
+    width: 100%; /* Ensures footer spans the full width of the viewport */
 }
+
 footer.footer a { color: var(--nory-text-muted); text-decoration: none; }
 footer.footer a:hover { color: var(--nory-accent-2); }
 
@@ -215,27 +228,45 @@ footer.footer a:hover { color: var(--nory-accent-2); }
 
 /* ---------- Tables ---------- */
 .table {
-  color: var(--nory-text);
-  border-color: var(--nory-panel-border);
+    color: var(--nory-text) !important;
+    border-color: var(--nory-panel-border);
+    --bs-table-bg: var(--nory-panel) !important;
+    --bs-table-color: var(--nory-text) !important;
 }
-.table thead th {
-  background-color: var(--nory-bg-elevated);
-  color: var(--nory-text-muted);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border-bottom: 1px solid var(--nory-panel-border);
-  font-weight: 600;
-}
-.table td, .table th { border-color: var(--nory-panel-border); vertical-align: middle; }
+
+    .table thead th {
+        background-color: var(--nory-bg-elevated) !important;
+        color: var(--nory-text-muted);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid var(--nory-panel-border);
+        font-weight: 600;
+    }
+
+    .table td, .table th {
+        background-color: var(--nory-panel) !important;
+        color: var(--nory-text) !important;
+        border-color: var(--nory-panel-border);
+        vertical-align: middle;
+    }
+
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-  background-color: var(--nory-bg-elevated);
-  color: var(--nory-text);
+    background-color: var(--nory-bg-elevated) !important;
+    color: var(--nory-text) !important;
 }
+
+.table-hover > tbody > tr:hover,
 .table-hover > tbody > tr:hover > * {
-  background-color: rgba(245,166,35,0.08);
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-hover-bg: rgba(245, 166, 35, 0.12) !important;
+    --bs-table-bg-state: rgba(245, 166, 35, 0.12) !important;
+    box-shadow: none !important;
+    background-color: rgba(245, 166, 35, 0.12) !important;
+    color: var(--nory-text) !important;
 }
+
 
 /* ---------- Forms ---------- */
 .form-control, .form-select {
@@ -434,4 +465,106 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+/* FORCE RESET ALL TABLES APPLICATION-WIDE */
+.table,
+.table tr,
+.table td,
+.table th {
+    background-color: #141d33 !important; /* Forces dark navy */
+    color: #eef1f8 !important; /* Forces light text */
+}
+
+/* FORCE DARK NAVY ON STRIPED ROWS */
+.table-striped > tbody > tr:nth-of-type(odd) > *,
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #101728 !important; /* Slightly darker navy */
+    color: #eef1f8 !important;
+}
+
+/* FORCE FIX THE ROW HOVER FLASHING EFFECT */
+.table-hover > tbody > tr:hover,
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th,
+.table-hover > tbody > tr:hover > * {
+    background-color: rgba(245, 166, 35, 0.15) !important; /* Smooth amber glow */
+    color: #eef1f8 !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================================
+   GLOBAL HOVER & COMPONENT STATE RESET
+   Forces all Bootstrap component interactive transitions into your dark theme
+   ===================================================================== */
+
+/* 1. Global Interactive Elements Hover Filter Reset */
+a:hover,
+.btn:hover,
+.dropdown-item:hover,
+.nav-link:hover,
+.list-group-item:hover,
+.table-hover > tbody > tr:hover {
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-bg-state: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 2. Fix Navbar Navigation Links Hover */
+.navbar .nav-link:hover {
+    background-color: transparent !important;
+    color: var(--nory-text) !important;
+}
+
+/* 3. Fix Dropdown Menu Items Hover */
+.navbar .dropdown-item:hover,
+.dropdown-menu .dropdown-item:hover {
+    background-color: var(--nory-bg-elevated) !important;
+    color: var(--nory-text) !important;
+    box-shadow: none !important;
+}
+
+/* 4. Fix Secondary Outline Buttons */
+.btn-secondary:hover,
+.btn-outline-secondary:hover,
+.btn-outline-primary:hover {
+    background-color: var(--nory-bg-elevated) !important;
+    color: var(--nory-text) !important;
+    border-color: var(--nory-accent-2) !important;
+}
+/* --- FIX FOR CHORD SHEET / TEXT BLOCKS --- */
+pre,
+code,
+.chord-container,
+.chord-display,
+.card-body pre {
+    background-color: var(--nory-bg-elevated) !important; /* Sets it to dark navy */
+    color: var(--nory-text) !important; /* Sets text to crisp light gray */
+    border: 1px solid var(--nory-panel-border) !important;
+}
+/* --- FORCED DARK OVERRIDE FOR CHORD SHEET BLOCKS --- */
+.page-shell div[class*="bg-white"],
+.page-shell div[class*="bg-light"],
+.page-shell .card-body > div,
+.page-shell [style*="background"] {
+    background: var(--nory-bg-elevated) !important;
+    background-color: var(--nory-bg-elevated) !important;
+    color: var(--nory-text) !important;
+    border-color: var(--nory-panel-border) !important;
+}
+
+    /* Force all child text within the chord box to be light and readable */
+    .page-shell div[class*="bg-white"] *,
+    .page-shell div[class*="bg-light"] *,
+    .page-shell .card-body > div * {
+        color: var(--nory-text) !important;
+    }
+/* --- FIX FOR BADGES AND META LABELS (KEY / CAPO) --- */
+.page-shell .badge,
+.page-shell span[class*="bg-light"],
+.page-shell span[class*="bg-white"],
+.page-shell div.d-flex span {
+    background-color: var(--nory-bg-elevated) !important; /* Changes white to dark navy */
+    color: var(--nory-text) !important; /* Changes white text to light gray */
+    border: 1px solid var(--nory-panel-border) !important; /* Adds a nice matching border */
 }

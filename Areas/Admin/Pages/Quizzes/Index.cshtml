@@ -35,7 +35,7 @@
                 <td>@quiz.Title</td>
                 <td>@quiz.Type</td>
                 <td>@quiz.Questions.Count</td>
-                <td>@(quiz.IsActive ? "<span class=\"badge bg-success\">Active</span>" : "<span class=\"badge bg-secondary\">Inactive</span>")</td>
+                <td>@Html.Raw(quiz.IsActive)</td>
                 <td>
                     <a asp-page="./Details" asp-route-id="@quiz.Id" class="btn btn-sm btn-outline-primary">Details</a>
                     <a asp-page="./Edit" asp-route-id="@quiz.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
