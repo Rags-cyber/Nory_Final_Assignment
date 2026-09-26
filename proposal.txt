@@ -1,0 +1,138 @@
+
+Nory – Music Learning Platform
+Nory: Music Learning Platform is an online learning website, which offers an interactive and systematic learning curve for any music theory fan or anyone who wants to learn the basics of guitar. The platform combines theoretical teaching with learning the instruments interactively, enabling users to enhance their musical skills through interactive lessons, quizzes, and progress monitoring.
+Learners then complete quizzes and access learning materials and can track their learning through an individualised dashboard, all while having access to the interface with security provided by the system itself. Put complete CRUD (Create/Read/Update/Delete) abilities for lessons, quizzes, users, and educational material to put it to use efficiently within a secure administration center. The platform is created using ASP.NET Web Forms, Microsoft SQL Server, HTML5, CSS3 and JavaScript.
+1. Introduction
+The development of web technologies has enabled a change in the entire education field delivering flexible, accessible learning to pupils via online means. Today's student is no different and for music education for instance, there are various but increasing numbers of students who want to learn at their own rate and in their own pace – on a computer platform and on their own devices. Most studies on the subject of music in the beginning are also disconnected from the playing of an instrument and teach music theory and not how it relates to the practical application of playing the instrument.
+
+Nory: Music Learning Platform aims to solve this problem by trying to combine music theory with learning the basics of the guitar into a single online programme. Learners can sign up, discover structured lessons, take quizzes and keep track of their learning journey using their own learning tracking dashboard. The platform allows a development of a learning environment that's engaging and organized, with the potential of self-paced learning.
+
+Developed the system with the use of ASP.Use C#, HTML5, CSS3 and JavaScript to write web applications in the.NET Core MVC framework, and use Microsoft SQL server to create and manage a relational database. It includes authentication, authorization, CRUD operations, responsive web design, client side validation and server side validation, as well secured database management system to achieve a reliable and effective learning experience.
+
+2. Objectives
+
+The main objectives of the project are:
+To create a safe and responsive music theory and guitar beginner's learning website.
+To secure users' registration and login/access control in learners and administrator.
+To give administrators a centralized dashboard to manage lesson, quiz, user and educational content with various CRUD operations.
+To enable integration of Microsoft SQL Server for secure storing and efficient management of user, lesson and quiz information.
+To facilitate interactive and user friendly learning with structured lesson plans, quiz questions, tracking system, and a responsive design.
+
+2.1 Mission Statement
+The goal of Nory is to offer a welcoming, educational and safe web based learning setting for anybody to start development of music theory information and guitar beginner abilities utilizing interactive lessons, sensible schooling activities and tailored progress monitoring. As a new platform, it aims to provide an innovative online learning environment with leading-edge Web capabilities that facilitate ongoing learning and musical growth.
+
+3. Audience Modelling
+
+Platform intended for various categories of users, which have various educational needs and duties.
+3.1 Primary Audience: Learners
+Music Theory and/or beginner guitar students.
+Students looking for individualized online music lessons.
+People with elementary computer and internet skills.
+Learners who like to learn interactively by way of quiz and progress report.
+
+
+
+3.2 Secondary Audience: Administrators
+Admins that own a site and have to take care about the education content.
+Teachers who provide continuous updates to lessons, quizzes and learning materials.
+Staff who are dedicated to keeping an eye on pupil progress and on system records.
+
+4. Problem Statement and Proposed Solution
+4.1 Problem Statement
+Beginners have problems learning music due to the large number of educational sites and applications, which are not consolidated in a single place. Music theory and the practical lessons of playing the guitar are rarely intertwined, which can make it hard for the student to relate theory to the actual playing. Also, most of the stage are suffering from the absence of structured learning trajectories, progression checking, and also advantageous material supervisory tools.
+
+These constraints make learning less engaging, and impede administrators from having current up-to-date educational resources.
+
+4.2 Proposed Solution
+Nory has as aim to create a concentrated web learning environment for Music Theory and beginner guitar lessons. The users can safely enroll, sign in, reach lessons, do quizzes and observe learning progress on a personalized Board based coming from the teacher.
+
+Administrators have full CRUD (Create, Read, Update, Delete) access to lessons, quizzes, users and educational content in a secure administration panel. The site is powered by ASP.To deliver a secure authentication system, effective database management using NET Core MVC along with C, Entity Framework Core and Microsoft SQL Server, responsive web design, and scalable system architecture.
+
+5. Project Scope
+The project aims to create a safe and reactive web based learning platform for music with ASP.C#, NET Core MVC, HTML5, CSS3, JavaScript and Microsoft SQL Server. Structured theory lessons and lessons for beginner guitarists, quizzes with interaction, progress tracking and content administration for the administrators. 
+5.1 Functional Requirements
+Public Users
+View the Home page.
+Explore information about courses.
+Register an account.
+Log in securely.
+View About and Contact pages.
+Registered Learners
+Secure login and logout.
+Access music theory lessons.
+Access beginner guitar lessons.
+Complete quizzes.
+View quiz scores.
+Track learning progress.
+Update personal profile.
+Administrators
+Secure administrator login.
+Manage lessons.
+Manage quizzes.
+Manage users.
+Upload educational resources.
+Manage website content.
+Perform CRUD operations.
+
+
+5.2 Technical Requirements
+Frontend Technologies
+HTML5
+CSS3
+JavaScript
+Responsive Web Design
+Backend Technologies
+ASP.NET Core MVC
+C#
+Database
+Microsoft SQL Server
+Entity Framework Core
+Validation
+Client-side validation using JavaScript.
+Server-side validation using ASP.NET Core MVC (C#).
+Security
+User Authentication
+User Authorization
+Session Management
+Password Encryption
+Role-Based Access Control
+File Organization
+External CSS Files
+JavaScript Files
+ASP.NET Core MVC Components (Models, Views, Controllers)
+Image and Audio Directories
+Database Configuration Files
+
+5.3 Non-Functional Requirements
+Usability: An intuitive interface is available, allowing users to easily navigate lessons, quizzes and dashboards.
+Performance: The system must have quick response times and effective working of the DB.
+Security: There must be data protection in the application with authentication, authorization, encrypted passwords with secure validation.
+Reliability: It would have to maintain user and educational data in line with all the users' interactions, while continuing to follow a consistent workflow.
+Accessibility: The site should be responsive to desktops, tablets and mobile devices.
+Maintainability: The MVC architecture should allow for ease of maintenance, scalability and possible change enhancements. .
+
+6. Limitations
+The platform currently has beginner music theory and guitar lessons.
+Online classes (live) and video conferencing are not permitted.
+A feature of offline learning is not available.
+The current version doesn't contain mobile applications.
+Personalized learning with the recommendations from AI is not adopted.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7. Conclusion
+The Nory Music Learning Platform is a holistic online learning suite that combines music theory lessons, beginner guitar lessons, and more into a single platform. The platform includes user management, learner progress tracking tools, quizzes, structured lessons, and other features to provide a fun and effective learning experience.
+Developed using ASP.It showcases real-life application of current web development technologies, database management, and authentication and authorization, while also using CRUD operations, all in NET Core MVC, CMicrosoft SQL Server, HTML5, CSS3, and JavaScript. The platform could additionally be enhanced with more pedagogical instruments, mobile apps, and live tutoring, in addition to AI-enabled learning capabilities, that will enhance the learning experience and overall enhancements.
+
+
