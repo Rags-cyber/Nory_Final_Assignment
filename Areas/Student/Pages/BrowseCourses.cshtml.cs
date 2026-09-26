@@ -38,7 +38,8 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages
                 Courses = await _context.Courses
                     .Where(c => c.IsActive && !EnrolledCourseIds.Contains(c.Id.ToString()))
                     .Include(c => c.Instructor)
-                    .OrderByDescending(c => c.CreatedAt)
+                    .Include(c => c.Lessons)
+                    .OrderBy(c => c.Title)
                     .ToListAsync();
             }
         }
@@ -47,6 +48,11 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (!await _context.Courses.AnyAsync(c => c.Id == courseId && c.IsActive))
             {
                 return NotFound();
             }

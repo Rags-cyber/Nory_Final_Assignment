@@ -4,6 +4,7 @@
     ViewData["Title"] = $"Lesson: {Model.Lesson.Title}";
     var contentLines = (Model.Lesson.Content ?? "")
         .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+    var isGuitarCourse = Model.Course.Title.Contains("Guitar", StringComparison.OrdinalIgnoreCase);
     var lessonImage = Model.Lesson.Title switch
     {
         "The Staff, Clefs, and Note Duration" => "/images/music-staff.svg",
@@ -17,12 +18,10 @@
     };
 }
 
-<p class="nory-eyebrow mb-1">@Model.Course.Title &middot; Lesson @Model.CurrentLessonIndex of @Model.TotalLessons</p>
-<h1 class="mb-3">@Model.Lesson.Title</h1>
-
-<div class="progress mb-4">
-    <div class="progress-bar" role="progressbar" style="width: @Model.Enrollment.ProgressPercentage%" aria-valuenow="@Model.Enrollment.ProgressPercentage" aria-valuemin="0" aria-valuemax="100"></div>
-</div>
+<nav aria-label="Breadcrumb" class="mb-3"><ol class="breadcrumb"><li class="breadcrumb-item"><a asp-page="./Index">My learning</a></li><li class="breadcrumb-item"><a asp-page="./CourseDetails" asp-route-id="@Model.Course.Id">@Model.Course.Title</a></li><li class="breadcrumb-item active" aria-current="page">Lesson @Model.CurrentLessonIndex</li></ol></nav>
+<div class="nory-page-heading"><div><p class="nory-eyebrow mb-1">LESSON @Model.CurrentLessonIndex OF @Model.TotalLessons</p><h1>@Model.Lesson.Title</h1></div><span class="nory-pill">@(isGuitarCourse ? "GUITAR PRACTICE" : "MUSIC THEORY")</span></div>
+<div class="nory-progress-label"><span>Course progress</span><strong>@Model.Enrollment.ProgressPercentage%</strong></div>
+<div class="progress mb-4" role="progressbar" aria-label="Course completion" aria-valuenow="@Model.Enrollment.ProgressPercentage" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: @Model.Enrollment.ProgressPercentage%"></div></div>
 
 <div class="row">
     <div class="col-md-8">
@@ -55,15 +54,14 @@
                         }
                     }
                 </div>
-                <div class="mt-3 p-3 rounded bg-body-tertiary">
-                    <strong>Source and license</strong>
-                    <p class="small text-muted mb-0">
-                        Lesson summary adapted for Nory from Robert Hutchinson, <em>Music Theory for the 21st-Century Classroom</em>,
-                        University of Puget Sound (2017; draft dated August 23, 2019), relevant chapter cited above.
-                        The source states it is available under the GNU Free Documentation License 1.2 or later.
-                        Nory's explanations and practice prompts are newly written summaries.
-                    </p>
-                </div>
+                @if (!isGuitarCourse)
+                {
+                    <div class="mt-4 p-3 rounded nory-source-note">
+                        <strong><i class="bi bi-book me-1"></i>Textbook source</strong>
+                        <p class="small text-muted mb-2">Original lesson summaries and exercises are informed by Robert Hutchinson, <em>Music Theory for the 21st-Century Classroom</em>, University of Puget Sound. Chapter references appear in the lesson. The textbook states that it is available under GNU Free Documentation License 1.2 or later.</p>
+                        <a href="/references/MusicTheory.pdf" target="_blank" rel="noopener noreferrer" class="small">Read the full textbook <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                }
             </div>
         </div>
 

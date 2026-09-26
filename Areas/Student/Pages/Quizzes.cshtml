@@ -3,9 +3,7 @@
 @{
     ViewData["Title"] = "Practice Quizzes";
 }
-<p class="nory-eyebrow mb-1">Practice studio</p>
-<h1>Quizzes &amp; ear training</h1>
-<p class="text-muted">Theory checks and listening exercises for courses you are actively enrolled in.</p>
+<section class="nory-hero-panel mb-4"><p class="nory-eyebrow mb-2">PRACTICE STUDIO</p><h1 class="mb-2">Listen. Think. Play.</h1><p class="text-muted mb-0">Take lesson-linked theory checks, identify notes by ear, and practise chord recognition. Your attempts and scores stay on your learning dashboard.</p></section>
 
 <div class="d-flex flex-wrap gap-2 mb-4">
     <a asp-page="./Quizzes" class="btn @(Model.Type is null ? "btn-primary" : "btn-outline-primary")">All quizzes</a>

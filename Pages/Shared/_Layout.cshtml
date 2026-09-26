@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Nory</title>
+    <meta name="theme-color" content="#0a0f1e" />
+    <title>@ViewData["Title"] - Nory Music Studio</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
@@ -12,94 +13,72 @@
     <link rel="stylesheet" href="~/NoryMusicLMS_VS.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg">
+    <header class="site-header">
+        <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-page="/Index">
-                    <span class="nory-logo-mark">N</span> Nory
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-page="/Index" aria-label="Nory Music Studio home">
+                    <span class="nory-logo-mark"><i class="bi bi-music-note-beamed"></i></span>
+                    <span>Nory<span class="brand-subtitle">MUSIC STUDIO</span></span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        @if (User.IsInRole("Admin"))
+                <div class="navbar-collapse collapse" id="mainNavigation">
+                    <ul class="navbar-nav ms-lg-4 me-auto align-items-lg-center">
+                        @if (User.IsInRole("Student"))
                         {
+                            <li class="nav-item"><a class="nav-link" asp-area="Student" asp-page="/Index"><i class="bi bi-grid-1x2 me-1"></i>My learning</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="Student" asp-page="/BrowseCourses"><i class="bi bi-collection me-1"></i>Courses</a></li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Admin Console
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Index">Dashboard</a></li>
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Courses/Index">Courses</a></li>
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Lessons/Index">Lessons</a></li>
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Quizzes/Index">Quizzes</a></li>
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Resources/Index">Resources</a></li>
-                                    <li><hr class="dropdown-divider" /></li>
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Users/Index">User Management</a></li>
+                                <a class="nav-link dropdown-toggle" href="#practiceMenu" id="practiceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-soundwave me-1"></i>Practice</a>
+                                <ul class="dropdown-menu" aria-labelledby="practiceDropdown">
+                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/Quizzes">Theory quizzes</a></li>
+                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/Quizzes" asp-route-type="EarTraining">Ear training</a></li>
+                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/BrowseCourses">Learn guitar chords</a></li>
+                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/ChordSongs/Index">Song chord library</a></li>
                                 </ul>
                             </li>
                         }
                         @if (User.IsInRole("Instructor"))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="instructorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Instructor Console</a>
-                                <ul class="dropdown-menu" aria-labelledby="instructorDropdown">
-                                    <li><a class="dropdown-item" asp-area="Instructor" asp-page="/Index">Dashboard</a></li>
-                                    <li><a class="dropdown-item" asp-area="Instructor" asp-page="/Courses/Index">My Courses</a></li>
-                                </ul>
-                            </li>
+                            <li class="nav-item"><a class="nav-link" asp-area="Instructor" asp-page="/Index"><i class="bi bi-speedometer2 me-1"></i>Instructor</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="Instructor" asp-page="/Courses/Index"><i class="bi bi-journal-richtext me-1"></i>My courses</a></li>
                         }
-                        @if (User.IsInRole("Student"))
+                        @if (User.IsInRole("Admin"))
                         {
+                            <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-page="/Index"><i class="bi bi-speedometer2 me-1"></i>Admin overview</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-page="/Users/Index"><i class="bi bi-people me-1"></i>Users</a></li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Student Portal
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="studentDropdown">
-                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/Index">My Dashboard</a></li>
-                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/BrowseCourses">Browse Courses</a></li>
-                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/Quizzes">Theory &amp; Ear Training</a></li>
-                                    <li><a class="dropdown-item" asp-area="Student" asp-page="/ChordSongs/Index">Guitar Song Chords</a></li>
+                                <a class="nav-link dropdown-toggle" href="#contentMenu" id="contentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learning content</a>
+                                <ul class="dropdown-menu" aria-labelledby="contentDropdown">
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Courses/Index">Courses</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Lessons/Index">Lessons</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Quizzes/Index">Quizzes</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="/Resources/Index">Resources</a></li>
                                 </ul>
                             </li>
                         }
                         @if (!(User?.Identity?.IsAuthenticated ?? false))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Student" asp-page="/BrowseCourses">Courses</a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Index">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="Student" asp-page="/BrowseCourses">Explore courses</a></li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/SampleData">Sample Data</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container page-shell">
+        <main role="main" class="pb-4">
             @RenderBody()
         </main>
     </div>
 
     <footer class="footer">
-        <div class="container d-flex flex-wrap justify-content-between align-items-center">
-            <div>
-                <strong class="text-light">Nory</strong> &middot; Studio-grade music theory &amp; ear training
-            </div>
-            <div>
-                &copy; 2026 Nory &middot; <a asp-area="" asp-page="/Privacy">Privacy</a>
-            </div>
+        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div><strong class="text-light">Nory Music Studio</strong><span class="footer-note">Learn the language. Train your ear. Play with confidence.</span></div>
+            <div>&copy; 2026 Nory &middot; <a asp-area="" asp-page="/Privacy">Privacy</a></div>
         </div>
     </footer>
 

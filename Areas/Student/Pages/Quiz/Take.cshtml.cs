@@ -282,7 +282,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                     case QuestionType.FillInBlank:
                         if (!string.IsNullOrEmpty(answerViewModel.SelectedAnswer) &&
                             !string.IsNullOrEmpty(question.CorrectAnswerText) &&
-                            answerViewModel.SelectedAnswer.Trim().ToLower() == question.CorrectAnswerText.Trim().ToLower())
+                            NormalizeAnswer(answerViewModel.SelectedAnswer) == NormalizeAnswer(question.CorrectAnswerText))
                         {
                             isCorrect = true;
                             pointsEarned = question.Points;
@@ -297,7 +297,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                     case QuestionType.AudioIdentification:
                         if (!string.IsNullOrEmpty(answerViewModel.SelectedAnswer) &&
                             !string.IsNullOrEmpty(question.CorrectAnswerText) &&
-                            answerViewModel.SelectedAnswer.Trim().ToLower() == question.CorrectAnswerText.Trim().ToLower())
+                            NormalizeAnswer(answerViewModel.SelectedAnswer) == NormalizeAnswer(question.CorrectAnswerText))
                         {
                             isCorrect = true;
                             pointsEarned = question.Points;
@@ -363,10 +363,27 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                     $"Passed the {Quiz.Type} quiz in {Quiz.Lesson.Course.Title}.");
             }
 
-            // Update enrollment progress based on quiz completion
-            await UpdateEnrollmentProgress(user.Id, Quiz.Lesson.CourseId);
-
             return RedirectToPage("./Result", new { attemptId = Attempt.Id });
+        }
+
+        private static string NormalizeAnswer(string? answer)
+        {
+            var normalized = (answer ?? string.Empty)
+                .Trim()
+                .Replace("♯", "#", StringComparison.Ordinal)
+                .Replace("♭", "b", StringComparison.Ordinal)
+                .Replace(" ", string.Empty, StringComparison.Ordinal)
+                .Replace("-", string.Empty, StringComparison.Ordinal)
+                .ToLowerInvariant();
+
+            return normalized switch
+            {
+                "perfect5th" or "perfectfifth" or "p5" => "p5",
+                "perfect4th" or "perfectfourth" or "p4" => "p4",
+                "major3rd" or "majorthird" or "m3major" => "maj3",
+                "minor3rd" or "minorthird" or "m3minor" => "min3",
+                _ => normalized
+            };
         }
 
         private static bool TryGetOptionCount(string? optionsJson, out int count)
@@ -383,18 +400,5 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
             }
         }
 
-        private async Task UpdateEnrollmentProgress(string userId, int courseId)
-        {
-            var enrollment = await _context.Enrollments
-                .FirstOrDefaultAsync(e => e.StudentId == userId && e.CourseId == courseId);
-
-            if (enrollment != null)
-            {
-                // Calculate progress based on completed lessons and quizzes
-                // For simplicity, we'll base it on lesson completion (which is updated when lessons are marked complete)
-                // In a real app, you might also factor in quiz scores
-                await _context.SaveChangesAsync();
-            }
-        }
     }
 }

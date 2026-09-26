@@ -4,11 +4,12 @@
     ViewData["Title"] = $"Take Quiz: {Model.Quiz.Title}";
 }
 
-<h1>@Model.Quiz.Title</h1>
-<p><strong>Course:</strong> @Model.Quiz.Lesson.Course.Title</p>
-<p><strong>Lesson:</strong> @Model.Quiz.Lesson.Title</p>
-<p><strong>Type:</strong> @Model.Quiz.Type</p>
-<p><strong>Description:</strong> @Model.Quiz.Description</p>
+<p class="nory-eyebrow mb-1">@Model.Quiz.Lesson.Course.Title</p>
+<div class="nory-page-heading">
+    <div><h1>@Model.Quiz.Title</h1><p class="text-muted mb-0">@Model.Quiz.Description</p></div>
+    <span class="nory-pill">@Model.Quiz.Type · @Model.Questions.Count questions</span>
+</div>
+<p class="small text-muted"><i class="bi bi-journal-text me-1"></i>Lesson: @Model.Quiz.Lesson.Title</p>
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -34,9 +35,9 @@
             var question = Model.Questions[i];
             var answer = Model.Answers.FirstOrDefault(a => a.QuestionId == question.Id);
 
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5>Question @(i + 1) (@question.Points points)</h5>
+            <div class="card nory-quiz-question mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Question @(i + 1)</span><span>@question.Points points</span>
                 </div>
                 <div class="card-body">
                     <input type="hidden" name="Answers[@i].QuestionId" value="@question.Id" />
@@ -103,10 +104,11 @@
                         case QuestionType.MultipleChoice:
                         case QuestionType.TrueFalse:
                             {
-                                @if (question.Type == QuestionType.MultipleChoice && question.ToneSequence?.StartsWith("chord:", StringComparison.Ordinal) == true)
+                                @if (question.Type == QuestionType.MultipleChoice && !string.IsNullOrWhiteSpace(question.ToneSequence) && !question.ToneSequence.StartsWith("staff:", StringComparison.Ordinal) && !question.ToneSequence.StartsWith("diagram:", StringComparison.Ordinal))
                                 {
+                                    var playbackLabel = question.ToneSequence.StartsWith("chord:", StringComparison.Ordinal) ? "Play chord" : "Play note";
                                     <button type="button" class="btn btn-outline-primary btn-sm nory-play-tones mb-3" data-tones="@question.ToneSequence">
-                                        <i class="bi bi-play-fill"></i> Play chord
+                                        <i class="bi bi-play-fill"></i> @playbackLabel
                                     </button>
                                 }
                                 var options = System.Text.Json.JsonSerializer.Deserialize<List<string>>(question.OptionsJson ?? "[]");
@@ -161,9 +163,9 @@
                                         <div class="alert alert-warning">No audio available for this question.</div>
                                     }
                                     <label class="form-label">Your Answer (note name or interval name, e.g. "C", "D#", "Perfect 5th"):</label>
-                                    <input class="form-control" type="text" name="Answers[@i].SelectedAnswer"
-                                        value="@(answer?.SelectedAnswer ?? string.Empty)" />
-                                    <div class="form-text">Enter what you hear - a single note name, or an interval name if two notes played.</div>
+                                    <input class="form-control" type="text" name="Answers[@i].SelectedAnswer" autocomplete="off" required
+                                        value="@(answer?.SelectedAnswer ?? string.Empty)" aria-label="Answer for question @(i + 1)" />
+                                    <div class="form-text">Enter a note such as C or F#, or an interval such as Perfect 5th. Replay the sound as needed.</div>
                                 </div>
                                 break;
                             }

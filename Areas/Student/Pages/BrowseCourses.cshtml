@@ -1,53 +1,44 @@
 @page
 @model NoryMusicLMS_VS.Areas.Student.Pages.BrowseCoursesModel
 @{
-    ViewData["Title"] = "Browse Courses";
+    ViewData["Title"] = "Course Library";
 }
 
-<p class="nory-eyebrow mb-1">Curriculum</p>
-<h1 class="mb-4">Available Courses</h1>
+<section class="nory-hero-panel mb-4">
+    <p class="nory-eyebrow mb-2">COURSE LIBRARY</p>
+    <h1 class="mb-2">Choose your next learning path.</h1>
+    <p class="text-muted mb-0" style="max-width: 46rem">Build strong music foundations with courses organized from notation through harmony and form. Learn guitar chords in a practical path, then check your understanding with quizzes.</p>
+</section>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div><h2 class="h4 mb-0">Available courses</h2><p class="small text-muted mb-0">Choose one course at a time and learn at your own pace.</p></div>
+    <a asp-page="./Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>My learning</a>
+</div>
 
 @if (Model.Courses == null || !Model.Courses.Any())
 {
-    <div class="alert alert-info">
-        No courses available at the moment. Please check back later.
-    </div>
+    <div class="card"><div class="card-body p-4"><h3 class="h5">You're up to date</h3><p class="text-muted mb-0">There are no other active courses to join right now. Your enrolled courses remain available from your learning dashboard.</p></div></div>
 }
 else
 {
-    <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
         @foreach (var course in Model.Courses)
         {
+            var isGuitar = course.Title.Contains("Guitar", StringComparison.OrdinalIgnoreCase);
             <div class="col">
-                <div class="card h-100">
-                    <div class="ratio ratio-16x9">
-                        @if (!string.IsNullOrEmpty(course.ImageUrl))
-                        {
-                            <img src="@course.ImageUrl" class="card-img-top" alt="@course.Title">
-                        }
-                        else
-                        {
-                            <img src="/images/music-staff.svg" class="card-img-top" alt="Music theory course illustration">
-                        }
-                    </div>
+                <article class="card nory-course-card">
+                    <div class="course-art" aria-hidden="true"><i class="bi @(isGuitar ? "bi-music-note-beamed" : "bi-music-note-list")"></i></div>
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">@course.Title</h5>
+                        <div class="d-flex align-items-center gap-2 mb-2"><span class="nory-pill">@(isGuitar ? "GUITAR" : "MUSIC THEORY")</span><span class="small text-muted">@course.Lessons.Count lessons</span></div>
+                        <h3 class="card-title h5">@course.Title</h3>
                         <p class="card-text flex-grow-1">@course.Description</p>
-                        <div class="mt-3">
-                            <p class="card-text">
-                                <small class="text-muted">
-                                    <i class="bi bi-person"></i> Instructor: @course.Instructor.FirstName @course.Instructor.LastName<br>
-                                    <i class="bi bi-calendar"></i> Starts: @course.StartDate.ToString("MMM dd, yyyy")<br>
-                                    <i class="bi bi-list-ul"></i> Lessons: @course.Lessons.Count
-                                </small>
-                            </p>
-                        </div>
+                        <div class="small text-muted mb-3"><i class="bi bi-person me-1"></i>@course.Instructor.FirstName @course.Instructor.LastName</div>
                         <form method="post" asp-page-handler="Enroll">
                             <input type="hidden" name="courseId" value="@course.Id" />
-                            <button type="submit" class="btn btn-primary w-100">Enroll Now</button>
+                            <button type="submit" class="btn btn-primary w-100">Enroll in this course <i class="bi bi-arrow-right ms-1"></i></button>
                         </form>
                     </div>
-                </div>
+                </article>
             </div>
         }
     </div>

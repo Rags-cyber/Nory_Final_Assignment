@@ -32,7 +32,7 @@ else
                     <div class="d-flex flex-wrap gap-2 mb-3">
                         @if (song.Key is not null) { <span class="badge bg-light text-dark">Key: @song.Key</span> }
                         @if (song.CapoFret.HasValue) { <span class="badge bg-light text-dark">Capo: @song.CapoFret</span> }
-                        @if (song.TempoBpm.HasValue) { <span class="badge bg-light text-dark">Practice tempo: ~@song.TempoBpm BPM</span> }
+                        @if (song.TempoBpm.HasValue) { <span class="badge bg-warning text-dark"><i class="bi bi-speedometer2 me-1"></i>Starting tempo @song.TempoBpm BPM</span> }
                     </div>
                     <div class="rounded p-3 bg-body-tertiary mb-3">
                         <h3 class="h6">Section chord progression</h3>
@@ -45,7 +45,12 @@ else
                     @if (!string.IsNullOrWhiteSpace(song.StrummingPattern)) { <p><strong>Strumming:</strong> @song.StrummingPattern</p> }
                     @if (song.TempoBpm.HasValue)
                     {
-                        <button type="button" class="btn btn-sm btn-outline-primary nory-metronome" data-bpm="@song.TempoBpm">Start metronome</button>
+                        <div class="nory-tempo-control mt-3 p-3 rounded">
+                            <div class="d-flex justify-content-between align-items-center mb-2"><label class="form-label mb-0" for="tempo-@song.Id">Practice tempo</label><output class="nory-tempo-value" for="tempo-@song.Id">@song.TempoBpm BPM</output></div>
+                            <input id="tempo-@song.Id" type="range" class="form-range nory-tempo-slider" min="40" max="220" step="1" value="@song.TempoBpm" aria-label="Adjust practice tempo" />
+                            <div class="d-flex justify-content-between small text-muted"><span>40 BPM</span><span>220 BPM</span></div>
+                            <div class="d-flex align-items-center gap-3 mt-2"><button type="button" class="btn btn-sm btn-primary nory-metronome" data-bpm="@song.TempoBpm"><i class="bi bi-play-fill me-1"></i>Start metronome</button><span class="small text-muted nory-tempo-status" aria-live="polite">Adjust the tempo to suit your practice.</span></div>
+                        </div>
                     }
                     @if (!string.IsNullOrWhiteSpace(song.AttributionUrl))
                     {
@@ -61,21 +66,60 @@ else
 
 @section Scripts {
 <script>
-    document.querySelectorAll('.nory-metronome').forEach(button => {
-        let timer = null, audio = null;
-        button.addEventListener('click', () => {
+    document.querySelectorAll('.nory-tempo-control').forEach(control => {
+        const slider = control.querySelector('.nory-tempo-slider');
+        const output = control.querySelector('.nory-tempo-value');
+        const status = control.querySelector('.nory-tempo-status');
+        const button = control.querySelector('.nory-metronome');
+        let timer = null;
+        let audio = null;
+
+        const tempo = () => Number(slider.value);
+        const renderTempo = () => {
+            output.value = `${tempo()} BPM`;
+            output.textContent = `${tempo()} BPM`;
+            button.dataset.bpm = tempo();
             if (timer) {
-                clearInterval(timer); timer = null; button.textContent = 'Start metronome'; return;
+                clearInterval(timer);
+                timer = setInterval(tick, 60000 / tempo());
+                status.textContent = `Metronome running at ${tempo()} BPM.`;
             }
-            audio ??= new (window.AudioContext || window.webkitAudioContext)();
-            const bpm = Number(button.dataset.bpm);
-            const tick = () => {
-                const osc = audio.createOscillator(), gain = audio.createGain();
-                osc.frequency.value = 880; gain.gain.setValueAtTime(0.16, audio.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.04);
-                osc.connect(gain); gain.connect(audio.destination); osc.start(); osc.stop(audio.currentTime + 0.05);
-            };
-            tick(); timer = setInterval(tick, 60000 / bpm); button.textContent = 'Stop metronome';
+        };
+        const tick = () => {
+            if (!audio) return;
+            const now = audio.currentTime;
+            const oscillator = audio.createOscillator();
+            const gain = audio.createGain();
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 880;
+            gain.gain.setValueAtTime(0.16, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.055);
+            oscillator.connect(gain);
+            gain.connect(audio.destination);
+            oscillator.start(now);
+            oscillator.stop(now + 0.06);
+        };
+
+        slider.addEventListener('input', renderTempo);
+        button.addEventListener('click', async () => {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+                button.innerHTML = '<i class="bi bi-play-fill me-1"></i>Start metronome';
+                status.textContent = 'Metronome stopped.';
+                return;
+            }
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) {
+                status.textContent = 'Audio playback is not supported in this browser.';
+                return;
+            }
+            audio ??= new AudioContext();
+            await audio.resume();
+            tick();
+            timer = setInterval(tick, 60000 / tempo());
+            button.innerHTML = '<i class="bi bi-stop-fill me-1"></i>Stop metronome';
+            status.textContent = `Metronome running at ${tempo()} BPM.`;
         });
     });
 </script>

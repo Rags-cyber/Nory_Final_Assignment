@@ -21,6 +21,7 @@ public class DetailsModel : PageModel
     }
 
     public Course Course { get; private set; } = default!;
+    public IList<Enrollment> Enrollments { get; private set; } = new List<Enrollment>();
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
@@ -33,6 +34,11 @@ public class DetailsModel : PageModel
             .FirstOrDefaultAsync(c => c.Id == id && c.InstructorId == userId);
         if (course is null) return NotFound();
         Course = course;
+        Enrollments = await _db.Enrollments.AsNoTracking()
+            .Include(e => e.Student)
+            .Where(e => e.CourseId == course.Id)
+            .OrderByDescending(e => e.ProgressPercentage)
+            .ToListAsync();
         return Page();
     }
 }

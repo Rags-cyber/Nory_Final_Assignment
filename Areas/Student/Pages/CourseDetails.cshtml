@@ -2,91 +2,60 @@
 @model NoryMusicLMS_VS.Areas.Student.Pages.CourseDetailsModel
 @{
     ViewData["Title"] = Model.Course?.Title ?? "Course Details";
+    var guitarCourse = Model.Course.Title.Contains("Guitar", StringComparison.OrdinalIgnoreCase);
 }
 
-<div class="container py-3">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-page="./Index">My Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">@Model.Course.Title</li>
-        </ol>
-    </nav>
+<nav aria-label="Breadcrumb" class="mb-3"><ol class="breadcrumb"><li class="breadcrumb-item"><a asp-page="./Index">My learning</a></li><li class="breadcrumb-item active" aria-current="page">@Model.Course.Title</li></ol></nav>
 
-    <div class="row mb-4">
-        <div class="col-md-8">
-            @if (!string.IsNullOrWhiteSpace(Model.Course.ImageUrl))
-            {
-                <img src="@Model.Course.ImageUrl" class="img-fluid rounded mb-3" alt="@Model.Course.Title" />
-            }
-            else
-            {
-                <img src="/images/music-staff.svg" class="img-fluid rounded mb-3" alt="Music notation illustration" />
-            }
-            <h2>@Model.Course.Title</h2>
-            <p class="lead text-muted">@Model.Course.Description</p>
-            <p>
-                <i class="bi bi-person"></i> <strong>Instructor:</strong> @Model.Course.Instructor.FirstName @Model.Course.Instructor.LastName<br />
-                <i class="bi bi-calendar"></i> <strong>Started:</strong> @Model.Course.StartDate.ToString("MMM dd, yyyy")
-            </p>
+<section class="nory-hero-panel mb-4">
+    <div class="row align-items-end g-3">
+        <div class="col-lg-8">
+            <p class="nory-eyebrow mb-2">@(guitarCourse ? "GUITAR PRACTICE PATH" : "MUSIC THEORY LEARNING PATH")</p>
+            <h1 class="mb-2">@Model.Course.Title</h1>
+            <p class="text-muted mb-3">@Model.Course.Description</p>
+            <p class="small text-muted mb-0"><i class="bi bi-person me-1"></i>@Model.Course.Instructor.FirstName @Model.Course.Instructor.LastName <span class="mx-2">·</span>@Model.Lessons.Count lessons</p>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Your Progress</h5>
-                    <div class="progress my-3" style="height: 20px;">
-                        <div class="progress-bar" role="progressbar" 
-                             style="width: @Model.Enrollment.ProgressPercentage%;" 
-                             aria-valuenow="@Model.Enrollment.ProgressPercentage" 
-                             aria-valuemin="0" aria-valuemax="100">
-                        </div>
-                    </div>
-                    <span class="badge @(Model.Enrollment.Status == EnrollmentStatus.Completed ? "bg-info" : "bg-success")">
-                        @Model.Enrollment.Status
-                    </span>
-                </div>
+        <div class="col-lg-4">
+            <div class="nory-action-card">
+                <div class="nory-progress-label"><span>Course lesson progress</span><strong>@Model.Enrollment.ProgressPercentage%</strong></div>
+                <div class="progress my-2" role="progressbar" aria-label="Course completion" aria-valuenow="@Model.Enrollment.ProgressPercentage" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: @Model.Enrollment.ProgressPercentage%"></div></div>
+                @if (Model.Lessons.Any())
+                {
+                    <a asp-page="./LessonView" asp-route-lessonId="@Model.Lessons.First().Id" class="btn btn-primary btn-sm mt-2">@(Model.Enrollment.ProgressPercentage >= 100 ? "Review lessons" : "Continue learning") <i class="bi bi-arrow-right ms-1"></i></a>
+                }
             </div>
         </div>
     </div>
+</section>
 
-    <h3>Course Lessons</h3>
-    <hr />
-
-    @if (Model.Lessons == null || !Model.Lessons.Any())
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+    <div><p class="nory-eyebrow mb-1">YOUR COURSE PATH</p><h2 class="h3 mb-0">Lessons and practice</h2></div>
+    @if (!guitarCourse)
     {
-        <div class="alert alert-info">
-            No lessons have been published for this course yet. Check back soon!
-        </div>
+        <a class="btn btn-sm btn-outline-secondary" href="/references/MusicTheory.pdf" target="_blank" rel="noopener noreferrer"><i class="bi bi-file-earmark-pdf me-1"></i>Open full textbook</a>
     }
     else
     {
-        <div class="list-group mb-4">
-            @foreach (var lesson in Model.Lessons)
-            {
-                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
-                    <div>
-                        <h5 class="mb-1">Lesson @lesson.OrderIndex: @lesson.Title</h5>
-                        <div class="text-muted small">
-                            @if (!string.IsNullOrEmpty(lesson.VideoUrl))
-                            {
-                                <span class="badge bg-danger me-1">Video</span>
-                            }
-                            @if (!string.IsNullOrEmpty(lesson.AudioUrl))
-                            {
-                                <span class="badge bg-info me-1">Audio</span>
-                            }
-                            @if (!string.IsNullOrEmpty(lesson.NotationUrl))
-                            {
-                                <span class="badge bg-secondary me-1">Sheet Music</span>
-                            }
-                        </div>
-                    </div>
-                    <a asp-page="./LessonView" asp-route-lessonId="@lesson.Id" class="btn btn-primary">
-                        Start Lesson
-                    </a>
-                </div>
-            }
-        </div>
+        <a asp-page="/ChordSongs/Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-music-note-list me-1"></i>Song chord library</a>
     }
-
-    <a asp-page="./Index" class="btn btn-outline-secondary">← Back to Dashboard</a>
 </div>
+
+@if (!Model.Lessons.Any())
+{
+    <div class="alert alert-info">This course does not have lessons published yet.</div>
+}
+else
+{
+    <div class="vstack gap-2 mb-4">
+        @foreach (var lesson in Model.Lessons)
+        {
+            <article class="card"><div class="card-body d-flex align-items-center gap-3 p-3 p-lg-4">
+                <span class="action-icon mb-0" aria-hidden="true"><i class="bi bi-music-note"></i></span>
+                <div class="flex-grow-1"><p class="nory-eyebrow mb-1">LESSON @lesson.OrderIndex.ToString("00")</p><h3 class="h5 mb-1">@lesson.Title</h3><div class="small text-muted">Study notes and practice prompts</div></div>
+                <a asp-page="./LessonView" asp-route-lessonId="@lesson.Id" class="btn btn-sm btn-outline-primary flex-shrink-0">Open lesson <i class="bi bi-arrow-right ms-1"></i></a>
+            </div></article>
+        }
+    </div>
+}
+
+<a asp-page="./Index" class="btn btn-link px-0"><i class="bi bi-arrow-left me-1"></i>Back to my learning</a>

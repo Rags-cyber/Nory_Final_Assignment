@@ -45,3 +45,31 @@ else
     }
     </div>
 }
+
+<section class="mt-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+        <div><p class="nory-eyebrow mb-1">LEARNER OUTCOMES</p><h2 class="h4 mb-0">Student progress</h2></div>
+        <span class="small text-muted">@Model.Enrollments.Count(e => e.Status != EnrollmentStatus.Dropped) active learners</span>
+    </div>
+    @if (!Model.Enrollments.Any())
+    {
+        <div class="alert alert-info">Learner enrollments and course progress will appear here.</div>
+    }
+    else
+    {
+        <div class="card"><div class="table-responsive"><table class="table table-hover mb-0">
+            <thead><tr><th>Student</th><th>Joined</th><th>Status</th><th>Lesson progress</th></tr></thead>
+            <tbody>
+            @foreach (var enrollment in Model.Enrollments)
+            {
+                <tr>
+                    <td>@enrollment.Student.FirstName @enrollment.Student.LastName</td>
+                    <td>@enrollment.EnrolledAt.ToString("MMM d, yyyy")</td>
+                    <td><span class="badge @(enrollment.Status == EnrollmentStatus.Active ? "bg-success" : enrollment.Status == EnrollmentStatus.Completed ? "bg-info" : "bg-secondary")">@enrollment.Status</span></td>
+                    <td style="min-width: 180px"><div class="d-flex align-items-center gap-2"><div class="progress flex-grow-1" role="progressbar" aria-label="@enrollment.Student.FirstName course progress" aria-valuenow="@enrollment.ProgressPercentage" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: @enrollment.ProgressPercentage%"></div></div><small>@enrollment.ProgressPercentage%</small></div></td>
+                </tr>
+            }
+            </tbody>
+        </table></div></div>
+    }
+</section>
