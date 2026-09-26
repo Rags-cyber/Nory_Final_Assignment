@@ -7,7 +7,6 @@ using NoryMusicLMS_VS.Services;
 
     var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizeAreaFolder("Admin", "/", "Admin");
@@ -15,15 +14,12 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeAreaFolder("Student", "/", "Student");
 });
 
-// Configure database connection (using LocalDB for simplicity)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<AwardService>();
 
-// Add Identity with roles
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    // Password settings
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
@@ -31,7 +27,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 1;
 
-    // Lockout settings
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
