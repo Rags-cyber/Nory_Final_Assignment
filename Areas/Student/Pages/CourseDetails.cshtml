@@ -7,7 +7,8 @@
 
 <nav aria-label="Breadcrumb" class="mb-3"><ol class="breadcrumb"><li class="breadcrumb-item"><a asp-page="./Index">My learning</a></li><li class="breadcrumb-item active" aria-current="page">@Model.Course.Title</li></ol></nav>
 
-<section class="nory-hero-panel mb-4">
+<section class="nory-hero-panel mb-4 overflow-hidden">
+    <img src="@MediaFallbacks.CourseImage(Model.Course)" class="w-100 mb-4 rounded" style="height:260px;object-fit:cover" alt="@Model.Course.Title course cover" />
     <div class="row align-items-end g-3">
         <div class="col-lg-8">
             <p class="nory-eyebrow mb-2">@(guitarCourse ? "GUITAR PRACTICE PATH" : "MUSIC THEORY LEARNING PATH")</p>
@@ -49,10 +50,13 @@ else
     <div class="vstack gap-2 mb-4">
         @foreach (var lesson in Model.Lessons)
         {
-            <article class="card"><div class="card-body d-flex align-items-center gap-3 p-3 p-lg-4">
+            <article class="card overflow-hidden"><div class="row g-0 align-items-stretch">
+                <div class="col-4 col-md-3"> <img src="@(MediaFallbacks.LessonImage(lesson))" class="w-100 h-100" style="min-height:125px;object-fit:cover" alt="@lesson.Title lesson visual" /> </div>
+                <div class="col-8 col-md-9"><div class="card-body d-flex align-items-center gap-3 p-3 p-lg-4">
                 <span class="action-icon mb-0" aria-hidden="true"><i class="bi bi-music-note"></i></span>
                 <div class="flex-grow-1"><p class="nory-eyebrow mb-1">LESSON @lesson.OrderIndex.ToString("00")</p><h3 class="h5 mb-1">@lesson.Title</h3><div class="small text-muted">Study notes and practice prompts</div></div>
                 <a asp-page="./LessonView" asp-route-lessonId="@lesson.Id" class="btn btn-sm btn-outline-primary flex-shrink-0">Open lesson <i class="bi bi-arrow-right ms-1"></i></a>
+                </div></div>
             </div></article>
         }
     </div>

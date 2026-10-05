@@ -11,7 +11,7 @@ namespace NoryMusicLMS_VS.Data
         {
         }
 
-        // Music-specific entities
+        
         public DbSet<Course> Courses { get; set; } = default!;
         public DbSet<Lesson> Lessons { get; set; } = default!;
         public DbSet<Quiz> Quizzes { get; set; } = default!;
@@ -23,12 +23,13 @@ namespace NoryMusicLMS_VS.Data
         public DbSet<LessonCompletion> LessonCompletions { get; set; } = default!;
         public DbSet<StudentAward> StudentAwards { get; set; } = default!;
         public DbSet<ChordSong> ChordSongs { get; set; } = default!;
+        public DbSet<StoredImage> StoredImages { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // Configure relationships
+            
             builder.Entity<Course>()
                 .HasOne(c => c.Instructor)
                 .WithMany(u => u.InstructorCourses)
@@ -58,7 +59,8 @@ namespace NoryMusicLMS_VS.Data
             builder.Entity<QuizAttempt>()
                 .HasOne(qa => qa.Quiz)
                 .WithMany(q => q.Attempts)
-                .HasForeignKey(qa => qa.QuizId);
+                .HasForeignKey(qa => qa.QuizId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<QuizAnswer>()
                 .HasOne(qa => qa.QuizAttempt)
@@ -73,13 +75,31 @@ namespace NoryMusicLMS_VS.Data
             builder.Entity<Enrollment>()
                 .HasOne(e => e.Course)
                 .WithMany(c => c.Enrollments)
-                .HasForeignKey(e => e.CourseId);
+                .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Resource>()
                 .HasOne(r => r.Lesson)
                 .WithMany(l => l.Resources)
                 .HasForeignKey(r => r.LessonId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Enrollment>()
+                .HasIndex(e => new { e.StudentId, e.CourseId })
+                .IsUnique();
+
+            builder.Entity<Lesson>()
+                .HasIndex(l => new { l.CourseId, l.OrderIndex });
+
+            builder.Entity<QuizQuestion>()
+                .HasIndex(q => new { q.QuizId, q.OrderIndex });
+
+            builder.Entity<QuizAttempt>()
+                .HasIndex(a => new { a.StudentId, a.QuizId, a.CompletedAt });
+
+            builder.Entity<QuizAnswer>()
+                .HasIndex(a => new { a.QuizAttemptId, a.QuizQuestionId })
+                .IsUnique();
 
             builder.Entity<LessonCompletion>()
                 .HasIndex(c => new { c.StudentId, c.LessonId })

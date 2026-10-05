@@ -155,6 +155,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bshal/Downloads/NoryMusicLMS_VS/Areas/Instructor/Pages/ChordSongs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSW5zdHJ1Y3RvclxQYWdlc1xDaG9yZFNvbmdzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bshal/Downloads/NoryMusicLMS_VS/Areas/Instructor/Pages/ChordSongs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSW5zdHJ1Y3RvclxQYWdlc1xDaG9yZFNvbmdzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bshal/Downloads/NoryMusicLMS_VS/Areas/Instructor/Pages/ChordSongs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSW5zdHJ1Y3RvclxQYWdlc1xDaG9yZFNvbmdzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bshal/Downloads/NoryMusicLMS_VS/Areas/Instructor/Pages/Courses/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSW5zdHJ1Y3RvclxQYWdlc1xDb3Vyc2VzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -185,6 +197,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/bshal/Downloads/NoryMusicLMS_VS/Areas/Instructor/Pages/Quizzes/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSW5zdHJ1Y3RvclxQYWdlc1xRdWl6emVzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bshal/Downloads/NoryMusicLMS_VS/Areas/Instructor/Pages/Quizzes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSW5zdHJ1Y3RvclxQYWdlc1xRdWl6emVzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bshal/Downloads/NoryMusicLMS_VS/Areas/Instructor/Pages/Quizzes/Manage.cshtml]

@@ -17,6 +17,8 @@ builder.Services.AddRazorPages(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<AwardService>();
+builder.Services.AddScoped<ImageStorageService>();
+builder.Services.AddScoped<AudioStorageService>();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -92,26 +94,32 @@ using (var scope = app.Services.CreateScope())
         }
 
         var schemaExists = await context.Database
-            .SqlQueryRaw<int>("SELECT CASE WHEN OBJECT_ID('dbo.AspNetRoles', 'U') IS NOT NULL THEN 1 ELSE 0 END AS [Value]")
+            .SqlQueryRaw<int>(
+                "SELECT CASE WHEN OBJECT_ID('dbo.AspNetRoles', 'U') IS NOT NULL " +
+                "AND OBJECT_ID('dbo.StoredImages', 'U') IS NOT NULL " +
+                "AND COL_LENGTH('dbo.Lessons', 'ImageUrl') IS NOT NULL " +
+                "AND COL_LENGTH('dbo.Quizzes', 'ImageUrl') IS NOT NULL " +
+                "AND COL_LENGTH('dbo.ChordSongs', 'ImageUrl') IS NOT NULL " +
+                "THEN 1 ELSE 0 END AS [Value]")
             .FirstOrDefaultAsync();
         if (schemaExists != 1)
         {
             throw new InvalidOperationException(
-                "Connected to the 'Nory' database, but its tables don't exist yet. " +
-                "Run Nory_Database_Script.sql in SSMS against (localdb)\\mssqllocaldb first, " +
+                "Connected to the 'Nory' database, but the application schema is incomplete. " +
+                "Run the supplied database.sql script against the intended database (or the upgrade script for an existing database), " +
                 "then restart the app.");
         }
 
         Console.WriteLine("Database connection and schema verified.");
 
-        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
+        
+        
         string[] roleNames = { "Admin", "Instructor", "Student" };
         foreach (var roleName in roleNames)
         {
-            var roleExists = await roleManager.RoleExistsAsync(roleName);
-            if (!roleExists)
+            if (!await roleManager.RoleExistsAsync(roleName))
             {
                 var roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
                 if (!roleResult.Succeeded)
@@ -120,97 +128,13 @@ using (var scope = app.Services.CreateScope())
                         string.Join("; ", roleResult.Errors.Select(e => e.Description)));
             }
         }
-
-        var adminEmail = "admin@norymusic.com";
-        var adminUser = await userManager.FindByEmailAsync(adminEmail);
-        if (adminUser == null)
-        {
-            adminUser = new ApplicationUser
-            {
-                UserName = adminEmail,
-                Email = adminEmail,
-                FirstName = "Nory",
-                LastName = "Administrator",
-                EmailConfirmed = true,
-                PhoneNumber = "+1234567890"
-            };
-
-            var result = await userManager.CreateAsync(adminUser, "Admin@123");
-            if (result.Succeeded)
-            {
-                await userManager.AddToRoleAsync(adminUser, "Admin");
-            }
-        }
-        else if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
-        {
-            var roleResult = await userManager.AddToRoleAsync(adminUser, "Admin");
-            if (!roleResult.Succeeded)
-                throw new InvalidOperationException(string.Join("; ", roleResult.Errors.Select(e => e.Description)));
-        }
-
-        var instructorEmail = "instructor@norymusic.com";
-        var instructorUser = await userManager.FindByEmailAsync(instructorEmail);
-        if (instructorUser == null)
-        {
-            instructorUser = new ApplicationUser
-            {
-                UserName = instructorEmail,
-                Email = instructorEmail,
-                FirstName = "Julian",
-                LastName = "Vance",
-                EmailConfirmed = true,
-                PhoneNumber = "+1234567891"
-            };
-
-            var result = await userManager.CreateAsync(instructorUser, "Instructor@123");
-            if (result.Succeeded)
-            {
-                await userManager.AddToRoleAsync(instructorUser, "Instructor");
-            }
-        }
-        else if (!await userManager.IsInRoleAsync(instructorUser, "Instructor"))
-        {
-            var roleResult = await userManager.AddToRoleAsync(instructorUser, "Instructor");
-            if (!roleResult.Succeeded)
-                throw new InvalidOperationException(string.Join("; ", roleResult.Errors.Select(e => e.Description)));
-        }
-
-        var studentEmail = "student@norymusic.com";
-        var studentUser = await userManager.FindByEmailAsync(studentEmail);
-        if (studentUser == null)
-        {
-            studentUser = new ApplicationUser
-            {
-                UserName = studentEmail,
-                Email = studentEmail,
-                FirstName = "Maya",
-                LastName = "Lin",
-                EmailConfirmed = true,
-                PhoneNumber = "+1234567892"
-            };
-
-            var result = await userManager.CreateAsync(studentUser, "Student@123");
-            if (result.Succeeded)
-            {
-                await userManager.AddToRoleAsync(studentUser, "Student");
-            }
-        }
-        else if (!await userManager.IsInRoleAsync(studentUser, "Student"))
-        {
-            var roleResult = await userManager.AddToRoleAsync(studentUser, "Student");
-            if (!roleResult.Succeeded)
-                throw new InvalidOperationException(string.Join("; ", roleResult.Errors.Select(e => e.Description)));
-        }
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "An error occurred while migrating/seeding the database.");
 
-        if (app.Environment.IsDevelopment())
-        {
-            throw;
-        }
+        throw;
     }
 }
 
@@ -221,6 +145,32 @@ app.MapGet("/references/MusicTheory.pdf", (IWebHostEnvironment environment) =>
         ? Results.File(pdfPath, "application/pdf", enableRangeProcessing: true)
         : Results.NotFound();
 });
+
+app.MapGet("/references/open-chords.pdf", (IWebHostEnvironment environment) =>
+{
+    var pdfPath = Path.Combine(environment.ContentRootPath, "open-chords.pdf");
+    return System.IO.File.Exists(pdfPath)
+        ? Results.File(pdfPath, "application/pdf", enableRangeProcessing: true)
+        : Results.NotFound();
+});
+
+
+
+app.MapGet("/media/{id:int}", async (int id, ApplicationDbContext db, HttpContext http) =>
+{
+    var image = await db.StoredImages.AsNoTracking()
+        .Where(i => i.Id == id)
+        .Select(i => new { i.Data, i.ContentType, i.UploadedAt })
+        .FirstOrDefaultAsync();
+    if (image is null) return Results.NotFound();
+
+    
+    
+    http.Response.Headers.CacheControl = "private, max-age=86400";
+    http.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    return Results.File(image.Data, image.ContentType,
+        lastModified: new DateTimeOffset(DateTime.SpecifyKind(image.UploadedAt, DateTimeKind.Utc)));
+}).RequireAuthorization();
 
 app.MapRazorPages();
 

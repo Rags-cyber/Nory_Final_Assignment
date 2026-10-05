@@ -113,8 +113,8 @@ public class ProfileModel : PageModel
             user.DateOfBirth = Input.DateOfBirth.Value.Date;
         user.Bio = Clean(Input.Bio);
 
-        // Apply only the fields belonging to roles actually assigned to this
-        // account. A forged form cannot write another role's profile data.
+        
+        
         if (IsStudent)
         {
             user.Instrument = Clean(Input.Instrument);

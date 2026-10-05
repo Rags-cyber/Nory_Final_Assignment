@@ -4,10 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <!-- This LMS is primarily run from Visual Studio on a desktop/laptop.
-         Workstation GC uses a smaller initial memory footprint than the
-         ASP.NET Server GC default, which can fail to initialize in
-         resource-constrained development environments. -->
+    
     <ServerGarbageCollection>false</ServerGarbageCollection>
     <UserSecretsId>aspnet-NoryMusicLMS_VS-23165781-5dd0-4627-af5e-cd8f07f3e987</UserSecretsId>
   </PropertyGroup>

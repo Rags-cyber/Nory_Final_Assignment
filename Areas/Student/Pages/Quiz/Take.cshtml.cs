@@ -52,7 +52,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 return NotFound();
             }
 
-            // Get the quiz with its questions
+            
             var quiz = await _context.Quizzes
                 .Include(q => q.Lesson)
                     .ThenInclude(l => l.Course)
@@ -64,7 +64,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
             }
             Quiz = quiz;
 
-            // Check if user is enrolled in this course
+            
             var enrollment = await _context.Enrollments
                 .FirstOrDefaultAsync(e => e.StudentId == user.Id && e.CourseId == Quiz.Lesson.CourseId);
 
@@ -74,7 +74,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 return RedirectToPage("/Student/BrowseCourses");
             }
 
-            // Get questions for this quiz
+            
             Questions = await _context.QuizQuestions
                 .Where(q => q.QuizId == quizId)
                 .OrderBy(q => q.OrderIndex)
@@ -82,15 +82,15 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
             if (Questions.Count == 0)
                 return BadRequest("This quiz has no questions yet.");
 
-            // Ignore forged question IDs and accept only answers for this quiz's
-            // actual questions; radio option indices are zero-based.
+            
+            
             Answers = (Answers ?? new List<QuizAnswerViewModel>())
                 .Where(a => Questions.Any(q => q.Id == a.QuestionId))
                 .GroupBy(a => a.QuestionId)
                 .Select(g => g.Last())
                 .ToList();
 
-            // Initialize answer view models
+            
             foreach (var question in Questions)
             {
                 Answers.Add(new QuizAnswerViewModel
@@ -99,14 +99,14 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 });
             }
 
-            // Check if there's an existing attempt for this user and quiz
+            
             Attempt = await _context.QuizAttempts
                 .Include(a => a.Quiz)
                 .FirstOrDefaultAsync(a => a.StudentId == user.Id && a.QuizId == quizId && a.CompletedAt == null);
 
             if (Attempt != null)
             {
-                // Load existing answers
+                
                 var existingAnswers = await _context.QuizAnswers
                     .Where(a => a.QuizAttemptId == Attempt.Id)
                     .ToListAsync();
@@ -138,7 +138,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 return NotFound();
             }
 
-            // Get the quiz
+            
             var quiz = await _context.Quizzes
                 .Include(q => q.Lesson)
                     .ThenInclude(l => l.Course)
@@ -150,7 +150,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
             }
             Quiz = quiz;
 
-            // Check enrollment
+            
             var enrollment = await _context.Enrollments
                 .FirstOrDefaultAsync(e => e.StudentId == user.Id && e.CourseId == Quiz.Lesson.CourseId);
 
@@ -160,7 +160,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 return RedirectToPage("/Student/BrowseCourses");
             }
 
-            // Get questions
+            
             Questions = await _context.QuizQuestions
                 .Where(q => q.QuizId == quizId)
                 .OrderBy(q => q.OrderIndex)
@@ -169,10 +169,10 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
             if (Questions.Count == 0)
                 return BadRequest("This quiz has no questions yet.");
 
-            // Require a valid response to every question. Previously a crafted
-            // or incomplete POST could silently skip questions and still close
-            // the attempt, making the quiz feel broken and losing the chance
-            // to answer the missing items.
+            
+            
+            
+            
             Answers ??= new List<QuizAnswerViewModel>();
             var submittedAnswers = Answers
                 .Where(a => Questions.Any(q => q.Id == a.QuestionId))
@@ -210,17 +210,17 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 return Page();
             }
 
-            // Discard forged question IDs and put accepted answers in the
-            // same order as the questions rendered by the form.
+            
+            
             Answers = Questions.Select(question => submittedAnswers[question.Id]).ToList();
 
-            // Check if there's an existing attempt
+            
             Attempt = await _context.QuizAttempts
                 .FirstOrDefaultAsync(a => a.StudentId == user.Id && a.QuizId == quizId && a.CompletedAt == null);
 
             if (Attempt == null)
             {
-                // Create new attempt
+                
                 Attempt = new QuizAttempt
                 {
                     StudentId = user.Id,
@@ -232,7 +232,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 await _context.SaveChangesAsync();
             }
 
-            // Process answers
+            
             int totalPoints = 0;
             int earnedPoints = 0;
 
@@ -260,7 +260,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                         }
                         else
                         {
-                            feedback = "Incorrect. The correct answer is option " + question.CorrectAnswerIndex;
+                            feedback = "Incorrect.";
                         }
                         break;
 
@@ -310,10 +310,11 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                         break;
                 }
 
-                totalPoints += question.Points;
-                earnedPoints += pointsEarned;
+                var questionPoints = Math.Max(0, question.Points);
+                totalPoints += questionPoints;
+                earnedPoints += Math.Min(pointsEarned, questionPoints);
 
-                // Save or update answer
+                
                 var existingAnswer = await _context.QuizAnswers
                     .FirstOrDefaultAsync(a => a.QuizAttemptId == Attempt.Id && a.QuizQuestionId == question.Id);
 
@@ -344,10 +345,10 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 }
             }
 
-            // Update attempt
+            
             Attempt.CompletedAt = DateTime.UtcNow;
             Attempt.ScorePercentage = totalPoints > 0 ? (int)((double)earnedPoints / totalPoints * 100) : 0;
-            Attempt.IsPassed = Attempt.ScorePercentage >= 60; // Passing grade is 60%
+            Attempt.IsPassed = Attempt.ScorePercentage >= 60; 
 
             await _context.SaveChangesAsync();
 

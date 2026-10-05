@@ -1,87 +1,10 @@
-@page
+@page "{id:int}"
 @model NoryMusicLMS_VS.Areas.Admin.Pages.Lessons.EditModel
-@{
-    ViewData["Title"] = "Edit Lesson";
-}
-
-<h1>Edit Lesson</h1>
-
-<h4>Lesson</h4>
-<hr />
-<div class="row">
-    <div class="col-md-8">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Lesson.Id" />
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Course</label>
-                <div class="col-sm-10">
-                    <select class="form-select" asp-for="Lesson.CourseId" asp-items="ViewBag.CourseId">
-                        <option value="">-- Select Course --</option>
-                    </select>
-                    <span asp-validation-for="Lesson.CourseId" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Title</label>
-                <div class="col-sm-10">
-                    <input class="form-control" asp-for="Lesson.Title" />
-                    <span asp-validation-for="Lesson.Title" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Content</label>
-                <div class="col-sm-10">
-                    <textarea class="form-control" asp-for="Lesson.Content" rows="6"></textarea>
-                    <span asp-validation-for="Lesson.Content" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Order Index</label>
-                <div class="col-sm-10">
-                    <input class="form-control" type="number" asp-for="Lesson.OrderIndex" />
-                    <span asp-validation-for="Lesson.OrderIndex" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Video URL</label>
-                <div class="col-sm-10">
-                    <input class="form-control" asp-for="Lesson.VideoUrl" placeholder="https://..." />
-                    <span asp-validation-for="Lesson.VideoUrl" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Audio URL</label>
-                <div class="col-sm-10">
-                    <input class="form-control" asp-for="Lesson.AudioUrl" placeholder="https://..." />
-                    <span asp-validation-for="Lesson.AudioUrl" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Notation URL</label>
-                <div class="col-sm-10">
-                    <input class="form-control" asp-for="Lesson.NotationUrl" placeholder="https://..." />
-                    <span asp-validation-for="Lesson.NotationUrl" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-sm-10 offset-sm-2">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@{ViewData["Title"]="Edit Lesson";}
+<h1>Edit lesson</h1><p class="text-muted">Course: @Model.CourseTitle</p><form method="post" enctype="multipart/form-data" class="row g-3"><div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="col-md-8"><label asp-for="Input.CourseId" class="form-label">Course</label><select asp-for="Input.CourseId" asp-items="ViewBag.CourseId" class="form-select"></select><span asp-validation-for="Input.CourseId" class="text-danger"></span></div><div class="col-md-4"><label asp-for="Input.OrderIndex" class="form-label">Order</label><input asp-for="Input.OrderIndex" type="number" min="1" class="form-control"/></div><div class="col-12"><label asp-for="Input.Title" class="form-label"></label><input asp-for="Input.Title" class="form-control"/><span asp-validation-for="Input.Title" class="text-danger"></span></div><div class="col-12"><label asp-for="Input.Content" class="form-label">Lesson content</label><textarea asp-for="Input.Content" class="form-control" rows="8"></textarea></div>
+<div class="col-md-4"><label asp-for="Input.VideoUrl" class="form-label">Video URL</label><input asp-for="Input.VideoUrl" class="form-control"/></div><div class="col-md-4"><label asp-for="Input.AudioUrl" class="form-label">Audio URL</label><input asp-for="Input.AudioUrl" class="form-control"/></div><div class="col-md-4"><label asp-for="Input.NotationUrl" class="form-label">Notation URL</label><input asp-for="Input.NotationUrl" class="form-control"/></div>
+<div class="col-md-6"><label asp-for="Input.Image" class="form-label">Lesson image</label>@if(!string.IsNullOrWhiteSpace(Model.CurrentImageUrl)){<img src="@Model.CurrentImageUrl" class="img-thumbnail d-block mb-2" style="max-height:140px"/>}<input asp-for="Input.Image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" class="form-control"/>@if(!string.IsNullOrWhiteSpace(Model.CurrentImageUrl)){<div class="form-check mt-2"><input asp-for="Input.RemoveImage" class="form-check-input"/><label asp-for="Input.RemoveImage" class="form-check-label">Remove image</label></div>}<span asp-validation-for="Input.Image" class="text-danger"></span></div><div class="col-12"><button class="btn btn-primary">Save lesson</button> <a asp-page="./Index" class="btn btn-outline-secondary">Cancel</a></div></form>@{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

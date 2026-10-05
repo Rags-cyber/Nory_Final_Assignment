@@ -5,17 +5,7 @@
     var contentLines = (Model.Lesson.Content ?? "")
         .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
     var isGuitarCourse = Model.Course.Title.Contains("Guitar", StringComparison.OrdinalIgnoreCase);
-    var lessonImage = Model.Lesson.Title switch
-    {
-        "The Staff, Clefs, and Note Duration" => "/images/music-staff.svg",
-        "Steps, Accidentals, and Key Signatures" => "/images/music-keys.svg",
-        "The Major Scale" => "/images/music-scale.svg",
-        "Intervals and Ear Training" => "/images/music-intervals.svg",
-        "Triads and Basic Chords" => "/images/music-triads.svg",
-        "Chord Progressions and Harmonic Function" => "/images/music-harmony.svg",
-        "Song Form and Accompaniment" => "/images/music-form.svg",
-        _ => "/images/music-staff.svg"
-    };
+    var lessonImage = MediaFallbacks.LessonImage(Model.Lesson);
 }
 
 <nav aria-label="Breadcrumb" class="mb-3"><ol class="breadcrumb"><li class="breadcrumb-item"><a asp-page="./Index">My learning</a></li><li class="breadcrumb-item"><a asp-page="./CourseDetails" asp-route-id="@Model.Course.Id">@Model.Course.Title</a></li><li class="breadcrumb-item active" aria-current="page">Lesson @Model.CurrentLessonIndex</li></ol></nav>
@@ -26,7 +16,7 @@
 <div class="row">
     <div class="col-md-8">
         <div class="card mb-4">
-            <img src="@lessonImage" class="w-100 rounded-top" alt="Music theory illustration for @Model.Lesson.Title" />
+            <img src="@lessonImage" class="w-100 rounded-top" alt="Illustration for @Model.Lesson.Title" />
             <div class="card-body">
                 <h3>Lesson Content</h3>
                 <div class="lesson-content">
@@ -184,12 +174,4 @@
     </div>
 </div>
 
-@* @if (Model.CurrentLessonIndex > 1)
-{
-    <div class="mt-4">
-        <a asp-page="./LessonView" asp-route-lessonId="@Model.Lesson.Id" class="btn btn-outline-secondary">
-            ← Previous Lesson
-        </a>
-    </div>
-}
-*@
+

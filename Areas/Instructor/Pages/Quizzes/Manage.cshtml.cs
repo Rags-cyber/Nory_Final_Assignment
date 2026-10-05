@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NoryMusicLMS_VS.Data;
 using NoryMusicLMS_VS.Models;
+using NoryMusicLMS_VS.Services;
 
 namespace NoryMusicLMS_VS.Areas.Instructor.Pages.Quizzes;
 
@@ -15,11 +16,15 @@ public class ManageModel : PageModel
 {
     private readonly ApplicationDbContext _db;
     private readonly UserManager<ApplicationUser> _users;
+    private readonly ImageStorageService _images;
+    private readonly AudioStorageService _audio;
 
-    public ManageModel(ApplicationDbContext db, UserManager<ApplicationUser> users)
+    public ManageModel(ApplicationDbContext db, UserManager<ApplicationUser> users, ImageStorageService images, AudioStorageService audio)
     {
         _db = db;
         _users = users;
+        _images = images;
+        _audio = audio;
     }
 
     public NoryMusicLMS_VS.Models.Quiz Quiz { get; private set; } = default!;
@@ -38,6 +43,8 @@ public class ManageModel : PageModel
         [StringLength(200)] public string? CorrectAnswerText { get; set; }
         [Url] public string? AudioUrl { get; set; }
         [StringLength(200)] public string? ToneSequence { get; set; }
+        public IFormFile? Image { get; set; }
+        public IFormFile? Audio { get; set; }
     }
 
     public async Task<IActionResult> OnGetAsync(int id)
@@ -72,12 +79,20 @@ public class ManageModel : PageModel
 
         if (Input.Type == QuestionType.AudioIdentification &&
             string.IsNullOrWhiteSpace(Input.AudioUrl) &&
+            Input.Audio is not { Length: > 0 } &&
             string.IsNullOrWhiteSpace(Input.ToneSequence))
         {
             ModelState.AddModelError(string.Empty, "Add an audio URL or comma-separated tone frequencies.");
         }
 
+        if (ImageStorageService.Validate(Input.Image) is { } imageError)
+            ModelState.AddModelError("Input.Image", imageError);
+        if (AudioStorageService.Validate(Input.Audio) is { } audioError)
+            ModelState.AddModelError("Input.Audio", audioError);
         if (!ModelState.IsValid) return Page();
+
+        var imageUrl = await _images.ApplyAsync(null, Input.Image, false, _users.GetUserId(User));
+        var audioUrl = Input.Audio is { Length: > 0 } ? await _audio.SaveAsync(Input.Audio, _users.GetUserId(User)) : Input.AudioUrl;
 
         var question = new QuizQuestion
         {
@@ -93,13 +108,29 @@ public class ManageModel : PageModel
                 ? JsonSerializer.Serialize(options)
                 : null,
             CorrectAnswerText = Input.CorrectAnswerText?.Trim(),
-            AudioUrl = Input.AudioUrl,
-            ToneSequence = Input.ToneSequence?.Trim()
+            AudioUrl = audioUrl,
+            ToneSequence = Input.ToneSequence?.Trim(),
+            ImageUrl = imageUrl
         };
         _db.QuizQuestions.Add(question);
         await _db.SaveChangesAsync();
         TempData["StatusMessage"] = "Question added.";
         return RedirectToPage("./Manage", new { id });
+    }
+
+
+    public async Task<IActionResult> OnPostDeleteQuestionAsync(int id, int questionId)
+    {
+        var quiz = await GetOwnedQuizAsync(id);
+        if (quiz is null) return NotFound();
+        var question = await _db.QuizQuestions.FirstOrDefaultAsync(q => q.Id == questionId && q.QuizId == id);
+        if (question is null) return NotFound();
+        await _images.DeleteIfStoredAsync(question.ImageUrl);
+        await _audio.DeleteIfStoredAsync(question.AudioUrl);
+        _db.QuizQuestions.Remove(question);
+        await _db.SaveChangesAsync();
+        TempData["StatusMessage"] = "Question deleted.";
+        return RedirectToPage(new { id });
     }
 
     private async Task<NoryMusicLMS_VS.Models.Quiz?> GetOwnedQuizAsync(int id)

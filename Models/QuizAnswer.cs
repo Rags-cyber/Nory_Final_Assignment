@@ -19,13 +19,13 @@ namespace NoryMusicLMS_VS.Models
         [ForeignKey("QuizQuestionId")]
         public QuizQuestion Question { get; set; } = default!;
 
-        // Student's answer
-        public string? SelectedAnswer { get; set; } // For MC: "B"; TF: "true"; FIB: "C major"
-        public int? SelectedAnswerIndex { get; set; } // For MC: index selected
+        
+        public string? SelectedAnswer { get; set; } 
+        public int? SelectedAnswerIndex { get; set; } 
 
         public bool IsCorrect { get; set; } = false;
         public double PointsEarned { get; set; } = 0;
-        public string? Feedback { get; set; } // Instructor feedback
+        public string? Feedback { get; set; } 
         public DateTime AnsweredAt { get; set; } = DateTime.UtcNow;
     }
 }

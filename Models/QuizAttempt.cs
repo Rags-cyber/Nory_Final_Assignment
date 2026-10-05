@@ -24,7 +24,7 @@ namespace NoryMusicLMS_VS.Models
         public double? ScorePercentage { get; set; }
         public bool IsPassed { get; set; } = false;
 
-        // Navigation properties
+        
         public ICollection<QuizAnswer> Answers { get; set; } = new List<QuizAnswer>();
     }
 }

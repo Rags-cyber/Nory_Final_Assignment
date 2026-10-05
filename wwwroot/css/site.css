@@ -31,7 +31,7 @@ body {
   text-align: start;
 }
 
-/* LMS Specific Styles */
+                         
 .navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -115,7 +115,7 @@ header {
   max-width: 1200px;
 }
 
-/* Dashboard Cards */
+                     
 .card.bg-primary, .card.bg-success, .card.bg-warning, .card.bg-info, .card.bg-danger {
   border-radius: 0.5rem;
   border: none;
@@ -126,7 +126,7 @@ header {
   font-weight: 600;
 }
 
-/* Table Styles */
+                  
 .table {
   background-color: white;
 }
@@ -141,7 +141,7 @@ th {
   border-bottom: 2px solid #dee2e6;
 }
 
-/* Responsive Grid */
+                     
 @media (max-width: 768px) {
   .card-body {
     padding: 1rem;
@@ -158,4 +158,29 @@ th {
 
 .lesson-content {
   white-space: pre-wrap;
+}
+                                                                  
+.list-group-item-action:hover,
+.list-group-item-action:focus,
+.list-group-item:hover {
+    background-color: rgba(255, 255, 255, 0.07) !important;                            
+    color: #ffffff !important;                                 
+}
+
+                                   
+.card-hover:hover,
+.card:hover {
+    background-color: #1e293b !important;                                        
+}
+
+                                                
+.list-group-item:hover *,
+.list-group-item-action:hover * {
+    color: inherit !important;
+}
+
+                                                        
+.list-group-item:hover .text-muted,
+.list-group-item-action:hover .text-muted {
+    color: #94a3b8 !important;                             
 }

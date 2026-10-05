@@ -5,8 +5,8 @@ namespace NoryMusicLMS_VS.Models
 {
     public enum QuizType
     {
-        Theory,           // Multiple choice, true/false, etc.
-        EarTraining       // Identify notes/chords from audio
+        Theory,           
+        EarTraining       
     }
 
     public class Quiz
@@ -30,7 +30,10 @@ namespace NoryMusicLMS_VS.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsActive { get; set; } = true;
 
-        // Navigation properties
+        
+        public string? ImageUrl { get; set; }
+
+        
         public ICollection<QuizQuestion> Questions { get; set; } = new List<QuizQuestion>();
         public ICollection<QuizAttempt> Attempts { get; set; } = new List<QuizAttempt>();
     }

@@ -70,8 +70,8 @@ public class RegisterModel : PageModel
             return Page();
         }
 
-        // Public self-registration is always Student. Instructor/Admin accounts
-        // must be assigned by an administrator, never by a submitted form field.
+        
+        
         var roleResult = await _users.AddToRoleAsync(user, "Student");
         if (!roleResult.Succeeded)
         {

@@ -33,14 +33,14 @@ namespace NoryMusicLMS_VS.Areas.Instructor.Pages
                 return;
             }
 
-            // Get courses taught by this instructor
+            
             Courses = await _context.Courses
                 .Where(c => c.InstructorId == user.Id)
                 .Include(c => c.Lessons)
                 .Include(c => c.Enrollments)
                 .ToListAsync();
 
-            // Count enrolled students (distinct from all instructor's courses)
+            
             var enrolledStudentIds = await _context.Enrollments
                 .Where(e => e.Status != EnrollmentStatus.Dropped)
                 .Where(e => Courses.Select(c => c.Id).Contains(e.CourseId))
@@ -50,7 +50,7 @@ namespace NoryMusicLMS_VS.Areas.Instructor.Pages
 
             TotalStudents = enrolledStudentIds;
 
-            // Count lessons and quizzes in instructor's courses
+            
             TotalLessons = await _context.Lessons
                 .Where(l => Courses.Select(c => c.Id).Contains(l.CourseId))
                 .CountAsync();

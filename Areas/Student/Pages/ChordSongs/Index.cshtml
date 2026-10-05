@@ -29,6 +29,13 @@ else
                         <div><h2 class="h4 mb-1">@song.Title</h2><p class="text-muted">@song.Artist</p></div>
                         <span class="badge bg-secondary align-self-start">@song.Instrument</span>
                     </div>
+                    
+                    @if (!string.IsNullOrWhiteSpace(song.ImageUrl))
+                    {
+                        <div class="text-center mb-3">
+                            <img src="@song.ImageUrl" alt="Chord diagram: @song.Title" class="img-fluid rounded" style="max-height:200px; object-fit:contain;" />
+                        </div>
+                    }
                     <div class="d-flex flex-wrap gap-2 mb-3">
                         @if (song.Key is not null) { <span class="badge bg-light text-dark">Key: @song.Key</span> }
                         @if (song.CapoFret.HasValue) { <span class="badge bg-light text-dark">Capo: @song.CapoFret</span> }

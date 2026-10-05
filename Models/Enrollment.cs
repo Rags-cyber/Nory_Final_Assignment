@@ -29,7 +29,7 @@ namespace NoryMusicLMS_VS.Models
         public DateTime EnrolledAt { get; set; } = DateTime.UtcNow;
         public DateTime? CompletedAt { get; set; }
         public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Active;
-        public double ProgressPercentage { get; set; } = 0; // Based on completed lessons/quizzes
-        public string? CertificateUrl { get; set; } // For completion certificate
+        public double ProgressPercentage { get; set; } = 0; 
+        public string? CertificateUrl { get; set; } 
     }
 }

@@ -10,6 +10,10 @@
     <span class="nory-pill">@Model.Quiz.Type · @Model.Questions.Count questions</span>
 </div>
 <p class="small text-muted"><i class="bi bi-journal-text me-1"></i>Lesson: @Model.Quiz.Lesson.Title</p>
+@if (!string.IsNullOrWhiteSpace(Model.Quiz.ImageUrl))
+{
+    <img src="@Model.Quiz.ImageUrl" class="img-fluid rounded mb-3" style="max-height:220px;object-fit:cover;" alt="" />
+}
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -41,7 +45,11 @@
                 </div>
                 <div class="card-body">
                     <input type="hidden" name="Answers[@i].QuestionId" value="@question.Id" />
-                    <p>@question.QuestionText</p>
+                    <p class="lead mb-3">@question.QuestionText</p>
+                    @if (!string.IsNullOrWhiteSpace(question.ImageUrl))
+                    {
+                        <img src="@question.ImageUrl" class="img-fluid mb-3 nory-question-image" alt="Question image" style="max-height: 220px; object-fit: contain;" />
+                    }
                     @if (question.Type == QuestionType.MultipleChoice && question.ToneSequence?.StartsWith("staff:", StringComparison.Ordinal) == true)
                     {
                         var staffParts = question.ToneSequence.Split(':');
@@ -183,9 +191,6 @@
 
 @section Scripts {
     <script>
-        // Plays frequencies or simultaneous chord tones using Web Audio.
-        // data-tones="261.63,392.00" plays C4 then G4 (a Perfect 5th),
-        // half a second apart, each held for 900ms.
         (function () {
             let audioCtx = null;
 
@@ -194,8 +199,6 @@
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
                 osc.frequency.value = freq;
-
-                // Simple envelope so notes don't click at start/end.
                 gain.gain.setValueAtTime(0, startTime);
                 gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
                 gain.gain.linearRampToValueAtTime(0.3, startTime + duration - 0.1);
@@ -245,7 +248,7 @@
                 if (!match) return;
                 const letterIndex = noteSteps.indexOf(match[1]);
                 const octave = Number(match[2]);
-                // Bottom line is E4 in treble clef and G2 in bass clef.
+                
                 const bassClef = parts[1] === 'bass';
                 const bottomLetterIndex = noteSteps.indexOf(bassClef ? 'G' : 'E');
                 const bottomOctave = bassClef ? 2 : 4;

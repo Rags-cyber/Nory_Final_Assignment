@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using NoryMusicLMS_VS.Data;
 using NoryMusicLMS_VS.Models;
 
@@ -24,7 +25,15 @@ public class AwardService
             Description = description,
             EarnedAt = DateTime.UtcNow
         });
-        await _db.SaveChangesAsync();
-        return true;
+        try
+        {
+            await _db.SaveChangesAsync();
+            return true;
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is SqlException sql && sql.Number is 2601 or 2627)
+        {
+            
+            return false;
+        }
     }
 }

@@ -47,7 +47,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages
                 return NotFound();
             }
 
-            // Get the lesson
+            
             Lesson = await _context.Lessons
                 .Include(l => l.Course)
                 .FirstOrDefaultAsync(l => l.Id == lessonId);
@@ -59,7 +59,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages
 
             Course = Lesson.Course;
 
-            // Check if user is enrolled in this course
+            
             Enrollment = await _context.Enrollments
                 .FirstOrDefaultAsync(e => e.StudentId == user.Id && e.CourseId == Course.Id &&
                     e.Status != EnrollmentStatus.Dropped);
@@ -70,20 +70,20 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages
                 return RedirectToPage("./BrowseCourses");
             }
 
-            // Get all lessons for this course to determine position
+            
             var allLessons = await _context.Lessons
                 .Where(l => l.CourseId == Course.Id)
                 .OrderBy(l => l.OrderIndex)
                 .ToListAsync();
 
             TotalLessons = allLessons.Count;
-            CurrentLessonIndex = allLessons.FindIndex(l => l.Id == lessonId) + 1; // 1-based index
+            CurrentLessonIndex = allLessons.FindIndex(l => l.Id == lessonId) + 1; 
             if (CurrentLessonIndex > 1)
                 PreviousLessonId = allLessons[CurrentLessonIndex - 2].Id;
             if (CurrentLessonIndex > 0 && CurrentLessonIndex < TotalLessons)
                 NextLessonId = allLessons[CurrentLessonIndex].Id;
 
-            // Get quizzes for this lesson
+            
             Quizzes = await _context.Quizzes
                 .Where(q => q.LessonId == lessonId && q.IsActive)
                 .OrderBy(q => q.CreatedAt)

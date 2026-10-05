@@ -1,11 +1,11 @@
-/* =====================================================================
-   Nory Design System
-   Dark navy + amber theme matching the Nory_Design_Idea mockups.
-   This file overrides Bootstrap defaults globally, so every page -
-   including the scaffolded Identity Login/Register pages and the
-   Admin CRUD pages - inherits it automatically without needing its
-   markup rewritten by hand.
-   ===================================================================== */
+                                                                        
+                     
+                                                                 
+                                                                   
+                                                                 
+                                                                   
+                            
+                                                                           
 
 :root {
   --nory-bg: #0a0f1e;
@@ -14,9 +14,9 @@
   --nory-panel-border: #232f4d;
   --nory-nav: #0d1426;
 
-  --nory-accent: #f5a623;      /* amber - primary CTAs */
+  --nory-accent: #f5a623;                                
   --nory-accent-hover: #ffb640;
-  --nory-accent-2: #2fd3e0;    /* cyan - secondary highlights */
+  --nory-accent-2: #2fd3e0;                                     
   --nory-accent-2-hover: #57e0ec;
 
   --nory-text: #eef1f8;
@@ -34,8 +34,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
 
-/* A denser desktop scale keeps dashboards and lessons comfortable on larger
-   screens while Bootstrap continues to handle mobile layouts. */
+                                                                            
+                                                                 
 html { font-size: 15px; }
 @media (min-width: 1200px) {
   .container { max-width: 1080px; }
@@ -79,7 +79,7 @@ h2 { font-size: clamp(1.45rem, 2vw, 1.8rem); }
   color: var(--nory-accent-2);
 }
 
-/* ---------- Navbar ---------- */
+                                  
 .navbar {
   background-color: var(--nory-nav) !important;
   border-bottom: 1px solid var(--nory-panel-border);
@@ -123,7 +123,7 @@ h2 { font-size: clamp(1.45rem, 2vw, 1.8rem); }
   color: var(--nory-text);
 }
 
-/* ---------- Layout shell ---------- */
+                                        
 main {
   min-height: 70vh;
 }
@@ -135,18 +135,18 @@ footer.footer {
     background-color: var(--nory-nav);
     border-top: 1px solid var(--nory-panel-border) !important;
     color: var(--nory-text-dim);
-    /* --- THE FIX: Compact height and spacing --- */
-    padding: 1.5rem 0; /* Reduces the massive top/bottom empty space */
-    margin-top: auto; /* Pushes footer down naturally if inside a flex container */
-    position: static !important; /* Removes any broken absolute layout behaviors */
-    line-height: normal !important; /* Removes default template line spacing heights */
-    width: 100%; /* Ensures footer spans the full width of the viewport */
+                                                     
+    padding: 1.5rem 0;                                                 
+    margin-top: auto;                                                              
+    position: static !important;                                                   
+    line-height: normal !important;                                                    
+    width: 100%;                                                          
 }
 
 footer.footer a { color: var(--nory-text-muted); text-decoration: none; }
 footer.footer a:hover { color: var(--nory-accent-2); }
 
-/* ---------- Buttons ---------- */
+                                   
 .btn {
   border-radius: var(--nory-radius-sm);
   font-weight: 600;
@@ -210,7 +210,7 @@ footer.footer a:hover { color: var(--nory-accent-2); }
 .btn-info { background-color: var(--nory-accent-2); border: none; color: #06232a; }
 .btn-lg { padding: 0.75rem 1.5rem; }
 
-/* ---------- Cards / panels ---------- */
+                                          
 .card, .jumbotron {
   background-color: var(--nory-panel) !important;
   border: 1px solid var(--nory-panel-border) !important;
@@ -226,7 +226,7 @@ footer.footer a:hover { color: var(--nory-accent-2); }
   padding: 3rem !important;
 }
 
-/* ---------- Tables ---------- */
+                                  
 .table {
     color: var(--nory-text) !important;
     border-color: var(--nory-panel-border);
@@ -268,7 +268,7 @@ footer.footer a:hover { color: var(--nory-accent-2); }
 }
 
 
-/* ---------- Forms ---------- */
+                                 
 .form-control, .form-select {
   background-color: var(--nory-bg-elevated);
   border: 1px solid var(--nory-panel-border);
@@ -294,14 +294,14 @@ footer.footer a:hover { color: var(--nory-accent-2); }
 .text-danger { color: var(--nory-danger) !important; }
 .valid-feedback { color: var(--nory-success); }
 
-/* ---------- Badges ---------- */
+                                  
 .badge.bg-info { background-color: rgba(47,211,224,0.15) !important; color: var(--nory-accent-2) !important; border: 1px solid rgba(47,211,224,0.35); }
 .badge.bg-secondary { background-color: var(--nory-bg-elevated) !important; color: var(--nory-text-muted) !important; border: 1px solid var(--nory-panel-border); }
 .badge.bg-success { background-color: rgba(53,201,143,0.15) !important; color: var(--nory-success) !important; border: 1px solid rgba(53,201,143,0.35); }
 .badge.bg-warning { background-color: rgba(245,166,35,0.15) !important; color: var(--nory-accent) !important; border: 1px solid rgba(245,166,35,0.35); }
 .badge.bg-danger { background-color: rgba(239,90,111,0.15) !important; color: #ff8a97 !important; border: 1px solid rgba(239,90,111,0.35); }
 
-/* ---------- Progress bars ---------- */
+                                         
 .progress {
   background-color: var(--nory-bg-elevated);
   border-radius: 999px;
@@ -312,17 +312,17 @@ footer.footer a:hover { color: var(--nory-accent-2); }
   border-radius: 999px;
 }
 
-/* ---------- Definition lists (Details pages) ---------- */
+                                                            
 dl.row dt { color: var(--nory-text-muted); font-weight: 500; }
 dl.row dd { color: var(--nory-text); }
 
-/* ---------- Alerts ---------- */
+                                  
 .alert { border-radius: var(--nory-radius-sm); border: 1px solid var(--nory-panel-border); }
 .alert-danger { background-color: rgba(239,90,111,0.1); color: #ff8a97; border-color: rgba(239,90,111,0.3); }
 .alert-success { background-color: rgba(53,201,143,0.1); color: #6fe3b6; border-color: rgba(53,201,143,0.3); }
 .alert-info { background-color: rgba(47,211,224,0.1); color: var(--nory-accent-2); border-color: rgba(47,211,224,0.3); }
 
-/* ---------- Small helper components used on restyled pages ---------- */
+                                                                          
 .nory-stat {
   background-color: var(--nory-bg-elevated);
   border: 1px solid var(--nory-panel-border);
@@ -376,7 +376,7 @@ dl.row dd { color: var(--nory-text); }
 }
 .nory-hero .accent { color: var(--nory-accent); }
 
-/* ---------- List groups / breadcrumbs ---------- */
+                                                     
 .list-group-item {
   background-color: var(--nory-panel);
   border-color: var(--nory-panel-border);
@@ -395,7 +395,7 @@ dl.row dd { color: var(--nory-text); }
 .breadcrumb-item.active { color: var(--nory-text-dim); }
 .breadcrumb-item + .breadcrumb-item::before { color: var(--nory-text-dim); }
 
-/* ---------- Studio shell and learning pages ---------- */
+                                                           
 body {
   min-height: 100vh;
   display: flex;
@@ -466,38 +466,38 @@ body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
-/* FORCE RESET ALL TABLES APPLICATION-WIDE */
+                                             
 .table,
 .table tr,
 .table td,
 .table th {
-    background-color: #141d33 !important; /* Forces dark navy */
-    color: #eef1f8 !important; /* Forces light text */
+    background-color: #141d33 !important;                       
+    color: #eef1f8 !important;                        
 }
 
-/* FORCE DARK NAVY ON STRIPED ROWS */
+                                     
 .table-striped > tbody > tr:nth-of-type(odd) > *,
 .table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #101728 !important; /* Slightly darker navy */
+    background-color: #101728 !important;                           
     color: #eef1f8 !important;
 }
 
-/* FORCE FIX THE ROW HOVER FLASHING EFFECT */
+                                             
 .table-hover > tbody > tr:hover,
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th,
 .table-hover > tbody > tr:hover > * {
-    background-color: rgba(245, 166, 35, 0.15) !important; /* Smooth amber glow */
+    background-color: rgba(245, 166, 35, 0.15) !important;                        
     color: #eef1f8 !important;
     box-shadow: none !important;
 }
 
-/* =====================================================================
-   GLOBAL HOVER & COMPONENT STATE RESET
-   Forces all Bootstrap component interactive transitions into your dark theme
-   ===================================================================== */
+                                                                        
+                                       
+                                                                              
+                                                                           
 
-/* 1. Global Interactive Elements Hover Filter Reset */
+                                                       
 a:hover,
 .btn:hover,
 .dropdown-item:hover,
@@ -510,13 +510,13 @@ a:hover,
     box-shadow: none !important;
 }
 
-/* 2. Fix Navbar Navigation Links Hover */
+                                          
 .navbar .nav-link:hover {
     background-color: transparent !important;
     color: var(--nory-text) !important;
 }
 
-/* 3. Fix Dropdown Menu Items Hover */
+                                      
 .navbar .dropdown-item:hover,
 .dropdown-menu .dropdown-item:hover {
     background-color: var(--nory-bg-elevated) !important;
@@ -524,7 +524,7 @@ a:hover,
     box-shadow: none !important;
 }
 
-/* 4. Fix Secondary Outline Buttons */
+                                      
 .btn-secondary:hover,
 .btn-outline-secondary:hover,
 .btn-outline-primary:hover {
@@ -532,17 +532,17 @@ a:hover,
     color: var(--nory-text) !important;
     border-color: var(--nory-accent-2) !important;
 }
-/* --- FIX FOR CHORD SHEET / TEXT BLOCKS --- */
+                                               
 pre,
 code,
 .chord-container,
 .chord-display,
 .card-body pre {
-    background-color: var(--nory-bg-elevated) !important; /* Sets it to dark navy */
-    color: var(--nory-text) !important; /* Sets text to crisp light gray */
+    background-color: var(--nory-bg-elevated) !important;                           
+    color: var(--nory-text) !important;                                    
     border: 1px solid var(--nory-panel-border) !important;
 }
-/* --- FORCED DARK OVERRIDE FOR CHORD SHEET BLOCKS --- */
+                                                         
 .page-shell div[class*="bg-white"],
 .page-shell div[class*="bg-light"],
 .page-shell .card-body > div,
@@ -553,18 +553,18 @@ code,
     border-color: var(--nory-panel-border) !important;
 }
 
-    /* Force all child text within the chord box to be light and readable */
+                                                                            
     .page-shell div[class*="bg-white"] *,
     .page-shell div[class*="bg-light"] *,
     .page-shell .card-body > div * {
         color: var(--nory-text) !important;
     }
-/* --- FIX FOR BADGES AND META LABELS (KEY / CAPO) --- */
+                                                         
 .page-shell .badge,
 .page-shell span[class*="bg-light"],
 .page-shell span[class*="bg-white"],
 .page-shell div.d-flex span {
-    background-color: var(--nory-bg-elevated) !important; /* Changes white to dark navy */
-    color: var(--nory-text) !important; /* Changes white text to light gray */
-    border: 1px solid var(--nory-panel-border) !important; /* Adds a nice matching border */
+    background-color: var(--nory-bg-elevated) !important;                                 
+    color: var(--nory-text) !important;                                       
+    border: 1px solid var(--nory-panel-border) !important;                                  
 }

@@ -6,7 +6,7 @@
 <h1>Edit lesson</h1>
 <p class="text-muted">Course: @Model.CourseTitle</p>
 <div class="row"><div class="col-lg-8">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="mb-3"><label asp-for="Input.Title" class="form-label"></label><input asp-for="Input.Title" class="form-control" /><span asp-validation-for="Input.Title" class="text-danger"></span></div>
         <div class="mb-3"><label asp-for="Input.Content" class="form-label">Lesson text/content</label><textarea asp-for="Input.Content" class="form-control" rows="7"></textarea><span asp-validation-for="Input.Content" class="text-danger"></span></div>
@@ -14,6 +14,20 @@
         <div class="mb-3"><label asp-for="Input.VideoUrl" class="form-label">Video URL (optional)</label><input asp-for="Input.VideoUrl" class="form-control" /><span asp-validation-for="Input.VideoUrl" class="text-danger"></span></div>
         <div class="mb-3"><label asp-for="Input.AudioUrl" class="form-label">Audio URL (optional)</label><input asp-for="Input.AudioUrl" class="form-control" /><span asp-validation-for="Input.AudioUrl" class="text-danger"></span></div>
         <div class="mb-3"><label asp-for="Input.NotationUrl" class="form-label">Notation/sheet music URL (optional)</label><input asp-for="Input.NotationUrl" class="form-control" /><span asp-validation-for="Input.NotationUrl" class="text-danger"></span></div>
+        <div class="mb-3">
+            <label asp-for="Input.Image" class="form-label">Lesson image</label>
+            @if (!string.IsNullOrEmpty(Model.CurrentImageUrl))
+            {
+                <div class="mb-2"><img src="@Model.CurrentImageUrl" alt="Current image" class="img-thumbnail" style="max-height:140px" /></div>
+            }
+            <input asp-for="Input.Image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" class="form-control" />
+            <div class="form-text">PNG, JPG, GIF or WebP, up to 2 MB. Saved in the database and shown to every enrolled student.</div>
+            <span asp-validation-for="Input.Image" class="text-danger"></span>
+            @if (!string.IsNullOrEmpty(Model.CurrentImageUrl))
+            {
+                <div class="form-check mt-2"><input asp-for="Input.RemoveImage" class="form-check-input" /><label asp-for="Input.RemoveImage" class="form-check-label">Remove current image</label></div>
+            }
+        </div>
         <button type="submit" class="btn btn-primary">Save lesson</button>
         <a asp-page="/Courses/Index" class="btn btn-outline-secondary">Back to courses</a>
     </form>

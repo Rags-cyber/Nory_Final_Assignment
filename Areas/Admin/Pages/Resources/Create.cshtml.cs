@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using NoryMusicLMS_VS.Data;
 using NoryMusicLMS_VS.Models;
 
@@ -28,6 +29,9 @@ namespace NoryMusicLMS_VS.Areas.Admin.Pages.Resources
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!await _context.Lessons.AnyAsync(l => l.Id == Resource.LessonId))
+                ModelState.AddModelError("Resource.LessonId", "Select a valid lesson.");
+
             if (!ModelState.IsValid)
             {
                 ViewData["LessonId"] = new SelectList(_context.Lessons.OrderBy(l => l.Title), "Id", "Title");

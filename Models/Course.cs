@@ -22,10 +22,10 @@ namespace NoryMusicLMS_VS.Models
         public DateTime StartDate { get; set; } = DateTime.Today;
         public DateTime EndDate { get; set; } = DateTime.Today.AddMonths(3);
         public bool IsActive { get; set; } = true;
-        public string? ImageUrl { get; set; } // For course thumbnail
+        public string? ImageUrl { get; set; } 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        // Navigation properties
+        
         public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
     }

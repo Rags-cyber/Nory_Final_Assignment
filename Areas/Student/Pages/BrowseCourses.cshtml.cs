@@ -28,13 +28,13 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-                // Get courses the user is already enrolled in
+                
                 EnrolledCourseIds = await _context.Enrollments
                     .Where(e => e.StudentId == user.Id && e.Status != EnrollmentStatus.Dropped)
                     .Select(e => e.CourseId.ToString())
                     .ToListAsync();
 
-                // Get available courses (active courses not already enrolled)
+                
                 Courses = await _context.Courses
                     .Where(c => c.IsActive && !EnrolledCourseIds.Contains(c.Id.ToString()))
                     .Include(c => c.Instructor)
@@ -57,13 +57,13 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages
                 return NotFound();
             }
 
-            // Check if already enrolled
+            
             var existingEnrollment = await _context.Enrollments
                 .FirstOrDefaultAsync(e => e.StudentId == user.Id && e.CourseId == courseId);
 
             if (existingEnrollment != null)
             {
-                // If dropped, reactivate
+                
                 if (existingEnrollment.Status == EnrollmentStatus.Dropped)
                 {
                     existingEnrollment.Status = EnrollmentStatus.Active;
@@ -80,7 +80,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages
                 return RedirectToPage("./Index");
             }
 
-            // Create new enrollment
+            
             var enrollment = new Enrollment
             {
                 StudentId = user.Id,

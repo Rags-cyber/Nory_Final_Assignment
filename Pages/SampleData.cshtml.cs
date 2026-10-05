@@ -29,7 +29,7 @@ namespace NoryMusicLMS_VS.Pages
 
         public async Task<IActionResult> OnPostGenerateAsync()
         {
-            // Create roles if they don't exist
+            
             string[] roleNames = { "Admin", "Instructor", "Student" };
             foreach (var roleName in roleNames)
             {
@@ -40,7 +40,7 @@ namespace NoryMusicLMS_VS.Pages
                 }
             }
 
-            // Create sample users if they don't exist
+            
             var instructorEmail = "instructor@norymusic.com";
             var instructorUser = await _userManager.FindByEmailAsync(instructorEmail);
             if (instructorUser == null)
@@ -85,7 +85,7 @@ namespace NoryMusicLMS_VS.Pages
                 }
             }
 
-            // Create sample courses
+            
             var musicTheory101 = await _context.Courses.FirstOrDefaultAsync(c => c.Title == "Music Theory Fundamentals");
             if (musicTheory101 == null && instructorUser != null)
             {
@@ -140,7 +140,7 @@ namespace NoryMusicLMS_VS.Pages
                 await _context.SaveChangesAsync();
             }
 
-            // Create sample lessons for Music Theory Fundamentals
+            
             if (musicTheory101 != null)
             {
                 var lesson1 = await _context.Lessons.FirstOrDefaultAsync(l => l.Title == "Introduction to Musical Notes" && l.CourseId == musicTheory101.Id);
@@ -198,7 +198,7 @@ namespace NoryMusicLMS_VS.Pages
                 }
             }
 
-            // Create sample lessons for Chord Progressions & Harmony
+            
             if (chordProgressions != null)
             {
                 var lesson1 = await _context.Lessons.FirstOrDefaultAsync(l => l.Title == "Introduction to Chord Progressions" && l.CourseId == chordProgressions.Id);
@@ -238,7 +238,7 @@ namespace NoryMusicLMS_VS.Pages
                 }
             }
 
-            // Create sample lessons for Ear Training Essentials
+            
             if (earTraining != null)
             {
                 var lesson1 = await _context.Lessons.FirstOrDefaultAsync(l => l.Title == "Introduction to Ear Training" && l.CourseId == earTraining.Id);
@@ -278,14 +278,14 @@ namespace NoryMusicLMS_VS.Pages
                 }
             }
 
-            // Create sample quizzes and questions
+            
             if (musicTheory101 != null)
             {
-                // Get the first lesson for quizzes
+                
                 var firstLesson = await _context.Lessons.FirstOrDefaultAsync(l => l.CourseId == musicTheory101.Id);
                 if (firstLesson != null)
                 {
-                    // Create a quiz for the first lesson
+                    
                     var quiz1 = await _context.Quizzes.FirstOrDefaultAsync(q => q.Title == "Notes Quiz" && q.LessonId == firstLesson.Id);
                     if (quiz1 == null)
                     {
@@ -302,7 +302,7 @@ namespace NoryMusicLMS_VS.Pages
                         await _context.SaveChangesAsync();
                     }
 
-                    // Add questions to the quiz
+                    
                     if (quiz1 != null)
                     {
                         var question1 = await _context.QuizQuestions.FirstOrDefaultAsync(q => q.QuizId == quiz1.Id && q.QuestionText == "What are the seven natural notes in music?");
@@ -343,7 +343,7 @@ namespace NoryMusicLMS_VS.Pages
                 }
             }
 
-            // Create ear training quiz with audio identification
+            
             if (earTraining != null)
             {
                 var firstLesson = await _context.Lessons.FirstOrDefaultAsync(l => l.CourseId == earTraining.Id);
@@ -365,7 +365,7 @@ namespace NoryMusicLMS_VS.Pages
                         await _context.SaveChangesAsync();
                     }
 
-                    // Add audio identification question
+                    
                     if (earQuiz != null)
                     {
                         var audioQuestion = await _context.QuizQuestions.FirstOrDefaultAsync(q => q.QuizId == earQuiz.Id && q.QuestionText == "Listen to the audio and identify the note being played");

@@ -24,7 +24,7 @@ public class ChordSong
     [StringLength(80)]
     public string? TempoNote { get; set; }
 
-    // Chord-only section map; deliberately does not contain song lyrics or tabs.
+    
     [Required, StringLength(2000)]
     public string ChordMap { get; set; } = "";
 
@@ -33,6 +33,10 @@ public class ChordSong
 
     [StringLength(1000)]
     public string? AttributionUrl { get; set; }
+
+    
+    [StringLength(200)]
+    public string? ImageUrl { get; set; }
 
     public DateTime AddedAt { get; set; } = DateTime.UtcNow;
 }

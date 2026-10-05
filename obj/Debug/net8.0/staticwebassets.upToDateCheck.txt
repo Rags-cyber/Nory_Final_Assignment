@@ -1,6 +1,40 @@
 wwwroot\css\nory-theme.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\chord-A-major.svg
+wwwroot\images\chord-A-minor.svg
+wwwroot\images\chord-A7.svg
+wwwroot\images\chord-Am7.svg
+wwwroot\images\chord-Asus4.svg
+wwwroot\images\chord-B-major.svg
+wwwroot\images\chord-B-minor.svg
+wwwroot\images\chord-C-maj7.svg
+wwwroot\images\chord-C-major.svg
+wwwroot\images\chord-C7.svg
+wwwroot\images\chord-Cm7.svg
+wwwroot\images\chord-D-major.svg
+wwwroot\images\chord-D-minor.svg
+wwwroot\images\chord-D7.svg
+wwwroot\images\chord-Dm7.svg
+wwwroot\images\chord-Dsus4.svg
+wwwroot\images\chord-E-major.svg
+wwwroot\images\chord-E-minor-barre.svg
+wwwroot\images\chord-E-minor.svg
+wwwroot\images\chord-E7.svg
+wwwroot\images\chord-E9.svg
+wwwroot\images\chord-Em7.svg
+wwwroot\images\chord-F-major.svg
+wwwroot\images\chord-F-minor.svg
+wwwroot\images\chord-G-major.svg
+wwwroot\images\course-beginner-guitar.svg
+wwwroot\images\course-chords-songwriting.svg
+wwwroot\images\course-music-theory.svg
+wwwroot\images\course-rhythm-reading.svg
+wwwroot\images\lesson-chords.svg
+wwwroot\images\lesson-guitar.svg
+wwwroot\images\lesson-notes.svg
+wwwroot\images\lesson-rhythm.svg
+wwwroot\images\lesson-staff.svg
 wwwroot\images\music-form.svg
 wwwroot\images\music-harmony.svg
 wwwroot\images\music-intervals.svg
@@ -9,6 +43,33 @@ wwwroot\images\music-rhythm.svg
 wwwroot\images\music-scale.svg
 wwwroot\images\music-staff.svg
 wwwroot\images\music-triads.svg
+wwwroot\images\note-eighth.svg
+wwwroot\images\note-half.svg
+wwwroot\images\note-quarter.svg
+wwwroot\images\note-value-eighth-question.svg
+wwwroot\images\note-value-quarter-question.svg
+wwwroot\images\note-value-whole-question.svg
+wwwroot\images\note-whole.svg
+wwwroot\images\notes\bass-a2.png
+wwwroot\images\notes\bass-b2.png
+wwwroot\images\notes\bass-c3.png
+wwwroot\images\notes\bass-d3.png
+wwwroot\images\notes\bass-e2.png
+wwwroot\images\notes\bass-e3.png
+wwwroot\images\notes\bass-f2.png
+wwwroot\images\notes\bass-g2.png
+wwwroot\images\notes\treble-a4.png
+wwwroot\images\notes\treble-b4.png
+wwwroot\images\notes\treble-c4.png
+wwwroot\images\notes\treble-c5.png
+wwwroot\images\notes\treble-d4.png
+wwwroot\images\notes\treble-e4.png
+wwwroot\images\notes\treble-f4.png
+wwwroot\images\notes\treble-g4.png
+wwwroot\images\quiz-chords.svg
+wwwroot\images\quiz-note-names.svg
+wwwroot\images\quiz-note-values.svg
+wwwroot\images\quiz-rhythm.svg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -70,3 +131,11 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\references\MusicTheory.pdf
+wwwroot\references\open-chords.pdf
+wwwroot\uploads\C-major Sound.mp3
+wwwroot\uploads\E-Major Sound.mp3
+wwwroot\uploads\G Major Sound.mp3
+wwwroot\uploads\House of Rising Sun Chords.png
+wwwroot\uploads\najeek-chords.png
+wwwroot\uploads\Perfect Chord.png

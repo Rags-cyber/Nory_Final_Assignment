@@ -38,7 +38,7 @@ namespace NoryMusicLMS_VS.Areas.Student.Pages.Quiz
                 return NotFound();
             }
 
-            // Get the attempt
+            
             Attempt = await _context.QuizAttempts
                 .Include(a => a.Quiz)
                     .ThenInclude(q => q.Lesson)

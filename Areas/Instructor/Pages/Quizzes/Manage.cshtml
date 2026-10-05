@@ -4,7 +4,7 @@
     ViewData["Title"] = "Manage Quiz";
 }
 <p class="nory-eyebrow mb-1">@Model.Quiz.Lesson.Course.Title · @Model.Quiz.Lesson.Title</p>
-<h1>@Model.Quiz.Title</h1>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2"><h1 class="mb-0">@Model.Quiz.Title</h1><a asp-page="./Edit" asp-route-id="@Model.Quiz.Id" class="btn btn-outline-primary">Edit quiz</a></div>
 <p class="text-muted">@Model.Quiz.Description</p>
 @if (TempData["StatusMessage"] is string message) { <div class="alert alert-success">@message</div> }
 
@@ -18,7 +18,15 @@ else
     <ol class="list-group list-group-numbered mb-4">
     @foreach (var question in Model.Quiz.Questions)
     {
-        <li class="list-group-item">@question.QuestionText <span class="badge bg-secondary">@question.Type</span> <span class="badge bg-info">@question.Points pts</span></li>
+        <li class="list-group-item d-flex align-items-center gap-3">
+            @if (!string.IsNullOrWhiteSpace(question.ImageUrl))
+            {
+                <img src="@question.ImageUrl" alt="" class="rounded" style="width:48px;height:48px;object-fit:cover;" />
+            }
+            <span class="flex-grow-1">@question.QuestionText</span>
+            <span class="badge bg-secondary">@question.Type</span>
+            <span class="badge bg-info">@question.Points pts</span><form method="post" asp-page-handler="DeleteQuestion" asp-route-id="@Model.Quiz.Id" asp-route-questionId="@question.Id" onsubmit="return confirm('Delete this question?');"><button type="submit" class="btn btn-sm btn-outline-danger">Delete</button></form>
+        </li>
     }
     </ol>
 }
@@ -26,7 +34,7 @@ else
 <section class="card">
     <div class="card-header"><h2 class="h5 mb-0">Add a question</h2></div>
     <div class="card-body">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3"><label asp-for="Input.QuestionText" class="form-label"></label><textarea asp-for="Input.QuestionText" class="form-control" rows="2"></textarea><span asp-validation-for="Input.QuestionText" class="text-danger"></span></div>
             <div class="row">
@@ -46,7 +54,9 @@ else
             <div id="textAnswerFields">
                 <div class="mb-3"><label asp-for="Input.CorrectAnswerText" class="form-label">Expected answer (e.g. C or Perfect 5th)</label><input asp-for="Input.CorrectAnswerText" class="form-control" /><span asp-validation-for="Input.CorrectAnswerText" class="text-danger"></span></div>
             </div>
+            <div class="mb-3"><label asp-for="Input.Image" class="form-label">Question image (optional)</label><input asp-for="Input.Image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" class="form-control" /><div class="form-text">PNG, JPG, GIF or WebP, up to 2 MB. Shown above the question text to students.</div><span asp-validation-for="Input.Image" class="text-danger"></span></div>
             <div id="audioFields">
+                <div class="mb-3"><label asp-for="Input.Audio" class="form-label">Upload MP3 audio (optional)</label><input asp-for="Input.Audio" type="file" accept=".mp3,audio/mpeg" class="form-control" /><span asp-validation-for="Input.Audio" class="text-danger"></span></div>
                 <div class="mb-3"><label asp-for="Input.AudioUrl" class="form-label">Audio URL (optional)</label><input asp-for="Input.AudioUrl" class="form-control" /><span asp-validation-for="Input.AudioUrl" class="text-danger"></span></div>
                 <div class="mb-3"><label asp-for="Input.ToneSequence" class="form-label">Tone sequence in Hz (optional, e.g. 261.63,392.00)</label><input asp-for="Input.ToneSequence" class="form-control" /><span asp-validation-for="Input.ToneSequence" class="text-danger"></span></div>
             </div>
@@ -65,10 +75,10 @@ else
         const audioFields = document.getElementById('audioFields');
         function updateQuestionFields() {
             const type = typeSelect.value;
-            const choice = type === 'MultipleChoice' || type === 'TrueFalse';
+            const choice = type === '0' || type === '1';
             choiceFields.hidden = !choice;
             textFields.hidden = choice;
-            audioFields.hidden = type !== 'AudioIdentification';
+            audioFields.hidden = type !== '3';
         }
         typeSelect.addEventListener('change', updateQuestionFields);
         updateQuestionFields();

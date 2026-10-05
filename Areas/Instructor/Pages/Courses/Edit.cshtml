@@ -5,13 +5,26 @@
 }
 <h1>Edit course</h1>
 <div class="row"><div class="col-md-7 col-lg-6">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="mb-3"><label asp-for="Input.Title" class="form-label"></label><input asp-for="Input.Title" class="form-control" /><span asp-validation-for="Input.Title" class="text-danger"></span></div>
         <div class="mb-3"><label asp-for="Input.Description" class="form-label"></label><textarea asp-for="Input.Description" class="form-control" rows="4"></textarea><span asp-validation-for="Input.Description" class="text-danger"></span></div>
         <div class="mb-3"><label asp-for="Input.StartDate" class="form-label"></label><input asp-for="Input.StartDate" type="date" class="form-control" /></div>
         <div class="mb-3"><label asp-for="Input.EndDate" class="form-label"></label><input asp-for="Input.EndDate" type="date" class="form-control" /><span asp-validation-for="Input.EndDate" class="text-danger"></span></div>
-        <div class="mb-3"><label asp-for="Input.ImageUrl" class="form-label"></label><input asp-for="Input.ImageUrl" class="form-control" /><span asp-validation-for="Input.ImageUrl" class="text-danger"></span></div>
+        <div class="mb-3">
+            <label asp-for="Input.Image" class="form-label">Course image (thumbnail)</label>
+            @if (!string.IsNullOrEmpty(Model.CurrentImageUrl))
+            {
+                <div class="mb-2"><img src="@Model.CurrentImageUrl" alt="Current image" class="img-thumbnail" style="max-height:140px" /></div>
+            }
+            <input asp-for="Input.Image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" class="form-control" />
+            <div class="form-text">PNG, JPG, GIF or WebP, up to 2 MB. Saved in the database and shown to every enrolled student.</div>
+            <span asp-validation-for="Input.Image" class="text-danger"></span>
+            @if (!string.IsNullOrEmpty(Model.CurrentImageUrl))
+            {
+                <div class="form-check mt-2"><input asp-for="Input.RemoveImage" class="form-check-input" /><label asp-for="Input.RemoveImage" class="form-check-label">Remove current image</label></div>
+            }
+        </div>
         <div class="form-check mb-3"><input asp-for="Input.IsActive" class="form-check-input" /><label asp-for="Input.IsActive" class="form-check-label">Published</label></div>
         <button class="btn btn-primary" type="submit">Save changes</button>
         <a asp-page="Details" asp-route-id="@Model.CourseId" class="btn btn-outline-secondary">Cancel</a>

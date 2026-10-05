@@ -54,7 +54,8 @@ else
     @foreach (var quiz in Model.Quizzes)
     {
         <div class="col">
-            <article class="card h-100">
+            <article class="card h-100 overflow-hidden">
+                <img src="@(MediaFallbacks.QuizImage(quiz))" class="card-img-top" style="height:160px;object-fit:cover;" alt="@quiz.Title" />
                 <div class="card-body">
                     <span class="badge @(quiz.Type == QuizType.EarTraining ? "bg-info" : "bg-primary")">@quiz.Type</span>
                     <h2 class="h5 mt-2">@quiz.Title</h2>

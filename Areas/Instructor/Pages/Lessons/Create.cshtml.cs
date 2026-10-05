@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NoryMusicLMS_VS.Data;
 using NoryMusicLMS_VS.Models;
+using NoryMusicLMS_VS.Services;
 
 namespace NoryMusicLMS_VS.Areas.Instructor.Pages.Lessons;
 
@@ -14,11 +15,13 @@ public class CreateModel : PageModel
 {
     private readonly ApplicationDbContext _db;
     private readonly UserManager<ApplicationUser> _users;
+    private readonly ImageStorageService _images;
 
-    public CreateModel(ApplicationDbContext db, UserManager<ApplicationUser> users)
+    public CreateModel(ApplicationDbContext db, UserManager<ApplicationUser> users, ImageStorageService images)
     {
         _db = db;
         _users = users;
+        _images = images;
     }
 
     [BindProperty] public LessonInput Input { get; set; } = new();
@@ -33,6 +36,7 @@ public class CreateModel : PageModel
         [Url] public string? VideoUrl { get; set; }
         [Url] public string? AudioUrl { get; set; }
         [Url] public string? NotationUrl { get; set; }
+        public IFormFile? Image { get; set; }
     }
 
     public async Task<IActionResult> OnGetAsync(int courseId)
@@ -50,7 +54,11 @@ public class CreateModel : PageModel
         var course = await GetOwnedCourseAsync(Input.CourseId);
         if (course is null) return NotFound();
         CourseTitle = course.Title;
+        if (ImageStorageService.Validate(Input.Image) is { } imageError)
+            ModelState.AddModelError("Input.Image", imageError);
         if (!ModelState.IsValid) return Page();
+
+        var imageUrl = await _images.ApplyAsync(null, Input.Image, false, _users.GetUserId(User));
 
         _db.Lessons.Add(new Lesson
         {
@@ -61,6 +69,7 @@ public class CreateModel : PageModel
             VideoUrl = Input.VideoUrl,
             AudioUrl = Input.AudioUrl,
             NotationUrl = Input.NotationUrl,
+            ImageUrl = imageUrl,
             CreatedAt = DateTime.UtcNow
         });
         await _db.SaveChangesAsync();

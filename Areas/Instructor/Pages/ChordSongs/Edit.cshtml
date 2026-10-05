@@ -1,0 +1,42 @@
+@page "{id:int}"
+@model NoryMusicLMS_VS.Areas.Instructor.Pages.ChordSongs.EditModel
+@{
+    ViewData["Title"] = "Edit Song";
+}
+<h1>Edit song</h1>
+<div class="row"><div class="col-lg-8">
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-6 mb-3"><label asp-for="Input.Title" class="form-label"></label><input asp-for="Input.Title" class="form-control" /><span asp-validation-for="Input.Title" class="text-danger"></span></div>
+            <div class="col-md-6 mb-3"><label asp-for="Input.Artist" class="form-label"></label><input asp-for="Input.Artist" class="form-control" /><span asp-validation-for="Input.Artist" class="text-danger"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 mb-3"><label asp-for="Input.Instrument" class="form-label"></label><input asp-for="Input.Instrument" class="form-control" /></div>
+            <div class="col-md-3 mb-3"><label asp-for="Input.Key" class="form-label"></label><input asp-for="Input.Key" class="form-control" /></div>
+            <div class="col-md-3 mb-3"><label asp-for="Input.CapoFret" class="form-label"></label><input asp-for="Input.CapoFret" type="number" min="0" max="12" class="form-control" /></div>
+            <div class="col-md-3 mb-3"><label asp-for="Input.TempoBpm" class="form-label"></label><input asp-for="Input.TempoBpm" type="number" min="20" max="300" class="form-control" /></div>
+        </div>
+        <div class="mb-3"><label asp-for="Input.TempoNote" class="form-label"></label><input asp-for="Input.TempoNote" class="form-control" /></div>
+        <div class="mb-3"><label asp-for="Input.ChordMap" class="form-label">Chord map (one section per line)</label><textarea asp-for="Input.ChordMap" class="form-control" rows="5"></textarea><span asp-validation-for="Input.ChordMap" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Input.StrummingPattern" class="form-label"></label><input asp-for="Input.StrummingPattern" class="form-control" /></div>
+        <div class="mb-3"><label asp-for="Input.AttributionUrl" class="form-label">Chord reference link (optional)</label><input asp-for="Input.AttributionUrl" class="form-control" /><span asp-validation-for="Input.AttributionUrl" class="text-danger"></span></div>
+        <div class="mb-3">
+            <label asp-for="Input.Image" class="form-label">Chord diagram image</label>
+            @if (!string.IsNullOrEmpty(Model.CurrentImageUrl))
+            {
+                <div class="mb-2"><img src="@Model.CurrentImageUrl" alt="Current image" class="img-thumbnail" style="max-height:140px" /></div>
+            }
+            <input asp-for="Input.Image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" class="form-control" />
+            <div class="form-text">PNG, JPG, GIF or WebP, up to 2 MB.</div>
+            <span asp-validation-for="Input.Image" class="text-danger"></span>
+            @if (!string.IsNullOrEmpty(Model.CurrentImageUrl))
+            {
+                <div class="form-check mt-2"><input asp-for="Input.RemoveImage" class="form-check-input" /><label asp-for="Input.RemoveImage" class="form-check-label">Remove current image</label></div>
+            }
+        </div>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <a asp-page="Index" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

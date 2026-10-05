@@ -10,6 +10,12 @@
     <p class="text-muted mb-0" style="max-width: 46rem">Build strong music foundations with courses organized from notation through harmony and form. Learn guitar chords in a practical path, then check your understanding with quizzes.</p>
 </section>
 
+<div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="card h-100"><div class="card-body"><i class="bi bi-journal-music fs-3 text-primary"></i><h3 class="h6 mt-2">Structured lessons</h3><p class="small text-muted mb-0">Every course is divided into a clear sequence of lessons, practice prompts and quizzes.</p></div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body"><i class="bi bi-image fs-3 text-info"></i><h3 class="h6 mt-2">Visual learning</h3><p class="small text-muted mb-0">Course, lesson and quiz visuals reinforce the topic instead of acting as placeholders.</p></div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body"><i class="bi bi-graph-up-arrow fs-3 text-success"></i><h3 class="h6 mt-2">Progress tracking</h3><p class="small text-muted mb-0">Complete lessons and use quizzes to build a visible learning record.</p></div></div></div>
+</div>
+
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <div><h2 class="h4 mb-0">Available courses</h2><p class="small text-muted mb-0">Choose one course at a time and learn at your own pace.</p></div>
     <a asp-page="./Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>My learning</a>
@@ -26,8 +32,8 @@ else
         {
             var isGuitar = course.Title.Contains("Guitar", StringComparison.OrdinalIgnoreCase);
             <div class="col">
-                <article class="card nory-course-card">
-                    <div class="course-art" aria-hidden="true"><i class="bi @(isGuitar ? "bi-music-note-beamed" : "bi-music-note-list")"></i></div>
+                <article class="card nory-course-card h-100 overflow-hidden">
+                    <img src="@(MediaFallbacks.CourseImage(course))" class="w-100" style="height:190px;object-fit:cover" alt="@course.Title course cover" />
                     <div class="card-body d-flex flex-column">
                         <div class="d-flex align-items-center gap-2 mb-2"><span class="nory-pill">@(isGuitar ? "GUITAR" : "MUSIC THEORY")</span><span class="small text-muted">@course.Lessons.Count lessons</span></div>
                         <h3 class="card-title h5">@course.Title</h3>

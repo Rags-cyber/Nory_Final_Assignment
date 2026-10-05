@@ -6,7 +6,7 @@
 <h1>Add lesson</h1>
 <p class="text-muted">Course: @Model.CourseTitle</p>
 <div class="row"><div class="col-lg-8">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <input asp-for="Input.CourseId" type="hidden" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="mb-3"><label asp-for="Input.Title" class="form-label"></label><input asp-for="Input.Title" class="form-control" /><span asp-validation-for="Input.Title" class="text-danger"></span></div>
@@ -15,6 +15,12 @@
         <div class="mb-3"><label asp-for="Input.VideoUrl" class="form-label">Video URL (optional)</label><input asp-for="Input.VideoUrl" class="form-control" /><span asp-validation-for="Input.VideoUrl" class="text-danger"></span></div>
         <div class="mb-3"><label asp-for="Input.AudioUrl" class="form-label">Audio URL (optional)</label><input asp-for="Input.AudioUrl" class="form-control" /><span asp-validation-for="Input.AudioUrl" class="text-danger"></span></div>
         <div class="mb-3"><label asp-for="Input.NotationUrl" class="form-label">Notation/sheet music URL (optional)</label><input asp-for="Input.NotationUrl" class="form-control" /><span asp-validation-for="Input.NotationUrl" class="text-danger"></span></div>
+        <div class="mb-3">
+            <label asp-for="Input.Image" class="form-label">Lesson image</label>
+            <input asp-for="Input.Image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" class="form-control" />
+            <div class="form-text">PNG, JPG, GIF or WebP, up to 2 MB. Saved in the database and shown to every enrolled student.</div>
+            <span asp-validation-for="Input.Image" class="text-danger"></span>
+        </div>
         <button type="submit" class="btn btn-primary">Create lesson</button>
         <a asp-page="/Courses/Details" asp-route-id="@Model.Input.CourseId" class="btn btn-outline-secondary">Cancel</a>
     </form>

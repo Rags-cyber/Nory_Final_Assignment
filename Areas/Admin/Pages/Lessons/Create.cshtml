@@ -4,75 +4,39 @@
     ViewData["Title"] = "Create Lesson";
 }
 
-<h1>Create Lesson</h1>
+<h1>Create lesson</h1>
 
-<form method="post">
-    <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Course</label>
-        <div class="col-sm-10">
-            <select class="form-select" asp-for="Lesson.CourseId" asp-items="ViewBag.CourseId">
-                <option value="">-- Select Course --</option>
-            </select>
-            <span asp-validation-for="Lesson.CourseId" class="text-danger"></span>
-        </div>
+<form method="post" enctype="multipart/form-data" class="row g-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="col-md-8">
+        <label asp-for="Input.CourseId" class="form-label">Course</label>
+        <select asp-for="Input.CourseId" class="form-control"></select>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Title</label>
-        <div class="col-sm-10">
-            <input class="form-control" asp-for="Lesson.Title" />
-            <span asp-validation-for="Lesson.Title" class="text-danger"></span>
-        </div>
+    <div class="col-12">
+        <label asp-for="Input.Title" class="form-label">Title</label>
+        <input asp-for="Input.Title" class="form-control" />
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Content</label>
-        <div class="col-sm-10">
-            <textarea class="form-control" asp-for="Lesson.Content" rows="5"></textarea>
-            <span asp-validation-for="Lesson.Content" class="text-danger"></span>
-        </div>
+    <div class="col-md-4">
+        <label asp-for="Input.VideoUrl" class="form-label">Video URL</label>
+        <input asp-for="Input.VideoUrl" class="form-control" />
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Order Index</label>
-        <div class="col-sm-10">
-            <input class="form-control" type="number" asp-for="Lesson.OrderIndex" />
-            <span asp-validation-for="Lesson.OrderIndex" class="text-danger"></span>
-        </div>
+    <div class="col-md-6">
+        <label asp-for="Input.Image" class="form-label">Lesson image</label>
+        <input asp-for="Input.Image" type="file" class="form-control" />
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Video URL (YouTube/Vimeo)</label>
-        <div class="col-sm-10">
-            <input class="form-control" asp-for="Lesson.VideoUrl" />
-            <span asp-validation-for="Lesson.VideoUrl" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Audio URL (MP3)</label>
-        <div class="col-sm-10">
-            <input class="form-control" asp-for="Lesson.AudioUrl" />
-            <span asp-validation-for="Lesson.AudioUrl" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Notation URL (PDF/Image)</label>
-        <div class="col-sm-10">
-            <input class="form-control" asp-for="Lesson.NotationUrl" />
-            <span asp-validation-for="Lesson.NotationUrl" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-10 offset-sm-2">
-            <button type="submit" class="btn btn-primary">Create</button>
-            <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
-        </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Create lesson</button>
+        <a asp-page="./Index" class="btn btn-outline-secondary">Cancel</a>
     </div>
 </form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

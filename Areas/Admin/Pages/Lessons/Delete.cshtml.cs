@@ -44,14 +44,32 @@ namespace NoryMusicLMS_VS.Areas.Admin.Pages.Lessons
                 return NotFound();
             }
 
-            Lesson = await _context.Lessons.FindAsync(id);
+            var lesson = await _context.Lessons
+                .Include(l => l.Quizzes)
+                .FirstOrDefaultAsync(l => l.Id == id.Value);
 
-            if (Lesson != null)
+            if (lesson == null)
             {
-                _context.Lessons.Remove(Lesson);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
 
+            
+            
+            foreach (var quiz in lesson.Quizzes.ToList())
+            {
+                var questions = await _context.QuizQuestions
+                    .Where(q => q.QuizId == quiz.Id)
+                    .ToListAsync();
+                foreach (var q in questions)
+                {
+                    _context.QuizQuestions.Remove(q);
+                }
+            }
+
+            _context.Lessons.Remove(lesson);
+            await _context.SaveChangesAsync();
+
+            TempData["StatusMessage"] = $"Lesson \"{lesson.Title}\" deleted.";
             return RedirectToPage("./Index");
         }
     }

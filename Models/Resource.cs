@@ -13,8 +13,8 @@ namespace NoryMusicLMS_VS.Models
         Other
     }
 
-    // Admin-managed educational resources attached to a lesson
-    // (referenced in the proposal as "Upload educational resources").
+    
+    
     public class Resource
     {
         public int Id { get; set; }
@@ -27,7 +27,7 @@ namespace NoryMusicLMS_VS.Models
 
         public ResourceType Type { get; set; } = ResourceType.Other;
 
-        // URL or relative path under wwwroot/uploads where the file/link lives
+        
         [Required, StringLength(1000)]
         public string Url { get; set; } = string.Empty;
 
